@@ -1,0 +1,13 @@
+# Route requests to index.php if file doesn't exist
+DirectoryIndex index.php index.html
+
+# Protect sensitive files
+<FilesMatch "^(config|install)\.php$">
+    # Remove this block after running install.php
+</FilesMatch>
+
+# Deny direct access to database directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^database/ - [F,L]
+</IfModule>
