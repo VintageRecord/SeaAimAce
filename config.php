@@ -13,8 +13,107 @@ function get_db(): PDO {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $pdo->exec('PRAGMA journal_mode=WAL');
+        _ensure_schema($pdo);
     }
     return $pdo;
+}
+
+function _ensure_schema(PDO $pdo): void {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS settings (
+            key   TEXT PRIMARY KEY,
+            value TEXT NOT NULL DEFAULT ''
+        );
+
+        CREATE TABLE IF NOT EXISTS features (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            icon        TEXT NOT NULL DEFAULT '',
+            title       TEXT NOT NULL DEFAULT '',
+            description TEXT NOT NULL DEFAULT '',
+            stat1_num   TEXT NOT NULL DEFAULT '',
+            stat1_label TEXT NOT NULL DEFAULT '',
+            stat2_num   TEXT NOT NULL DEFAULT '',
+            stat2_label TEXT NOT NULL DEFAULT '',
+            stat3_num   TEXT NOT NULL DEFAULT '',
+            stat3_label TEXT NOT NULL DEFAULT '',
+            sort_order  INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS spaces (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            title       TEXT NOT NULL DEFAULT '',
+            description TEXT NOT NULL DEFAULT '',
+            tag1        TEXT NOT NULL DEFAULT '',
+            tag2        TEXT NOT NULL DEFAULT '',
+            tag3        TEXT NOT NULL DEFAULT '',
+            sort_order  INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS pricing_plans (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            name          TEXT NOT NULL DEFAULT '',
+            price_monthly INTEGER NOT NULL DEFAULT 0,
+            price_yearly  INTEGER NOT NULL DEFAULT 0,
+            features      TEXT NOT NULL DEFAULT '[]',
+            is_featured   INTEGER NOT NULL DEFAULT 0,
+            button_text   TEXT NOT NULL DEFAULT 'Get Started',
+            sort_order    INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS amenities (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            icon        TEXT NOT NULL DEFAULT '',
+            title       TEXT NOT NULL DEFAULT '',
+            description TEXT NOT NULL DEFAULT '',
+            sort_order  INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS contact_submissions (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            name       TEXT NOT NULL DEFAULT '',
+            email      TEXT NOT NULL DEFAULT '',
+            phone      TEXT NOT NULL DEFAULT '',
+            company    TEXT NOT NULL DEFAULT '',
+            interest   TEXT NOT NULL DEFAULT '',
+            message    TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS pages (
+            id               INTEGER PRIMARY KEY AUTOINCREMENT,
+            title            TEXT NOT NULL DEFAULT '',
+            slug             TEXT NOT NULL UNIQUE,
+            meta_title       TEXT NOT NULL DEFAULT '',
+            meta_description TEXT NOT NULL DEFAULT '',
+            status           TEXT NOT NULL DEFAULT 'draft',
+            html_content     TEXT NOT NULL DEFAULT '',
+            editor_json      TEXT NOT NULL DEFAULT '{}',
+            updated_at       TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS media (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            filename      TEXT NOT NULL,
+            original_name TEXT NOT NULL DEFAULT '',
+            mime_type     TEXT NOT NULL DEFAULT '',
+            file_size     INTEGER NOT NULL DEFAULT 0,
+            uploaded_at   TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS nav_links (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            label      TEXT NOT NULL DEFAULT '',
+            url        TEXT NOT NULL DEFAULT '',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS footer_columns (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            heading    TEXT NOT NULL DEFAULT '',
+            links      TEXT NOT NULL DEFAULT '[]',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        );
+    ");
 }
 
 function setting(string $key, string $default = ''): string {
