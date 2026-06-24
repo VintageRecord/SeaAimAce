@@ -1,5 +1,5 @@
  .u-section-1 {
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/-min.jpg');
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('new_images/-min.jpg');
   background-position: 50% 50%;
 }
 
@@ -443,7 +443,7 @@
 
 .u-section-2 .u-image-1 {
   min-height: 850px;
-  background-image: url("images/bnbn-min.jpg");
+  background-image: url("new_images/bnbn-min.jpg");
   background-position: 50% 50%;
   --animation-custom_in-translate_x: 300px;
   --animation-custom_in-translate_y: 0px;
@@ -729,7 +729,7 @@
 
 .u-section-4 .u-image-1 {
   min-height: 573px;
-  background-image: linear-gradient(0deg, rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("images/cvcv-min.jpg");
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("new_images/cvcv-min.jpg");
   background-position: 50% 36.38%;
   margin-top: 0;
   margin-bottom: 0;
@@ -1679,7 +1679,7 @@
     padding-right: 10px;
   }
 } .u-section-6 {
-  background-image: url("images/bnbnnbn-min.jpg");
+  background-image: url("new_images/bnbnnbn-min.jpg");
   background-position: 50% 50%;
 }
 
@@ -1732,7 +1732,7 @@
 
 .u-section-6 .u-image-1 {
   min-height: 536px;
-  background-image: url("images/bnbnbnn.jpg");
+  background-image: url("new_images/bnbnbnn.jpg");
   background-position: 50% 50%;
   --animation-custom_in-translate_x: 0px;
   --animation-custom_in-translate_y: 300px;
@@ -1857,7 +1857,7 @@
 
 .u-section-7 .u-image-1 {
   min-height: 366px;
-  background-image: url("images/rrer.jpg");
+  background-image: url("new_images/rrer.jpg");
   background-position: 50% 50%;
   --animation-custom_in-translate_x: 0px;
   --animation-custom_in-translate_y: 0px;
@@ -1868,7 +1868,7 @@
 
 .u-section-7 .u-image-2 {
   min-height: 301px;
-  background-image: url("images/fff.jpg");
+  background-image: url("new_images/fff.jpg");
   background-position: 50% 50%;
   --animation-custom_in-translate_x: 300px;
   --animation-custom_in-translate_y: 0px;
@@ -2008,7 +2008,7 @@
     min-height: 344px;
   }
 } .u-section-8 {
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('images/gfgfggfggg-min.jpg');
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('new_images/gfgfggfggg-min.jpg');
   background-position: 50% 0%;
 }
 

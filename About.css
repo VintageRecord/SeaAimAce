@@ -1,5 +1,5 @@
  .u-section-1 {
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('images/new3-min.jpg');
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('new_images/new3-min.jpg');
   background-position: 50% 50%;
 }
 
@@ -348,7 +348,7 @@
 
 .u-section-3 .u-image-1 {
   min-height: 435px;
-  background-image: url("images/3.jpg");
+  background-image: url("new_images/3.jpg");
   background-position: 50% 50%;
 }
 
@@ -358,7 +358,7 @@
 
 .u-section-3 .u-image-2 {
   min-height: 313px;
-  background-image: url("images/4.jpg");
+  background-image: url("new_images/4.jpg");
   background-position: 50% 50%;
 }
 
@@ -402,7 +402,7 @@
 
 .u-section-3 .u-image-3 {
   min-height: 313px;
-  background-image: url("images/56.jpg");
+  background-image: url("new_images/56.jpg");
   background-position: 50% 50%;
 }
 
@@ -412,7 +412,7 @@
 
 .u-section-3 .u-image-4 {
   min-height: 435px;
-  background-image: url("images/t5.jpg");
+  background-image: url("new_images/t5.jpg");
   background-position: 50% 50%;
 }
 
@@ -662,7 +662,7 @@
 
 .u-section-4 .u-image-1 {
   min-height: 660px;
-  background-image: url("images/789.jpg");
+  background-image: url("new_images/789.jpg");
   background-position: 50% 50%;
   --animation-custom_in-translate_x: 0px;
   --animation-custom_in-translate_y: 300px;
@@ -917,7 +917,7 @@
 }
 
 .u-section-5 .u-image-1 {
-  background-image: url("images/r6.jpg");
+  background-image: url("new_images/r6.jpg");
   background-position: 50% 50%;
   min-height: 748px;
 }
@@ -927,7 +927,7 @@
 }
 
 .u-section-5 .u-image-2 {
-  background-image: url("images/e4.jpg");
+  background-image: url("new_images/e4.jpg");
   background-position: 50% 50%;
   min-height: 499px;
 }
@@ -1783,7 +1783,7 @@
 .u-container-layout.hover .u-block-79b7-73:not([data-block-selected]):not([data-cell-selected]) {
   transform: translateX(0px) translateY(-5px) scale(1) !important;
 } .u-section-7 {
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('images/gfgfggfggg-min.jpg');
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('new_images/gfgfggfggg-min.jpg');
   background-position: 50% 50%;
 }
 
