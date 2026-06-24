@@ -92,6 +92,7 @@ $show_preview ??= true; // set to false on pages where preview doesn't make sens
                 <?php if ($show_preview): ?>
                 <button class="preview-toggle-btn" id="preview-toggle-btn" onclick="togglePreview()">Show Preview</button>
                 <?php endif; ?>
+                <a href="live-edit.php" class="view-site-btn" style="background:var(--accent2)">Live Edit</a>
                 <a href="../index.php" target="_blank" class="view-site-btn">View Site</a>
             </div>
         </div>
