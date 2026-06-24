@@ -38,7 +38,11 @@ a:hover { color: var(--accent2); }
     top: 0; left: 0; bottom: 0;
     overflow-y: auto;
     z-index: 100;
+    /* Hide scrollbar on all browsers */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
+.sidebar::-webkit-scrollbar { display: none; }
 
 .sidebar-logo {
     padding: 18px 20px;
