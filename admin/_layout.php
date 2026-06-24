@@ -9,7 +9,7 @@ $active_nav ??= '';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= h($page_title) ?> | FORGE CMS</title>
-<link rel="stylesheet" href="<?= dirname($_SERVER['SCRIPT_NAME']) === '/admin' ? '' : '../' ?>admin/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="admin-layout">
@@ -76,6 +76,6 @@ $active_nav ??= '';
                 <div class="breadcrumb"><a href="index.php">Admin</a> / <?= h($page_title) ?></div>
                 <h1><?= h($page_title) ?></h1>
             </div>
-            <a href="../index.php" target="_blank" class="view-site-btn">↗ View Site</a>
+            <a href="../index.php" target="_blank" class="view-site-btn" style="color:#fff">↗ View Site</a>
         </div>
         <div class="page-content">
