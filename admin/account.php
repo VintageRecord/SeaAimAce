@@ -11,8 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new2     = $_POST['confirm_password']  ?? '';
     $username = trim($_POST['username']     ?? '');
 
-    $stored_hash = setting('admin_password', '');
-    if (!password_verify($current, $stored_hash)) {
+    if (!password_verify($current, setting('admin_password', ''))) {
         $error = 'Current password is incorrect.';
     } elseif ($new1 !== '' && strlen($new1) < 8) {
         $error = 'New password must be at least 8 characters.';
@@ -25,19 +24,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$page_title = 'Change Password';
-$active_nav = 'account';
+$page_title  = 'Change Password';
+$active_nav  = 'account';
+$show_preview = false;
 include '_layout.php';
 ?>
 
-<?php if ($saved): ?>
-<div class="alert alert-success">✅ Account updated successfully.</div>
-<?php endif; ?>
-<?php if ($error): ?>
-<div class="alert alert-danger"><?= h($error) ?></div>
-<?php endif; ?>
+<?php if ($saved): ?><div class="alert alert-success">Account updated successfully.</div><?php endif; ?>
+<?php if ($error): ?><div class="alert alert-danger"><?= h($error) ?></div><?php endif; ?>
 
-<div class="card" style="max-width:480px">
+<div class="card" style="max-width:460px">
     <div class="card-header"><h2>Update Credentials</h2></div>
     <div class="card-body">
         <form method="POST">
@@ -46,7 +42,7 @@ include '_layout.php';
                 <input type="text" name="username" placeholder="<?= h(setting('admin_username', 'admin')) ?>">
             </div>
             <div class="form-group">
-                <label>Current Password <span style="color:var(--accent)">*</span></label>
+                <label>Current Password *</label>
                 <input type="password" name="current_password" required>
             </div>
             <div class="form-group">
@@ -57,7 +53,7 @@ include '_layout.php';
                 <label>Confirm New Password</label>
                 <input type="password" name="confirm_password">
             </div>
-            <button type="submit" class="btn btn-primary">💾 Update Account</button>
+            <button type="submit" class="btn btn-primary">Update Account</button>
         </form>
     </div>
 </div>

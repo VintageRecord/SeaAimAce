@@ -2,22 +2,24 @@
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 
-$saved = false;
+$fields = [
+    'site_title',
+    'nav_logo_text','nav_book_btn_text','nav_book_btn_href',
+    'hero_heading_line1','hero_heading_line2','hero_subtitle',
+    'hero_btn1_text','hero_btn1_href','hero_btn2_text','hero_btn2_href',
+    'features_heading','features_subtext',
+    'spaces_heading','spaces_subtext',
+];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fields = [
-        'site_title',
-        'nav_logo_text','nav_book_btn_text','nav_book_btn_href',
-        'hero_heading_line1','hero_heading_line2','hero_subtitle',
-        'hero_btn1_text','hero_btn1_href','hero_btn2_text','hero_btn2_href',
-        'features_heading','features_subtext',
-        'spaces_heading','spaces_subtext',
-    ];
     foreach ($fields as $f) {
-        if (isset($_POST[$f])) {
-            save_setting($f, trim($_POST[$f]));
-        }
+        if (isset($_POST[$f])) save_setting($f, trim($_POST[$f]));
     }
-    $saved = true;
+    if (!empty($_SERVER['HTTP_X_AJAX'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true]);
+        exit;
+    }
 }
 
 $page_title = 'General & Hero';
@@ -25,11 +27,7 @@ $active_nav = 'general';
 include '_layout.php';
 ?>
 
-<?php if ($saved): ?>
-<div class="alert alert-success">✅ Settings saved successfully.</div>
-<?php endif; ?>
-
-<form method="POST">
+<form method="POST" data-ajax data-live>
 <div class="card">
     <div class="card-header"><h2>Site Settings</h2></div>
     <div class="card-body">
@@ -69,7 +67,7 @@ include '_layout.php';
                 <input type="text" name="hero_heading_line1" value="<?= h(setting('hero_heading_line1')) ?>">
             </div>
             <div class="form-group">
-                <label>Heading Line 2 (accent)</label>
+                <label>Heading Line 2 (accent colour)</label>
                 <input type="text" name="hero_heading_line2" value="<?= h(setting('hero_heading_line2')) ?>">
             </div>
             <div class="form-group full-width">
@@ -124,8 +122,9 @@ include '_layout.php';
     </div>
 </div>
 
-<div style="margin-top:8px">
-    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+<div class="save-bar">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <span class="save-status"></span>
 </div>
 </form>
 

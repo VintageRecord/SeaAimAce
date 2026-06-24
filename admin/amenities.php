@@ -3,9 +3,11 @@ require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 
 $db = get_db();
-$saved = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    save_setting('amenities_heading', trim($_POST['amenities_heading'] ?? ''));
+    save_setting('amenities_subtext', trim($_POST['amenities_subtext'] ?? ''));
+
     $ids   = $_POST['id']          ?? [];
     $icons = $_POST['icon']        ?? [];
     $titls = $_POST['title']       ?? [];
@@ -19,10 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$id, $icons[$i] ?? '', $title, $descs[$i] ?? '', $i]);
     }
 
-    // Section header
-    save_setting('amenities_heading', trim($_POST['amenities_heading'] ?? ''));
-    save_setting('amenities_subtext', trim($_POST['amenities_subtext'] ?? ''));
-    $saved = true;
+    if (!empty($_SERVER['HTTP_X_AJAX'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true]);
+        exit;
+    }
 }
 
 $amenities = $db->query('SELECT * FROM amenities ORDER BY sort_order')->fetchAll();
@@ -31,23 +34,13 @@ $active_nav = 'amenities';
 include '_layout.php';
 ?>
 
-<?php if ($saved): ?>
-<div class="alert alert-success">✅ Amenities saved successfully.</div>
-<?php endif; ?>
-
-<form method="POST">
+<form method="POST" data-ajax data-live>
 <div class="card">
     <div class="card-header"><h2>Section Header</h2></div>
     <div class="card-body">
         <div class="form-grid">
-            <div class="form-group">
-                <label>Heading</label>
-                <input type="text" name="amenities_heading" value="<?= h(setting('amenities_heading')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Subtext</label>
-                <input type="text" name="amenities_subtext" value="<?= h(setting('amenities_subtext')) ?>">
-            </div>
+            <div class="form-group"><label>Heading</label><input type="text" name="amenities_heading" value="<?= h(setting('amenities_heading')) ?>"></div>
+            <div class="form-group"><label>Subtext</label><input type="text" name="amenities_subtext" value="<?= h(setting('amenities_subtext')) ?>"></div>
         </div>
     </div>
 </div>
@@ -56,31 +49,24 @@ include '_layout.php';
 <?php foreach ($amenities as $i => $a): ?>
 <div class="item-block">
     <div class="item-block-header">
-        <span class="item-block-title"><?= h($a['icon']) ?> <?= h($a['title']) ?></span>
-        <button type="button" class="item-remove" onclick="removeBlock(this)">✕</button>
+        <span class="item-block-title"><?= h($a['title']) ?></span>
+        <button type="button" class="item-remove" onclick="removeBlock(this)">x</button>
     </div>
     <input type="hidden" name="id[]" value="<?= $a['id'] ?>">
-    <div class="form-grid" style="grid-template-columns:80px 1fr 2fr">
-        <div class="form-group">
-            <label>Emoji Icon</label>
-            <input type="text" name="icon[]" value="<?= h($a['icon']) ?>" placeholder="☕">
-        </div>
-        <div class="form-group">
-            <label>Title</label>
-            <input type="text" name="title[]" value="<?= h($a['title']) ?>" required>
-        </div>
-        <div class="form-group">
-            <label>Description</label>
-            <input type="text" name="description[]" value="<?= h($a['description']) ?>">
-        </div>
+    <div class="form-grid" style="grid-template-columns:90px 1fr 2fr">
+        <div class="form-group"><label>Icon (emoji)</label><input type="text" name="icon[]" value="<?= h($a['icon']) ?>" placeholder="e.g. coffee icon"></div>
+        <div class="form-group"><label>Title</label><input type="text" name="title[]" value="<?= h($a['title']) ?>" required></div>
+        <div class="form-group"><label>Description</label><input type="text" name="description[]" value="<?= h($a['description']) ?>"></div>
     </div>
 </div>
 <?php endforeach; ?>
 </div>
 
 <button type="button" class="add-item-btn" onclick="addAmenity()">+ Add Amenity</button>
-<div style="margin-top:16px">
-    <button type="submit" class="btn btn-primary">💾 Save Amenities</button>
+
+<div class="save-bar">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <span class="save-status"></span>
 </div>
 </form>
 
@@ -88,19 +74,22 @@ include '_layout.php';
 <div class="item-block">
     <div class="item-block-header">
         <span class="item-block-title">New Amenity</span>
-        <button type="button" class="item-remove" onclick="removeBlock(this)">✕</button>
+        <button type="button" class="item-remove" onclick="removeBlock(this)">x</button>
     </div>
     <input type="hidden" name="id[]" value="">
-    <div class="form-grid" style="grid-template-columns:80px 1fr 2fr">
-        <div class="form-group"><label>Emoji Icon</label><input type="text" name="icon[]" placeholder="☕"></div>
+    <div class="form-grid" style="grid-template-columns:90px 1fr 2fr">
+        <div class="form-group"><label>Icon (emoji)</label><input type="text" name="icon[]"></div>
         <div class="form-group"><label>Title</label><input type="text" name="title[]" required></div>
         <div class="form-group"><label>Description</label><input type="text" name="description[]"></div>
     </div>
 </div>
 </template>
 <script>
-function addAmenity() { document.getElementById('amenities-list').appendChild(document.getElementById('amenity-tpl').content.cloneNode(true)); }
-function removeBlock(btn) { btn.closest('.item-block').remove(); }
+function addAmenity() {
+    document.getElementById('amenities-list').appendChild(
+        document.getElementById('amenity-tpl').content.cloneNode(true)
+    );
+}
 </script>
 
 <?php include '_layout_end.php'; ?>

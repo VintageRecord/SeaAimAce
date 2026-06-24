@@ -2,7 +2,6 @@
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 
-$saved = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fields = [
         'contact_heading','contact_subtext',
@@ -14,7 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($fields as $f) {
         if (isset($_POST[$f])) save_setting($f, trim($_POST[$f]));
     }
-    $saved = true;
+
+    if (!empty($_SERVER['HTTP_X_AJAX'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true]);
+        exit;
+    }
 }
 
 $page_title = 'Contact Info';
@@ -22,11 +26,7 @@ $active_nav = 'contact';
 include '_layout.php';
 ?>
 
-<?php if ($saved): ?>
-<div class="alert alert-success">✅ Contact settings saved.</div>
-<?php endif; ?>
-
-<form method="POST">
+<form method="POST" data-ajax data-live>
 <div class="card">
     <div class="card-header"><h2>Section Header</h2></div>
     <div class="card-body">
@@ -62,7 +62,7 @@ include '_layout.php';
 </div>
 
 <div class="card">
-    <div class="card-header"><h2>Contact Form</h2></div>
+    <div class="card-header"><h2>Contact Form Labels</h2></div>
     <div class="card-body">
         <div class="form-grid">
             <div class="form-group"><label>Form Heading</label><input type="text" name="contact_form_heading" value="<?= h(setting('contact_form_heading')) ?>"></div>
@@ -71,8 +71,9 @@ include '_layout.php';
     </div>
 </div>
 
-<div style="margin-top:8px">
-    <button type="submit" class="btn btn-primary">💾 Save Contact Info</button>
+<div class="save-bar">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <span class="save-status"></span>
 </div>
 </form>
 

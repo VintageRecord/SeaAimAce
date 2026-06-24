@@ -3,7 +3,6 @@ require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 
 $db = get_db();
-$saved = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ids    = $_POST['id']          ?? [];
@@ -20,7 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = !empty($ids[$i]) && is_numeric($ids[$i]) ? (int)$ids[$i] : null;
         $stmt->execute([$id, $title, $descs[$i] ?? '', $tag1s[$i] ?? '', $tag2s[$i] ?? '', $tag3s[$i] ?? '', $i]);
     }
-    $saved = true;
+
+    if (!empty($_SERVER['HTTP_X_AJAX'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true]);
+        exit;
+    }
 }
 
 $spaces = $db->query('SELECT * FROM spaces ORDER BY sort_order')->fetchAll();
@@ -29,48 +33,31 @@ $active_nav = 'spaces';
 include '_layout.php';
 ?>
 
-<?php if ($saved): ?>
-<div class="alert alert-success">✅ Spaces saved successfully.</div>
-<?php endif; ?>
-
-<form method="POST">
+<form method="POST" data-ajax data-live>
 <div id="spaces-list">
 <?php foreach ($spaces as $i => $s): ?>
 <div class="item-block">
     <div class="item-block-header">
         <span class="item-block-title"><?= h($s['title']) ?></span>
-        <button type="button" class="item-remove" onclick="removeBlock(this)">✕</button>
+        <button type="button" class="item-remove" onclick="removeBlock(this)">x</button>
     </div>
     <input type="hidden" name="id[]" value="<?= $s['id'] ?>">
     <div class="form-grid">
-        <div class="form-group">
-            <label>Space Name</label>
-            <input type="text" name="title[]" value="<?= h($s['title']) ?>" required>
-        </div>
-        <div class="form-group">
-            <label>Short Description</label>
-            <input type="text" name="description[]" value="<?= h($s['description']) ?>">
-        </div>
-        <div class="form-group">
-            <label>Tag 1</label>
-            <input type="text" name="tag1[]" value="<?= h($s['tag1']) ?>" placeholder="e.g. Flexible">
-        </div>
-        <div class="form-group">
-            <label>Tag 2</label>
-            <input type="text" name="tag2[]" value="<?= h($s['tag2']) ?>" placeholder="e.g. Community">
-        </div>
-        <div class="form-group">
-            <label>Tag 3 (usually price)</label>
-            <input type="text" name="tag3[]" value="<?= h($s['tag3']) ?>" placeholder="e.g. $160/mo">
-        </div>
+        <div class="form-group"><label>Space Name</label><input type="text" name="title[]" value="<?= h($s['title']) ?>" required></div>
+        <div class="form-group"><label>Short Description</label><input type="text" name="description[]" value="<?= h($s['description']) ?>"></div>
+        <div class="form-group"><label>Tag 1</label><input type="text" name="tag1[]" value="<?= h($s['tag1']) ?>" placeholder="e.g. Flexible"></div>
+        <div class="form-group"><label>Tag 2</label><input type="text" name="tag2[]" value="<?= h($s['tag2']) ?>" placeholder="e.g. Community"></div>
+        <div class="form-group"><label>Tag 3 (price)</label><input type="text" name="tag3[]" value="<?= h($s['tag3']) ?>" placeholder="e.g. $160/mo"></div>
     </div>
 </div>
 <?php endforeach; ?>
 </div>
 
 <button type="button" class="add-item-btn" onclick="addSpace()">+ Add Space</button>
-<div style="margin-top:16px">
-    <button type="submit" class="btn btn-primary">💾 Save All Spaces</button>
+
+<div class="save-bar">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <span class="save-status"></span>
 </div>
 </form>
 
@@ -78,7 +65,7 @@ include '_layout.php';
 <div class="item-block">
     <div class="item-block-header">
         <span class="item-block-title">New Space</span>
-        <button type="button" class="item-remove" onclick="removeBlock(this)">✕</button>
+        <button type="button" class="item-remove" onclick="removeBlock(this)">x</button>
     </div>
     <input type="hidden" name="id[]" value="">
     <div class="form-grid">
@@ -91,8 +78,11 @@ include '_layout.php';
 </div>
 </template>
 <script>
-function addSpace() { document.getElementById('spaces-list').appendChild(document.getElementById('space-tpl').content.cloneNode(true)); }
-function removeBlock(btn) { btn.closest('.item-block').remove(); }
+function addSpace() {
+    document.getElementById('spaces-list').appendChild(
+        document.getElementById('space-tpl').content.cloneNode(true)
+    );
+}
 </script>
 
 <?php include '_layout_end.php'; ?>
