@@ -2,130 +2,156 @@
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 
-$fields = [
-    'site_title',
-    'nav_logo_text','nav_book_btn_text','nav_book_btn_href',
-    'hero_heading_line1','hero_heading_line2','hero_subtitle',
-    'hero_btn1_text','hero_btn1_href','hero_btn2_text','hero_btn2_href',
-    'features_heading','features_subtext',
-    'spaces_heading','spaces_subtext',
-];
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $fields = ['site_name','site_logo','home_meta_title','home_meta_desc',
+               'home_hero_heading','home_hero_sub','home_hero_btn1','home_hero_btn1url','home_hero_btn2','home_hero_btn2url',
+               'home_sec2_heading','home_sec2_text',
+               'home_amenities_heading','home_amenities_list',
+               'home_family_heading','home_family_text','home_family_btn',
+               'home_activities_heading','home_sport_heading','home_sport_text','home_sport_btn',
+               'footer_text'];
     foreach ($fields as $f) {
-        if (isset($_POST[$f])) save_setting($f, trim($_POST[$f]));
+        save_setting($f, $_POST[$f] ?? '');
     }
     if (!empty($_SERVER['HTTP_X_AJAX'])) {
         header('Content-Type: application/json');
         echo json_encode(['success' => true]);
         exit;
     }
+    $saved = true;
 }
 
-$page_title = 'General & Hero';
+$page_title = 'Home Page';
 $active_nav = 'general';
-include '_layout.php';
+require '_layout.php';
 ?>
+<?php if (!empty($saved)): ?>
+<div class="alert alert-success">Settings saved.</div>
+<?php endif; ?>
 
 <form method="POST" data-ajax data-live>
-<div class="card">
-    <div class="card-header"><h2>Site Settings</h2></div>
-    <div class="card-body">
-        <div class="form-group">
-            <label>Site Title (browser tab)</label>
-            <input type="text" name="site_title" value="<?= h(setting('site_title')) ?>">
-        </div>
-    </div>
+<div class="form-section-title">Site Identity</div>
+<div class="form-grid">
+  <div class="form-group">
+    <label>Site Name</label>
+    <input type="text" name="site_name" value="<?= h(setting('site_name','CampForge')) ?>">
+  </div>
+  <div class="form-group">
+    <label>Logo Image Path (relative to site root)</label>
+    <input type="text" name="site_logo" value="<?= h(setting('site_logo','new_images/-.png')) ?>">
+  </div>
+  <div class="form-group">
+    <label>Home Meta Title</label>
+    <input type="text" name="home_meta_title" value="<?= h(setting('home_meta_title','Home')) ?>">
+  </div>
+  <div class="form-group">
+    <label>Home Meta Description</label>
+    <input type="text" name="home_meta_desc" value="<?= h(setting('home_meta_desc','Best Camping in the National Park')) ?>">
+  </div>
 </div>
 
-<div class="card">
-    <div class="card-header"><h2>Navigation</h2></div>
-    <div class="card-body">
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Logo Text</label>
-                <input type="text" name="nav_logo_text" value="<?= h(setting('nav_logo_text')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Book Tour Button Text</label>
-                <input type="text" name="nav_book_btn_text" value="<?= h(setting('nav_book_btn_text')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Book Tour Button Link</label>
-                <input type="text" name="nav_book_btn_href" value="<?= h(setting('nav_book_btn_href')) ?>">
-            </div>
-        </div>
-    </div>
+<div class="form-section-title">Hero Section</div>
+<div class="form-grid">
+  <div class="form-group full-width">
+    <label>Hero Heading</label>
+    <input type="text" name="home_hero_heading" value="<?= h(setting('home_hero_heading','Best Camping in the National Park')) ?>">
+  </div>
+  <div class="form-group full-width">
+    <label>Hero Subtext</label>
+    <textarea name="home_hero_sub" rows="2"><?= h(setting('home_hero_sub','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')) ?></textarea>
+  </div>
+  <div class="form-group">
+    <label>Button 1 Text</label>
+    <input type="text" name="home_hero_btn1" value="<?= h(setting('home_hero_btn1','Our Story')) ?>">
+  </div>
+  <div class="form-group">
+    <label>Button 1 URL</label>
+    <input type="text" name="home_hero_btn1url" value="<?= h(setting('home_hero_btn1url','about.php')) ?>">
+  </div>
+  <div class="form-group">
+    <label>Button 2 Text</label>
+    <input type="text" name="home_hero_btn2" value="<?= h(setting('home_hero_btn2','Contact Us')) ?>">
+  </div>
+  <div class="form-group">
+    <label>Button 2 URL</label>
+    <input type="text" name="home_hero_btn2url" value="<?= h(setting('home_hero_btn2url','contact.php')) ?>">
+  </div>
 </div>
 
-<div class="card">
-    <div class="card-header"><h2>Hero Section</h2></div>
-    <div class="card-body">
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Heading Line 1</label>
-                <input type="text" name="hero_heading_line1" value="<?= h(setting('hero_heading_line1')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Heading Line 2 (accent colour)</label>
-                <input type="text" name="hero_heading_line2" value="<?= h(setting('hero_heading_line2')) ?>">
-            </div>
-            <div class="form-group full-width">
-                <label>Subtitle</label>
-                <input type="text" name="hero_subtitle" value="<?= h(setting('hero_subtitle')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Primary Button Text</label>
-                <input type="text" name="hero_btn1_text" value="<?= h(setting('hero_btn1_text')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Primary Button Link</label>
-                <input type="text" name="hero_btn1_href" value="<?= h(setting('hero_btn1_href')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Secondary Button Text</label>
-                <input type="text" name="hero_btn2_text" value="<?= h(setting('hero_btn2_text')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Secondary Button Link</label>
-                <input type="text" name="hero_btn2_href" value="<?= h(setting('hero_btn2_href')) ?>">
-            </div>
-        </div>
-    </div>
+<div class="form-section-title">Tours Section</div>
+<div class="form-grid">
+  <div class="form-group">
+    <label>Heading</label>
+    <input type="text" name="home_sec2_heading" value="<?= h(setting('home_sec2_heading','10 Amazing Camping Tours')) ?>">
+  </div>
+  <div class="form-group full-width">
+    <label>Text</label>
+    <textarea name="home_sec2_text" rows="2"><?= h(setting('home_sec2_text','Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.')) ?></textarea>
+  </div>
 </div>
 
-<div class="card">
-    <div class="card-header"><h2>Section Headers</h2></div>
-    <div class="card-body">
-        <p class="form-section-title">Features Section</p>
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Heading</label>
-                <input type="text" name="features_heading" value="<?= h(setting('features_heading')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Subtext</label>
-                <input type="text" name="features_subtext" value="<?= h(setting('features_subtext')) ?>">
-            </div>
-        </div>
-        <p class="form-section-title">Spaces Section</p>
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Heading</label>
-                <input type="text" name="spaces_heading" value="<?= h(setting('spaces_heading')) ?>">
-            </div>
-            <div class="form-group">
-                <label>Subtext</label>
-                <input type="text" name="spaces_subtext" value="<?= h(setting('spaces_subtext')) ?>">
-            </div>
-        </div>
-    </div>
+<div class="form-section-title">Amenities Section</div>
+<div class="form-grid">
+  <div class="form-group">
+    <label>Section Heading</label>
+    <input type="text" name="home_amenities_heading" value="<?= h(setting('home_amenities_heading','Available to campsite guests:')) ?>">
+  </div>
+  <div class="form-group full-width">
+    <label>Amenity Items (one per line)</label>
+    <textarea name="home_amenities_list" rows="6"><?= h(setting('home_amenities_list',"store (with eco products)\nchildren's playground\nclimbing tower\nvolleyball court\nbike hire\nmountain bike hire\npétanque court\ntable tennis")) ?></textarea>
+  </div>
+</div>
+
+<div class="form-section-title">Family Camp Section</div>
+<div class="form-grid">
+  <div class="form-group">
+    <label>Heading</label>
+    <input type="text" name="home_family_heading" value="<?= h(setting('home_family_heading','Family Camp')) ?>">
+  </div>
+  <div class="form-group">
+    <label>Button Text</label>
+    <input type="text" name="home_family_btn" value="<?= h(setting('home_family_btn','Book Now')) ?>">
+  </div>
+  <div class="form-group full-width">
+    <label>Text</label>
+    <textarea name="home_family_text" rows="2"><?= h(setting('home_family_text','Lorem ipsum dolor sit amet, consectetur adipiscing elit.')) ?></textarea>
+  </div>
+</div>
+
+<div class="form-section-title">Our Camping Section</div>
+<div class="form-grid">
+  <div class="form-group full-width">
+    <label>Section Heading</label>
+    <input type="text" name="home_activities_heading" value="<?= h(setting('home_activities_heading','Our Camping')) ?>">
+  </div>
+</div>
+
+<div class="form-section-title">Sport Activities Section</div>
+<div class="form-grid">
+  <div class="form-group">
+    <label>Heading</label>
+    <input type="text" name="home_sport_heading" value="<?= h(setting('home_sport_heading','Sport activities')) ?>">
+  </div>
+  <div class="form-group">
+    <label>Button Text</label>
+    <input type="text" name="home_sport_btn" value="<?= h(setting('home_sport_btn','Contact Us')) ?>">
+  </div>
+  <div class="form-group full-width">
+    <label>Text</label>
+    <textarea name="home_sport_text" rows="2"><?= h(setting('home_sport_text','Lorem ipsum dolor sit amet, consectetur adipiscing elit.')) ?></textarea>
+  </div>
+</div>
+
+<div class="form-section-title">Footer</div>
+<div class="form-group">
+  <label>Footer Copyright Text</label>
+  <input type="text" name="footer_text" value="<?= h(setting('footer_text','© ' . date('Y') . ' CampForge. All rights reserved.')) ?>">
 </div>
 
 <div class="save-bar">
-    <button type="submit" class="btn btn-primary">Save</button>
-    <span class="save-status"></span>
+  <button type="submit" class="btn btn-primary">Save Changes</button>
+  <span class="save-status" id="save-status"></span>
 </div>
 </form>
 
-<?php include '_layout_end.php'; ?>
+<?php require '_layout_end.php'; ?>

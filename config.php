@@ -113,6 +113,47 @@ function _ensure_schema(PDO $pdo): void {
             links      TEXT NOT NULL DEFAULT '[]',
             sort_order INTEGER NOT NULL DEFAULT 0
         );
+
+        CREATE TABLE IF NOT EXISTS team_members (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            name       TEXT NOT NULL DEFAULT '',
+            role       TEXT NOT NULL DEFAULT '',
+            bio        TEXT NOT NULL DEFAULT '',
+            image      TEXT NOT NULL DEFAULT '',
+            fb_url     TEXT NOT NULL DEFAULT '',
+            tw_url     TEXT NOT NULL DEFAULT '',
+            ig_url     TEXT NOT NULL DEFAULT '',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS faq_items (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            question   TEXT NOT NULL DEFAULT '',
+            answer     TEXT NOT NULL DEFAULT '',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS gallery_items (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            image      TEXT NOT NULL DEFAULT '',
+            caption    TEXT NOT NULL DEFAULT '',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS home_services (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            icon_img   TEXT NOT NULL DEFAULT '',
+            title      TEXT NOT NULL DEFAULT '',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS home_activities (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            image       TEXT NOT NULL DEFAULT '',
+            title       TEXT NOT NULL DEFAULT '',
+            description TEXT NOT NULL DEFAULT '',
+            sort_order  INTEGER NOT NULL DEFAULT 0
+        );
     ");
 }
 

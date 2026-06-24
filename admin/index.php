@@ -5,10 +5,12 @@ require_admin_login();
 $db = get_db();
 $total_pages       = $db->query("SELECT COUNT(*) FROM pages")->fetchColumn();
 $published_pages   = $db->query("SELECT COUNT(*) FROM pages WHERE status='published'")->fetchColumn();
-$draft_pages       = $db->query("SELECT COUNT(*) FROM pages WHERE status='draft'")->fetchColumn();
 $total_media       = $db->query("SELECT COUNT(*) FROM media")->fetchColumn();
 $submissions_count = $db->query('SELECT COUNT(*) FROM contact_submissions')->fetchColumn();
 $new_submissions   = $db->query("SELECT COUNT(*) FROM contact_submissions WHERE created_at >= datetime('now','-7 days')")->fetchColumn();
+$team_count        = $db->query('SELECT COUNT(*) FROM team_members')->fetchColumn();
+$faq_count         = $db->query('SELECT COUNT(*) FROM faq_items')->fetchColumn();
+$gallery_count     = $db->query('SELECT COUNT(*) FROM gallery_items')->fetchColumn();
 $recent            = $db->query('SELECT * FROM contact_submissions ORDER BY created_at DESC LIMIT 5')->fetchAll();
 $recent_pages      = $db->query('SELECT * FROM pages ORDER BY updated_at DESC LIMIT 5')->fetchAll();
 
@@ -19,9 +21,11 @@ include '_layout.php';
 ?>
 
 <div class="stats-grid">
-    <div class="stat-card"><div class="stat-label">Total Pages</div><div class="stat-value stat-accent"><?= $total_pages ?></div></div>
+    <div class="stat-card"><div class="stat-label">Custom Pages</div><div class="stat-value stat-accent"><?= $total_pages ?></div></div>
     <div class="stat-card"><div class="stat-label">Published</div><div class="stat-value stat-accent"><?= $published_pages ?></div></div>
-    <div class="stat-card"><div class="stat-label">Drafts</div><div class="stat-value"><?= $draft_pages ?></div></div>
+    <div class="stat-card"><div class="stat-label">Team Members</div><div class="stat-value"><?= $team_count ?></div></div>
+    <div class="stat-card"><div class="stat-label">FAQ Items</div><div class="stat-value"><?= $faq_count ?></div></div>
+    <div class="stat-card"><div class="stat-label">Gallery Images</div><div class="stat-value"><?= $gallery_count ?></div></div>
     <div class="stat-card"><div class="stat-label">Media Files</div><div class="stat-value"><?= $total_media ?></div></div>
     <div class="stat-card"><div class="stat-label">Submissions</div><div class="stat-value"><?= $submissions_count ?></div></div>
     <div class="stat-card"><div class="stat-label">New (7 days)</div><div class="stat-value stat-accent"><?= $new_submissions ?></div></div>

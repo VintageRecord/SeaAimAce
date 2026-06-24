@@ -6,3 +6,5 @@ uploads/*.png
 uploads/*.gif
 uploads/*.webp
 uploads/*.svg
+nicepage.js
+jquery.js

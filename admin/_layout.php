@@ -41,27 +41,24 @@ $show_preview ??= true; // set to false on pages where preview doesn't make sens
             <a href="media.php" class="<?= $active_nav === 'media' ? 'active' : '' ?>">
                 <span class="nav-dot"></span> Media Library
             </a>
-            <div class="nav-group-label">Homepage Content</div>
+            <div class="nav-group-label">Site Content</div>
             <a href="general.php" class="<?= $active_nav === 'general' ? 'active' : '' ?>">
-                <span class="nav-dot"></span> General &amp; Hero
+                <span class="nav-dot"></span> Home Page
             </a>
-            <a href="features.php" class="<?= $active_nav === 'features' ? 'active' : '' ?>">
-                <span class="nav-dot"></span> Features
+            <a href="site-about.php" class="<?= $active_nav === 'site-about' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> About Page
             </a>
-            <a href="spaces.php" class="<?= $active_nav === 'spaces' ? 'active' : '' ?>">
-                <span class="nav-dot"></span> Spaces
+            <a href="site-contact.php" class="<?= $active_nav === 'site-contact' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> Contact Page
             </a>
-            <a href="pricing.php" class="<?= $active_nav === 'pricing' ? 'active' : '' ?>">
-                <span class="nav-dot"></span> Pricing
+            <a href="site-faq.php" class="<?= $active_nav === 'site-faq' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> FAQ Page
             </a>
-            <a href="amenities.php" class="<?= $active_nav === 'amenities' ? 'active' : '' ?>">
-                <span class="nav-dot"></span> Amenities
+            <a href="site-gallery.php" class="<?= $active_nav === 'site-gallery' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> Gallery Page
             </a>
-            <a href="contact.php" class="<?= $active_nav === 'contact' ? 'active' : '' ?>">
-                <span class="nav-dot"></span> Contact Info
-            </a>
-            <a href="footer.php" class="<?= $active_nav === 'footer' ? 'active' : '' ?>">
-                <span class="nav-dot"></span> CTA &amp; Footer
+            <a href="site-team.php" class="<?= $active_nav === 'site-team' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> Team Page
             </a>
             <div class="nav-group-label">Site Settings</div>
             <a href="navigation.php" class="<?= $active_nav === 'navigation' ? 'active' : '' ?>">

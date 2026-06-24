@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS footer_columns (
 
 // Seed default settings
 $defaults = [
-    'site_title'          => 'FORGE - Industrial Coworking Space',
+    'site_title'          => 'CampForge',
     'admin_username'      => 'admin',
     'admin_password'      => password_hash('forge2024', PASSWORD_DEFAULT),
 
@@ -258,9 +258,70 @@ if ($amenitiesCount == 0) {
 // Seed nav_links
 $navCount = $db->query('SELECT COUNT(*) FROM nav_links')->fetchColumn();
 if ($navCount == 0) {
-    $navLinks = [['Spaces','#spaces'],['Pricing','#pricing'],['Amenities','#amenities'],['Contact','#contact']];
+    $navLinks = [
+        ['Home',    './'],
+        ['About Us','about.php'],
+        ['Gallery', 'gallery.php'],
+        ['Our Team','team.php'],
+        ['FAQ',     'faq.php'],
+        ['Contact', 'contact.php'],
+    ];
     $nlstmt = $db->prepare('INSERT INTO nav_links (label,url,sort_order) VALUES (?,?,?)');
     foreach ($navLinks as $i => $nl) $nlstmt->execute([...$nl, $i]);
+}
+
+// Seed team members
+$teamCount = $db->query('SELECT COUNT(*) FROM team_members')->fetchColumn();
+if ($teamCount == 0) {
+    $members = [
+        ['Ann Brown',     'Camp Director',   '', 'new_images/01.png', '#','#','#'],
+        ['David Villegas','Lead Guide',       '', 'new_images/02.png', '#','#','#'],
+        ['Clayton Lane',  'Safety Officer',   '', 'new_images/03.png', '#','#','#'],
+        ['Robert Fifield','Activities Coach', '', 'new_images/04.png', '#','#','#'],
+        ['Dan Spinello',  'Chef',             '', 'new_images/05.png', '#','#','#'],
+        ['Dwight Atkins', 'Site Manager',     '', 'new_images/06.png', '#','#','#'],
+    ];
+    $mstmt = $db->prepare('INSERT INTO team_members (name,role,bio,image,fb_url,tw_url,ig_url,sort_order) VALUES (?,?,?,?,?,?,?,?)');
+    foreach ($members as $i => $m) $mstmt->execute([...$m, $i]);
+}
+
+// Seed FAQ items
+$faqCount = $db->query('SELECT COUNT(*) FROM faq_items')->fetchColumn();
+if ($faqCount == 0) {
+    $faqs = [
+        ['What should I bring to camp?', 'Pack essentials: tent, sleeping bag, warm clothing, rain gear, first aid kit, flashlight, water bottles, food, and sunscreen.'],
+        ['Are pets allowed on site?',    'Yes, well-behaved pets on a leash are welcome in designated areas. Please clean up after your pet at all times.'],
+        ['What activities are available?','We offer trekking, rock climbing, mountain biking, beach camping, volleyball, and guided nature tours.'],
+        ['Can I make a group booking?',  'Absolutely! We accommodate groups of all sizes. Contact us for special group rates.'],
+    ];
+    $fstmt = $db->prepare('INSERT INTO faq_items (question,answer,sort_order) VALUES (?,?,?)');
+    foreach ($faqs as $i => $f) $fstmt->execute([...$f, $i]);
+}
+
+// Seed gallery items
+$galCount = $db->query('SELECT COUNT(*) FROM gallery_items')->fetchColumn();
+if ($galCount == 0) {
+    $imgs = ['new_images/3.jpg','new_images/37.jpg','new_images/fd.jpg','new_images/t5.jpg','new_images/r6.jpg','new_images/bnnnb.jpg'];
+    $gstmt = $db->prepare('INSERT INTO gallery_items (image,caption,sort_order) VALUES (?,?,?)');
+    foreach ($imgs as $i => $img) $gstmt->execute([$img, '', $i]);
+}
+
+// Seed home settings
+$siteNameExists = $db->query("SELECT COUNT(*) FROM settings WHERE key='site_name'")->fetchColumn();
+if (!$siteNameExists) {
+    $homeSettings = [
+        'site_name'             => 'CampForge',
+        'site_logo'             => 'new_images/-.png',
+        'footer_text'           => '© ' . date('Y') . ' CampForge. All rights reserved.',
+        'home_hero_heading'     => 'Best Camping in the National Park',
+        'home_hero_sub'         => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        'home_hero_btn1'        => 'Our Story',
+        'home_hero_btn1url'     => 'about.php',
+        'home_hero_btn2'        => 'Contact Us',
+        'home_hero_btn2url'     => 'contact.php',
+    ];
+    $sstmt = $db->prepare('INSERT OR IGNORE INTO settings (key,value) VALUES (?,?)');
+    foreach ($homeSettings as $k => $v) $sstmt->execute([$k, $v]);
 }
 
 // Seed footer_columns
