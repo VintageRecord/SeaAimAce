@@ -1,0 +1,5 @@
+Options -Indexes
+# Only allow image types to be served
+<FilesMatch "\.(php|php3|php4|phtml|pl|cgi|sh)$">
+    Deny from all
+</FilesMatch>

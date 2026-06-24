@@ -63,6 +63,41 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
     message TEXT NOT NULL DEFAULT '',
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS pages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL DEFAULT '',
+    slug TEXT NOT NULL UNIQUE,
+    meta_title TEXT NOT NULL DEFAULT '',
+    meta_description TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'draft',
+    html_content TEXT NOT NULL DEFAULT '',
+    editor_json TEXT NOT NULL DEFAULT '{}',
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS media (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    original_name TEXT NOT NULL DEFAULT '',
+    mime_type TEXT NOT NULL DEFAULT '',
+    file_size INTEGER NOT NULL DEFAULT 0,
+    uploaded_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS nav_links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    label TEXT NOT NULL DEFAULT '',
+    url TEXT NOT NULL DEFAULT '',
+    sort_order INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS footer_columns (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    heading TEXT NOT NULL DEFAULT '',
+    links TEXT NOT NULL DEFAULT '[]',
+    sort_order INTEGER NOT NULL DEFAULT 0
+);
 ");
 
 // Seed default settings
@@ -138,6 +173,14 @@ $defaults = [
 
     // Footer
     'footer_copyright'    => '© 2026 FORGE Coworking. Built to last.',
+
+    // Nav style
+    'nav_bg_color'        => '',
+    'nav_text_color'      => '',
+
+    // Footer style
+    'footer_bg_color'     => '',
+    'footer_text_color'   => '',
 ];
 
 $stmt = $db->prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)');
@@ -212,7 +255,33 @@ if ($amenitiesCount == 0) {
     }
 }
 
-echo "<h2 style='font-family:sans-serif'>✅ FORGE CMS installed successfully!</h2>";
+// Seed nav_links
+$navCount = $db->query('SELECT COUNT(*) FROM nav_links')->fetchColumn();
+if ($navCount == 0) {
+    $navLinks = [['Spaces','#spaces'],['Pricing','#pricing'],['Amenities','#amenities'],['Contact','#contact']];
+    $nlstmt = $db->prepare('INSERT INTO nav_links (label,url,sort_order) VALUES (?,?,?)');
+    foreach ($navLinks as $i => $nl) $nlstmt->execute([...$nl, $i]);
+}
+
+// Seed footer_columns
+$footerColCount = $db->query('SELECT COUNT(*) FROM footer_columns')->fetchColumn();
+if ($footerColCount == 0) {
+    $cols = [
+        ['Locations', json_encode([['Downtown - Main St','#'],['Eastside - Tech Hub','#'],['Westside - Creative District','#'],['Coming Soon: Airport','#']])],
+        ['Company',   json_encode([['About Us','#'],['Careers','#'],['Press','#'],['Partnerships','#']])],
+        ['Resources', json_encode([['Blog','#'],['Events','#'],['Member Portal','#'],['FAQ','#']])],
+        ['Contact',   json_encode([['hello@forge.work','#'],['1-800-FORGE-IT','#'],['Live Chat','#'],['Support','#']])],
+    ];
+    $fcstmt = $db->prepare('INSERT INTO footer_columns (heading,links,sort_order) VALUES (?,?,?)');
+    foreach ($cols as $i => $c) $fcstmt->execute([...$c, $i]);
+}
+
+// Create uploads directory
+$uploadsDir = __DIR__ . '/uploads';
+if (!is_dir($uploadsDir)) mkdir($uploadsDir, 0755, true);
+file_put_contents($uploadsDir . '/.htaccess', "Options -Indexes\n");
+
+echo "<h2 style='font-family:sans-serif'>FORGE CMS installed successfully!</h2>";
 echo "<p style='font-family:sans-serif'>Default admin credentials: <strong>admin</strong> / <strong>forge2024</strong><br>";
 echo "Please <a href='admin/login.php'>log in</a> and change the password immediately.</p>";
 echo "<p style='font-family:sans-serif'><a href='index.php'>View website &rarr;</a></p>";

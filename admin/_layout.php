@@ -30,7 +30,18 @@ $show_preview ??= true; // set to false on pages where preview doesn't make sens
             <a href="index.php" class="<?= $active_nav === 'dashboard' ? 'active' : '' ?>">
                 <span class="nav-dot"></span> Dashboard
             </a>
-            <div class="nav-group-label">Content</div>
+            <div class="nav-group-label">Pages</div>
+            <a href="pages.php" class="<?= $active_nav === 'pages' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> All Pages
+            </a>
+            <a href="pages-edit.php" class="<?= $active_nav === 'page-new' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> New Page
+            </a>
+            <div class="nav-group-label">Media</div>
+            <a href="media.php" class="<?= $active_nav === 'media' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> Media Library
+            </a>
+            <div class="nav-group-label">Homepage Content</div>
             <a href="general.php" class="<?= $active_nav === 'general' ? 'active' : '' ?>">
                 <span class="nav-dot"></span> General &amp; Hero
             </a>
@@ -51,6 +62,10 @@ $show_preview ??= true; // set to false on pages where preview doesn't make sens
             </a>
             <a href="footer.php" class="<?= $active_nav === 'footer' ? 'active' : '' ?>">
                 <span class="nav-dot"></span> CTA &amp; Footer
+            </a>
+            <div class="nav-group-label">Site Settings</div>
+            <a href="navigation.php" class="<?= $active_nav === 'navigation' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> Navigation &amp; Footer
             </a>
             <div class="nav-group-label">Inbox</div>
             <a href="submissions.php" class="<?= $active_nav === 'submissions' ? 'active' : '' ?>">

@@ -1,2 +1,8 @@
 database/forge.db
 database/*.db
+uploads/*.jpg
+uploads/*.jpeg
+uploads/*.png
+uploads/*.gif
+uploads/*.webp
+uploads/*.svg
