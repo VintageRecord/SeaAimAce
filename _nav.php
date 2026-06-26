@@ -1,7 +1,9 @@
 <?php
 // Shared navigation — included by every front-end page
 // $current_page: 'home'|'about'|'contact'|'faq'|'gallery'|'team'|'landing'
+// $_nav_base: optional prefix for asset/page URLs (e.g. '../' when included from admin/)
 $current_page ??= '';
+$_nav_base ??= '';
 $site_logo = setting('site_logo', 'new_images/-.png');
 $site_name = setting('site_name', 'CampForge');
 
@@ -21,8 +23,8 @@ if (empty($nav_rows)) {
 ?>
 <header class="u-clearfix u-header u-header" id="sec-c67f">
   <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-    <a href="./" class="u-image u-logo u-image-1" data-image-width="165" data-image-height="188">
-      <img src="<?= h($site_logo) ?>" class="u-logo-image u-logo-image-1" alt="<?= h($site_name) ?>">
+    <a href="<?= h($_nav_base) ?>./" class="u-image u-logo u-image-1" data-image-width="165" data-image-height="188">
+      <img src="<?= h($_nav_base . $site_logo) ?>" class="u-logo-image u-logo-image-1" alt="<?= h($site_name) ?>">
     </a>
     <nav class="u-menu u-menu-one-level u-offcanvas u-menu-1" data-responsive-from="MD" role="navigation">
       <div class="menu-collapse" style="font-size:1rem;letter-spacing:0;font-weight:500;">
@@ -35,7 +37,7 @@ if (empty($nav_rows)) {
         <ul class="u-nav u-spacing-2 u-unstyled u-nav-1" role="menubar">
           <?php foreach ($nav_rows as $nl): ?>
           <li class="u-nav-item" role="none">
-            <a class="u-active-grey-5 u-button-style u-hover-grey-10 u-nav-link u-text-active-grey-90 u-text-grey-90 u-text-hover-grey-90 u-nav-link-2" href="<?= h($nl['url']) ?>" role="menuitem"><?= h($nl['label']) ?></a>
+            <a class="u-active-grey-5 u-button-style u-hover-grey-10 u-nav-link u-text-active-grey-90 u-text-grey-90 u-text-hover-grey-90 u-nav-link-2" href="<?= h($_nav_base . $nl['url']) ?>" role="menuitem"><?= h($nl['label']) ?></a>
           </li>
           <?php endforeach; ?>
         </ul>
@@ -46,7 +48,7 @@ if (empty($nav_rows)) {
             <div class="u-menu-close" tabindex="-1" aria-label="Close menu"></div>
             <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2">
               <?php foreach ($nav_rows as $nl): ?>
-              <li class="u-nav-item"><a class="u-button-style u-nav-link" href="<?= h($nl['url']) ?>"><?= h($nl['label']) ?></a></li>
+              <li class="u-nav-item"><a class="u-button-style u-nav-link" href="<?= h($_nav_base . $nl['url']) ?>"><?= h($nl['label']) ?></a></li>
               <?php endforeach; ?>
             </ul>
           </div>
