@@ -520,10 +520,18 @@ document.querySelectorAll('[data-editable]').forEach(el => {
     el.contentEditable = 'true';
     el.spellcheck = true;
 
+    // Track original content so we only save when something actually changed
+    el._originalContent = el.innerHTML;
+    el._isDirty = false;
+
     el.addEventListener('focus', () => {
         activeEl = el;
         el.dataset.active = '1';
         clearTimeout(hideToolbarTimer);
+    });
+
+    el.addEventListener('input', () => {
+        el._isDirty = (el.innerHTML !== el._originalContent);
     });
 
     el.addEventListener('blur', evt => {
@@ -533,7 +541,7 @@ document.querySelectorAll('[data-editable]').forEach(el => {
         el.removeAttribute('data-active');
         if (activeEl === el) activeEl = null;
         scheduleHideToolbar();
-        autoSave(el);
+        if (el._isDirty) autoSave(el);
     });
 
     el.addEventListener('keydown', evt => {
@@ -623,7 +631,7 @@ function execCmd(cmd, val) {
         const el = container.nodeType === 3
             ? container.parentElement.closest('[data-editable]')
             : container.closest?.('[data-editable]');
-        if (el) markPending(el);
+        if (el) { el._isDirty = true; markPending(el); }
     }
 }
 
@@ -649,21 +657,21 @@ function applyFontSize(px) {
     }
     // Mark pending
     const el = span.closest('[data-editable]');
-    if (el) markPending(el);
+    if (el) { el._isDirty = true; markPending(el); }
 }
 
 function applyColor(val) {
     restoreSelection();
     document.execCommand('foreColor', false, val);
     const el = activeEl || document.querySelector('[data-editable][data-active]');
-    if (el) markPending(el);
+    if (el) { el._isDirty = true; markPending(el); }
 }
 
 function applyBgColor(val) {
     restoreSelection();
     document.execCommand('hiliteColor', false, val);
     const el = activeEl || document.querySelector('[data-editable][data-active]');
-    if (el) markPending(el);
+    if (el) { el._isDirty = true; markPending(el); }
 }
 
 // ── Link ──
@@ -725,6 +733,8 @@ async function autoSave(el) {
             el.classList.add('saved');
             setTimeout(() => el.classList.remove('saved'), 1200);
             delete pendingSaves[buildKey(el)];
+            el._originalContent = el.innerHTML;
+            el._isDirty = false;
         } else {
             showIndicator(json.error || 'Save failed', true);
         }
