@@ -151,8 +151,18 @@ body { padding-top: var(--bar-h) !important; }
             <rect x="18" y="5" width="4" height="30" fill="#FF6B35" opacity="0.8"/>
             <rect x="5" y="18" width="30" height="4" fill="#FF6B35" opacity="0.8"/>
         </svg>
-        <span>FORGE</span>
+        <span>Live Editor</span>
     </div>
+    <div class="bar-sep"></div>
+    <label style="font-size:.75rem;color:#777;font-family:inherit;margin-right:4px">Page:</label>
+    <select class="tb-select" id="page-switcher" style="width:130px;font-size:.78rem" onchange="switchPage(this.value)" title="Switch page">
+        <option value="live-edit.php" selected>Home</option>
+        <option value="live-edit-about.php">About Us</option>
+        <option value="live-edit-gallery.php">Gallery</option>
+        <option value="live-edit-team.php">Our Team</option>
+        <option value="live-edit-faq.php">FAQ</option>
+        <option value="live-edit-contact.php">Contact</option>
+    </select>
     <div class="bar-sep"></div>
     <span class="bar-hint">Click any text to edit — select text to format</span>
     <div class="bar-spacer"></div>
@@ -787,6 +797,36 @@ window.addEventListener('beforeunload', e => {
 
 // Hide hint after first interaction
 document.addEventListener('click', () => { hint.style.opacity = '0'; }, { once: true });
+
+// Page switcher
+function switchPage(url) {
+    if (!url) return;
+    if (Object.keys(pendingSaves).length > 0) {
+        if (!confirm('You have unsaved changes. Leave anyway?')) {
+            document.getElementById('page-switcher').value = 'live-edit.php';
+            return;
+        }
+    }
+    location.href = url;
+}
+
+// Redirect nav links to stay within the live editor
+const navPageMap = {
+    './':           'live-edit.php',
+    'about.php':    'live-edit-about.php',
+    'gallery.php':  'live-edit-gallery.php',
+    'team.php':     'live-edit-team.php',
+    'faq.php':      'live-edit-faq.php',
+    'contact.php':  'live-edit-contact.php',
+};
+document.querySelectorAll('.u-nav-link').forEach(link => {
+    const raw = link.getAttribute('href') || '';
+    const page = raw.replace(/^\.\.\//, '');
+    if (navPageMap[page]) {
+        link.href = navPageMap[page];
+        link.removeAttribute('target');
+    }
+});
 </script>
 </body>
 </html>
