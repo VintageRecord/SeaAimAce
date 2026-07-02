@@ -163,7 +163,12 @@ function setting(string $key, string $default = ''): string {
         $stmt = get_db()->prepare('SELECT value FROM settings WHERE key = ?');
         $stmt->execute([$key]);
         $row = $stmt->fetch();
-        $cache[$key] = $row ? $row['value'] : $default;
+        // Decode any accumulated HTML entities from repeated live-editor saves
+        $val = $row ? $row['value'] : $default;
+        if ($row && strpos($val, '&amp;') !== false) {
+            $val = html_entity_decode($val, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        }
+        $cache[$key] = $val;
     }
     return $cache[$key];
 }

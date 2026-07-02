@@ -17,6 +17,8 @@ function clean(string $html): string {
     // Strip script/iframe tags but preserve inline formatting
     $html = preg_replace('/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i', '', $html);
     $html = preg_replace('/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/i', '', $html);
+    // Decode any HTML entities so repeated saves don't accumulate &amp;amp; etc.
+    $html = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     return trim($html);
 }
 

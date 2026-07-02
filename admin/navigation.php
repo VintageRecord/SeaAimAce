@@ -4,7 +4,34 @@ require_admin_login();
 
 $db = get_db();
 
+$default_nav_links = [
+    ['Home',     './'],
+    ['About Us', 'about.php'],
+    ['Gallery',  'gallery.php'],
+    ['Our Team', 'team.php'],
+    ['FAQ',      'faq.php'],
+    ['Contact',  'contact.php'],
+];
+
+// Detect and auto-fix old FORGE nav links
+$existing_labels = $db->query("SELECT label FROM nav_links")->fetchAll(PDO::FETCH_COLUMN);
+$forge_labels = ['Spaces', 'Pricing', 'Amenities'];
+if (!empty(array_intersect($existing_labels, $forge_labels))) {
+    $db->exec('DELETE FROM nav_links');
+    $nlst = $db->prepare('INSERT INTO nav_links (label,url,sort_order) VALUES (?,?,?)');
+    foreach ($default_nav_links as $i => $nl) $nlst->execute([...$nl, $i]);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Reset to defaults
+    if (isset($_POST['reset_nav'])) {
+        $db->exec('DELETE FROM nav_links');
+        $nlst = $db->prepare('INSERT INTO nav_links (label,url,sort_order) VALUES (?,?,?)');
+        foreach ($default_nav_links as $i => $nl) $nlst->execute([...$nl, $i]);
+        header('Location: navigation.php?reset=1');
+        exit;
+    }
+
     // Style settings
     foreach (['nav_logo_text','nav_book_btn_text','nav_book_btn_href','nav_bg_color','nav_text_color',
               'footer_copyright','footer_bg_color','footer_text_color'] as $f) {
@@ -53,8 +80,20 @@ include '_layout.php';
 
 <form method="POST" data-ajax data-live>
 
+<?php if (isset($_GET['reset'])): ?>
+<div class="alert alert-success" style="background:#d4edda;border:1px solid #c3e6cb;color:#155724;padding:12px 18px;border-radius:6px;margin-bottom:18px;">
+    Navigation reset to camping site defaults.
+</div>
+<?php endif; ?>
+
 <div class="card">
-    <div class="card-header"><h2>Navigation Bar</h2></div>
+    <div class="card-header">
+        <h2>Navigation Bar</h2>
+        <form method="POST" style="margin:0">
+            <input type="hidden" name="reset_nav" value="1">
+            <button type="submit" class="btn btn-secondary btn-sm" onclick="return confirm('Reset all nav links to camping site defaults?')">Reset Nav to Defaults</button>
+        </form>
+    </div>
     <div class="card-body">
         <div class="form-grid">
             <div class="form-group"><label>Logo Text</label><input type="text" name="nav_logo_text" value="<?= h(setting('nav_logo_text')) ?>"></div>
