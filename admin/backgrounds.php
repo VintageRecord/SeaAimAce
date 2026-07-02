@@ -62,7 +62,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (isset($_GET['flash'])) $flash = $_GET['flash'];
 
-$media_files = $db->query("SELECT filename FROM media ORDER BY id DESC")->fetchAll(PDO::FETCH_COLUMN);
+// Default values extracted from CSS files (used when setting is not yet saved)
+$bg_defaults = [
+    'bg_home_hero'    => 'new_images/-min.jpg',
+    'bg_home_sec2'    => 'new_images/bnbn-min.jpg',
+    'bg_home_sec4'    => 'new_images/cvcv-min.jpg',
+    'bg_home_sec6'    => 'new_images/bnbnnbn-min.jpg',
+    'bg_home_contact' => 'new_images/gfgfggfggg-min.jpg',
+    'bg_about_hero'   => 'new_images/new3-min.jpg',
+    'bg_about_contact'=> 'new_images/gfgfggfggg-min.jpg',
+    'bg_gallery_hero' => 'new_images/river-flowing-through-forest-generative-al2-min.jpg',
+    'bg_gallery_sec6' => 'new_images/gfgfggfggg-min.jpg',
+    'bg_team_hero'    => 'new_images/3570.jpg',
+    'bg_faq_hero'     => 'new_images/friends-camping-forest-together-3-min1.jpg',
+    'bg_contact_hero' => 'new_images/new3-min.jpg',
+    'bg_contact_sec4' => 'new_images/gfgfggfggg-min.jpg',
+];
+
+// Seed defaults into DB on first visit (only if setting is missing)
+foreach ($bg_defaults as $k => $v) {
+    if (setting($k, '') === '') {
+        save_setting($k, $v);
+    }
+}
+
+$media_files   = $db->query("SELECT filename FROM media ORDER BY id DESC")->fetchAll(PDO::FETCH_COLUMN);
+
+// Also collect new_images/ files for the picker
+$new_images_dir = dirname(__DIR__) . '/new_images';
+$new_images_files = [];
+if (is_dir($new_images_dir)) {
+    foreach (scandir($new_images_dir) as $f) {
+        if ($f === '.' || $f === '..') continue;
+        $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg','jpeg','png','gif','webp','svg'])) {
+            $new_images_files[] = $f;
+        }
+    }
+    sort($new_images_files);
+}
 
 $page_title = 'Background Images';
 $active_nav = 'backgrounds';
@@ -104,6 +142,8 @@ include '_layout.php';
 .picker-grid { padding:16px; overflow-y:auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:8px; }
 .picker-thumb { aspect-ratio:1; object-fit:cover; border-radius:6px; cursor:pointer; border:2px solid transparent; width:100%; }
 .picker-thumb:hover { border-color:#3b82f6; }
+.picker-tab { flex:1; padding:10px 0; background:none; border:none; font-size:.82rem; color:#64748b; cursor:pointer; border-bottom:2px solid transparent; }
+.picker-tab.active { color:#3b82f6; border-bottom-color:#3b82f6; font-weight:600; }
 
 .flash-ok { background:#dcfce7; color:#166534; border:1px solid #bbf7d0; border-radius:6px; padding:10px 16px; margin-bottom:20px; font-size:.85rem; }
 </style>
@@ -124,7 +164,14 @@ include '_layout.php';
   <div class="bg-grid">
   <?php foreach ($slots as [$key, $label]):
     $cv = setting($key, '');
-    $preview_url = $cv !== '' ? ('../uploads/' . ltrim($cv, 'uploads/')) : '';
+    // Build preview URL: new_images/ and uploads/ are siblings of admin/
+    if ($cv === '') {
+        $preview_url = '';
+    } elseif (strpos($cv, '/') !== false) {
+        $preview_url = '../' . $cv; // already has directory prefix (new_images/ or uploads/)
+    } else {
+        $preview_url = '../uploads/' . $cv; // bare filename → uploads/
+    }
   ?>
   <div class="bg-card">
     <div class="bg-card-preview <?= $cv !== '' ? 'has-img' : '' ?>"
@@ -158,10 +205,25 @@ include '_layout.php';
 <div id="picker-modal">
   <div class="picker-box">
     <div class="picker-head">
-      <h3>Media Library</h3>
+      <h3>Choose Image</h3>
       <button class="picker-close" onclick="closePicker()">&#10005;</button>
     </div>
-    <div class="picker-grid">
+    <div style="display:flex;gap:0;border-bottom:1px solid #e2e8f0">
+      <button class="picker-tab active" onclick="switchTab('site')" id="tab-site">Site Images</button>
+      <button class="picker-tab" onclick="switchTab('uploads')" id="tab-uploads">Uploaded</button>
+    </div>
+    <div class="picker-grid" id="picker-pane-site">
+      <?php foreach ($new_images_files as $mf): ?>
+      <img src="../new_images/<?= h($mf) ?>"
+           class="picker-thumb"
+           title="<?= h($mf) ?>"
+           onclick="pickMedia('new_images/<?= h(addslashes($mf)) ?>')">
+      <?php endforeach; ?>
+      <?php if (empty($new_images_files)): ?>
+      <p style="grid-column:1/-1;color:#94a3b8;font-size:.85rem">No site images found.</p>
+      <?php endif; ?>
+    </div>
+    <div class="picker-grid" id="picker-pane-uploads" style="display:none">
       <?php foreach ($media_files as $mf): ?>
       <img src="../uploads/<?= h($mf) ?>"
            class="picker-thumb"
@@ -169,7 +231,7 @@ include '_layout.php';
            onclick="pickMedia('<?= h(addslashes($mf)) ?>')">
       <?php endforeach; ?>
       <?php if (empty($media_files)): ?>
-      <p style="grid-column:1/-1;color:#94a3b8;font-size:.85rem">No images yet. <a href="media.php">Upload via Media Library.</a></p>
+      <p style="grid-column:1/-1;color:#94a3b8;font-size:.85rem">No uploaded images yet. <a href="media.php">Upload some.</a></p>
       <?php endif; ?>
     </div>
   </div>
@@ -185,6 +247,12 @@ function openPicker(key) {
 function closePicker() {
   document.getElementById('picker-modal').classList.remove('open');
   _pickerTarget = null;
+}
+function switchTab(tab) {
+  document.getElementById('picker-pane-site').style.display    = tab === 'site'    ? '' : 'none';
+  document.getElementById('picker-pane-uploads').style.display = tab === 'uploads' ? '' : 'none';
+  document.getElementById('tab-site').classList.toggle('active', tab === 'site');
+  document.getElementById('tab-uploads').classList.toggle('active', tab === 'uploads');
 }
 function pickMedia(fname) {
   if (!_pickerTarget) return;
