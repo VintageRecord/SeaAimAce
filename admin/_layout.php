@@ -64,6 +64,9 @@ $show_preview ??= true; // set to false on pages where preview doesn't make sens
             <a href="navigation.php" class="<?= $active_nav === 'navigation' ? 'active' : '' ?>">
                 <span class="nav-dot"></span> Navigation &amp; Footer
             </a>
+            <a href="backgrounds.php" class="<?= $active_nav === 'backgrounds' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> Background Images
+            </a>
             <div class="nav-group-label">Inbox</div>
             <a href="submissions.php" class="<?= $active_nav === 'submissions' ? 'active' : '' ?>">
                 <span class="nav-dot"></span> Submissions

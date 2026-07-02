@@ -12,6 +12,7 @@ $current_page = 'team';
   <title><?= h(setting('team_meta_title','Our Team')) ?> | <?= h(setting('site_name','CampForge')) ?></title>
   <link rel="stylesheet" href="nicepage.css" media="screen">
   <link rel="stylesheet" href="Team.css" media="screen">
+<?php require __DIR__ . '/_bg_styles.php'; ?>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&family=Montserrat:wght@400;600;700">
   <meta data-intl-tel-input-cdn-path="intlTelInput/">
 </head>

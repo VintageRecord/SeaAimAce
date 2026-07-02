@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 $db = get_db();
-$current_page = 'faq-page';
+$current_page = 'faq';
 ?>
 <!DOCTYPE html>
 <html style="font-size:16px;" lang="en">
@@ -12,6 +12,7 @@ $current_page = 'faq-page';
   <title><?= h(setting('faq_meta_title','FAQ')) ?> | <?= h(setting('site_name','CampForge')) ?></title>
   <link rel="stylesheet" href="nicepage.css" media="screen">
   <link rel="stylesheet" href="FAQ-Page.css" media="screen">
+<?php require __DIR__ . '/_bg_styles.php'; ?>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&family=Montserrat:wght@400;600;700">
   <meta data-intl-tel-input-cdn-path="intlTelInput/">
 </head>
