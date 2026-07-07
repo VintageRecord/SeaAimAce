@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_sec_action'])) {
         $body    = trim($_POST['sec_body']      ?? '');
         $image   = trim($_POST['sec_image']     ?? '');
         $youtube = trim($_POST['sec_youtube']   ?? '');
-        $bg      = trim($_POST['sec_bg_color']  ?? '#ffffff');
+        $bg      = trim($_POST['sec_bg_color']  ?? '#f4f6f8');
         $fg      = trim($_POST['sec_text_color']?? '#333333');
         $enabled = isset($_POST['sec_enabled']) ? 1 : 0;
         $sort    = (int)($_POST['sec_sort']     ?? 0);
@@ -86,11 +86,11 @@ if (is_dir($_sec_ni_dir)) {
 
 <div class="form-section-title" style="margin-top:32px">
   Custom Sections
-  <span style="font-size:.72rem;font-weight:400;color:#94a3b8;margin-left:8px">Added below the main page content</span>
+  <span style="font-size:.72rem;font-weight:400;color:#94a3b8;margin-left:8px">Appear at the bottom of the page, just before the footer</span>
 </div>
 
 <?php if ($_sec_flash === 'saved'): ?>
-<div class="alert alert-success" style="margin-bottom:12px">Section saved.</div>
+<div class="alert alert-success" style="margin-bottom:12px">Section saved. It appears at the <strong>bottom of the live page</strong>, just before the footer. <a href="../<?= h($_sec_page === 'home' ? 'index' : $_sec_page) ?>.php#custom-sections" target="_blank" style="color:var(--accent2)">View on site &rarr;</a></div>
 <?php elseif ($_sec_flash === 'deleted'): ?>
 <div class="alert alert-success" style="margin-bottom:12px;background:#fee2e2;color:#991b1b;border-color:#fecaca">Section deleted.</div>
 <?php endif; ?>
@@ -187,10 +187,10 @@ if (is_dir($_sec_ni_dir)) {
 
         <label style="margin-top:12px;display:block">Background Colour</label>
         <div style="display:flex;gap:6px;align-items:center">
-          <input type="color" id="sec-bg-pick" value="<?= h($_sec_edit['bg_color'] ?? '#ffffff') ?>"
+          <input type="color" id="sec-bg-pick" value="<?= h($_sec_edit['bg_color'] ?? '#f4f6f8') ?>"
                  onchange="document.getElementById('sec-bg-txt').value=this.value"
                  style="width:38px;height:30px;padding:2px;cursor:pointer;border:1px solid #cbd5e1;border-radius:4px">
-          <input type="text" id="sec-bg-txt" name="sec_bg_color" value="<?= h($_sec_edit['bg_color'] ?? '#ffffff') ?>"
+          <input type="text" id="sec-bg-txt" name="sec_bg_color" value="<?= h($_sec_edit['bg_color'] ?? '#f4f6f8') ?>"
                  oninput="document.getElementById('sec-bg-pick').value=this.value" style="flex:1">
         </div>
 

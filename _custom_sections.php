@@ -13,8 +13,9 @@ $_cs_list = $_cs_rows->fetchAll();
 
 if (empty($_cs_list)) return;
 
+$_cs_first = true;
 foreach ($_cs_list as $_cs):
-    $bg   = $_cs['bg_color']   ?: '#ffffff';
+    $bg   = $_cs['bg_color']   ?: '#f4f6f8';
     $fg   = $_cs['text_color'] ?: '#333333';
     $yt   = trim($_cs['youtube_url']);
     $img  = trim($_cs['image']);
@@ -33,7 +34,7 @@ foreach ($_cs_list as $_cs):
         $img_url = (strpos($img, '/') === false) ? 'uploads/' . $img : $img;
     }
 ?>
-<section style="background:<?= h($bg) ?>;color:<?= h($fg) ?>;padding:64px 24px;font-family:'Segoe UI',system-ui,sans-serif" class="custom-section">
+<section <?= $_cs_first ? 'id="custom-sections"' : '' ?> style="background:<?= h($bg) ?>;color:<?= h($fg) ?>;padding:64px 24px;font-family:'Segoe UI',system-ui,sans-serif;border-top:4px solid #c0303b" class="custom-section">
   <div style="max-width:1100px;margin:0 auto">
 
     <?php if ($_cs['heading']): ?>
@@ -71,4 +72,4 @@ foreach ($_cs_list as $_cs):
 
   </div>
 </section>
-<?php endforeach; ?>
+<?php $_cs_first = false; endforeach; ?>
