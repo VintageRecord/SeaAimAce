@@ -98,24 +98,24 @@ if (is_dir($_sec_ni_dir)) {
 <?php if (!empty($_sec_list)): ?>
 <div style="margin-bottom:18px">
   <?php foreach ($_sec_list as $_sr): ?>
-  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px">
+  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:8px">
     <div style="flex:1;min-width:0">
-      <span style="font-size:.85rem;font-weight:600;color:#1e293b"><?= h($_sr['heading'] ?: '(no heading)') ?></span>
-      <?php if ($_sr['image']): ?><span style="font-size:.7rem;color:#64748b;margin-left:8px">&#128247;</span><?php endif; ?>
-      <?php if ($_sr['youtube_url']): ?><span style="font-size:.7rem;color:#64748b;margin-left:4px">&#9654;</span><?php endif; ?>
+      <span style="font-size:.85rem;font-weight:600;color:var(--text)"><?= h($_sr['heading'] ?: '(no heading)') ?></span>
+      <?php if ($_sr['image']): ?><span style="font-size:.7rem;color:var(--text-muted);margin-left:8px">&#128247;</span><?php endif; ?>
+      <?php if ($_sr['youtube_url']): ?><span style="font-size:.7rem;color:var(--text-muted);margin-left:4px">&#9654;</span><?php endif; ?>
     </div>
     <form method="post" style="display:inline">
       <input type="hidden" name="_sec_action" value="toggle">
       <input type="hidden" name="_sec_id" value="<?= (int)$_sr['id'] ?>">
-      <button type="submit" style="font-size:.7rem;padding:2px 8px;border-radius:10px;border:none;cursor:pointer;background:<?= $_sr['enabled'] ? '#dcfce7' : '#f1f5f9' ?>;color:<?= $_sr['enabled'] ? '#166534' : '#94a3b8' ?>">
+      <button type="submit" style="font-size:.7rem;padding:2px 8px;border-radius:10px;border:none;cursor:pointer;background:<?= $_sr['enabled'] ? '#14532d' : '#1e1e1e' ?>;color:<?= $_sr['enabled'] ? '#86efac' : '#888' ?>">
         <?= $_sr['enabled'] ? 'Visible' : 'Hidden' ?>
       </button>
     </form>
-    <a href="?sec_edit=<?= (int)$_sr['id'] ?>#sec-editor" style="font-size:.75rem;color:#3b82f6;text-decoration:none">Edit</a>
+    <a href="?sec_edit=<?= (int)$_sr['id'] ?>#sec-editor" style="font-size:.75rem;color:var(--accent2);text-decoration:none">Edit</a>
     <form method="post" style="display:inline" onsubmit="return confirm('Delete this section?')">
       <input type="hidden" name="_sec_action" value="delete">
       <input type="hidden" name="_sec_id" value="<?= (int)$_sr['id'] ?>">
-      <button type="submit" style="font-size:.75rem;color:#ef4444;background:none;border:none;cursor:pointer;padding:0">Delete</button>
+      <button type="submit" style="font-size:.75rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0">Delete</button>
     </form>
   </div>
   <?php endforeach; ?>
@@ -123,11 +123,11 @@ if (is_dir($_sec_ni_dir)) {
 <?php endif; ?>
 
 <!-- Add / Edit form -->
-<div id="sec-editor" style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:24px">
-  <div style="font-size:.85rem;font-weight:700;color:#1e293b;margin-bottom:16px">
+<div id="sec-editor" style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:24px">
+  <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:16px">
     <?= $_sec_edit ? 'Edit Section' : 'Add Section' ?>
     <?php if ($_sec_edit): ?>
-    <a href="?" style="font-size:.72rem;font-weight:400;color:#64748b;margin-left:10px;text-decoration:none">&#10005; Cancel</a>
+    <a href="?" style="font-size:.72rem;font-weight:400;color:var(--text-muted);margin-left:10px;text-decoration:none">&#10005; Cancel</a>
     <?php endif; ?>
   </div>
   <form method="post" enctype="multipart/form-data">
@@ -159,7 +159,7 @@ if (is_dir($_sec_ni_dir)) {
           <button type="button" class="sec-tb-btn" onclick="secClear()">Tx</button>
         </div>
         <div id="sec-editable" contenteditable="true"
-             style="border:1px solid #cbd5e1;border-radius:6px;padding:10px;min-height:80px;font-size:.88rem;line-height:1.65;font-family:inherit"><?= $_sec_edit ? sh($_sec_edit['body']) : '' ?></div>
+             style="border:1px solid var(--border);border-radius:6px;padding:10px;min-height:80px;font-size:.88rem;line-height:1.65;font-family:inherit;background:var(--surface);color:var(--text)"><?= $_sec_edit ? sh($_sec_edit['body']) : '' ?></div>
         <textarea name="sec_body" id="sec-body-ta" style="display:none"><?= h($_sec_edit['body'] ?? '') ?></textarea>
       </div>
 
@@ -221,17 +221,17 @@ if (is_dir($_sec_ni_dir)) {
 </div>
 
 <!-- Image picker modal -->
-<div id="sec-picker-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center">
-  <div style="background:#fff;border-radius:12px;width:min(680px,95vw);max-height:80vh;display:flex;flex-direction:column;overflow:hidden">
-    <div style="padding:14px 18px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center">
-      <strong style="font-size:.92rem">Choose Image</strong>
-      <button onclick="secClosePicker()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#64748b">&#10005;</button>
+<div id="sec-picker-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);align-items:center;justify-content:center">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;width:min(680px,95vw);max-height:80vh;display:flex;flex-direction:column;overflow:hidden">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <strong style="font-size:.92rem;color:var(--text)">Choose Image</strong>
+      <button onclick="secClosePicker()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted)">&#10005;</button>
     </div>
-    <div style="display:flex;border-bottom:1px solid #e2e8f0">
-      <button class="sec-picker-tab active" onclick="secSwitchTab('site')" id="sec-tab-site" style="flex:1;padding:9px;background:none;border:none;border-bottom:2px solid #3b82f6;font-size:.8rem;color:#3b82f6;cursor:pointer;font-weight:600">Site Images</button>
-      <button class="sec-picker-tab" onclick="secSwitchTab('uploads')" id="sec-tab-uploads" style="flex:1;padding:9px;background:none;border:none;border-bottom:2px solid transparent;font-size:.8rem;color:#64748b;cursor:pointer">Uploaded</button>
+    <div style="display:flex;border-bottom:1px solid var(--border)">
+      <button class="sec-picker-tab active" onclick="secSwitchTab('site')" id="sec-tab-site" style="flex:1;padding:9px;background:none;border:none;border-bottom:2px solid var(--accent2);font-size:.8rem;color:var(--accent2);cursor:pointer;font-weight:600">Site Images</button>
+      <button class="sec-picker-tab" onclick="secSwitchTab('uploads')" id="sec-tab-uploads" style="flex:1;padding:9px;background:none;border:none;border-bottom:2px solid transparent;font-size:.8rem;color:var(--text-muted);cursor:pointer">Uploaded</button>
     </div>
-    <div id="sec-pane-site" style="padding:12px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px">
+    <div id="sec-pane-site" style="padding:12px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;background:var(--surface2)">
       <?php foreach ($_sec_new_images as $_mf): ?>
       <img src="../new_images/<?= h($_mf) ?>" title="<?= h($_mf) ?>"
            style="aspect-ratio:1;object-fit:cover;border-radius:5px;cursor:pointer;border:2px solid transparent;width:100%"
@@ -239,7 +239,7 @@ if (is_dir($_sec_ni_dir)) {
            onclick="secPickImg('new_images/<?= h(addslashes($_mf)) ?>')">
       <?php endforeach; ?>
     </div>
-    <div id="sec-pane-uploads" style="display:none;padding:12px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px">
+    <div id="sec-pane-uploads" style="display:none;padding:12px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;background:var(--surface2)">
       <?php foreach ($_sec_media as $_mf): ?>
       <img src="../uploads/<?= h($_mf) ?>" title="<?= h($_mf) ?>"
            style="aspect-ratio:1;object-fit:cover;border-radius:5px;cursor:pointer;border:2px solid transparent;width:100%"
@@ -254,8 +254,8 @@ if (is_dir($_sec_ni_dir)) {
 </div>
 
 <style>
-.sec-tb-btn { font-size:.75rem;padding:3px 8px;background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer; }
-.sec-tb-btn:hover { background:#e2e8f0; }
+.sec-tb-btn { font-size:.75rem;padding:3px 8px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:4px;cursor:pointer; }
+.sec-tb-btn:hover { background:var(--surface2);border-color:#444; }
 </style>
 
 <script>
