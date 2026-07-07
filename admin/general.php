@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
+$_sections_page = 'home';
+require '_sections_handler.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
     $fields = ['site_name','site_logo','home_meta_title','home_meta_desc',

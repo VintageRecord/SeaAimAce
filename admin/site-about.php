@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
+$_sections_page = 'about';
+require '_sections_handler.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
     $fields = ['about_meta_title','about_meta_desc','about_hero_heading','about_hero_sub','about_hero_btn1','about_hero_btn2',

@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
+$_sections_page = 'contact';
+require '_sections_handler.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
     $fields = ['contact_meta_title','contact_hero_heading','contact_hero_sub','contact_form_heading',

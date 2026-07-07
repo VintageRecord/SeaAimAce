@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
+$_sections_page = 'faq';
+require '_sections_handler.php';
 
 $db = get_db();
 

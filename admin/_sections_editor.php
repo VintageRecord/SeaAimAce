@@ -1,65 +1,12 @@
 <?php
 /**
- * Shared custom-sections editor panel.
- * Include at the bottom of any per-page admin editor (site-about.php etc.)
- * Requires: $db, $_sections_page (e.g. 'about'), $active_nav already set.
- *
- * Handles its own POST via ?_sec_action=... so the parent form is not affected.
+ * Shared custom-sections editor panel (rendering only).
+ * POST handling is done by _sections_handler.php, included at the top of each page.
  */
 
 $_sec_page  = $_sections_page ?? 'home';
-$_sec_flash = '';
+$_sec_flash = $_GET['sec_flash'] ?? '';
 $db = get_db();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_sec_action'])) {
-    $action = $_POST['_sec_action'];
-
-    if ($action === 'save') {
-        $id      = (int)($_POST['_sec_id'] ?? 0);
-        $heading = trim($_POST['sec_heading']   ?? '');
-        $body    = trim($_POST['sec_body']      ?? '');
-        $image   = trim($_POST['sec_image']     ?? '');
-        $youtube = trim($_POST['sec_youtube']   ?? '');
-        $bg      = trim($_POST['sec_bg_color']  ?? '#f4f6f8');
-        $fg      = trim($_POST['sec_text_color']?? '#333333');
-        $enabled = isset($_POST['sec_enabled']) ? 1 : 0;
-        $sort    = (int)($_POST['sec_sort']     ?? 0);
-
-        // Handle image upload
-        if (!empty($_FILES['sec_image_upload']) && $_FILES['sec_image_upload']['error'] === UPLOAD_ERR_OK) {
-            $f   = $_FILES['sec_image_upload'];
-            $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
-            if (in_array($ext, ['jpg','jpeg','png','gif','webp','svg'])) {
-                $fname = uniqid('sec_', true) . '.' . $ext;
-                $dest  = dirname(__DIR__) . '/uploads/' . $fname;
-                if (move_uploaded_file($f['tmp_name'], $dest)) {
-                    $db->prepare('INSERT OR IGNORE INTO media (filename,mime_type,file_size) VALUES (?,?,?)')
-                       ->execute([$fname, mime_content_type($dest), $f['size']]);
-                    $image = $fname;
-                }
-            }
-        }
-
-        if ($id > 0) {
-            $db->prepare('UPDATE custom_sections SET heading=?,body=?,image=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=? WHERE id=? AND page=?')
-               ->execute([$heading,$body,$image,$youtube,$bg,$fg,$sort,$enabled,$id,$_sec_page]);
-        } else {
-            $max = $db->query("SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections WHERE page='$_sec_page'")->fetchColumn();
-            $db->prepare('INSERT INTO custom_sections (page,heading,body,image,youtube_url,bg_color,text_color,sort_order,enabled) VALUES (?,?,?,?,?,?,?,?,1)')
-               ->execute([$_sec_page,$heading,$body,$image,$youtube,$bg,$fg,$max]);
-        }
-        $_sec_flash = 'saved';
-
-    } elseif ($action === 'delete') {
-        $id = (int)($_POST['_sec_id'] ?? 0);
-        if ($id) $db->prepare('DELETE FROM custom_sections WHERE id=? AND page=?')->execute([$id,$_sec_page]);
-        $_sec_flash = 'deleted';
-
-    } elseif ($action === 'toggle') {
-        $id = (int)($_POST['_sec_id'] ?? 0);
-        if ($id) $db->prepare('UPDATE custom_sections SET enabled=1-enabled WHERE id=? AND page=?')->execute([$id,$_sec_page]);
-    }
-}
 
 $_sec_edit_id = isset($_GET['sec_edit']) ? (int)$_GET['sec_edit'] : 0;
 $_sec_edit    = null;
@@ -92,7 +39,9 @@ if (is_dir($_sec_ni_dir)) {
 <?php if ($_sec_flash === 'saved'): ?>
 <div class="alert alert-success" style="margin-bottom:12px">Section saved. It appears at the <strong>bottom of the live page</strong>, just before the footer. <a href="../<?= h($_sec_page === 'home' ? 'index' : $_sec_page) ?>.php#custom-sections" target="_blank" style="color:var(--accent2)">View on site &rarr;</a></div>
 <?php elseif ($_sec_flash === 'deleted'): ?>
-<div class="alert alert-success" style="margin-bottom:12px;background:#fee2e2;color:#991b1b;border-color:#fecaca">Section deleted.</div>
+<div class="alert alert-danger" style="margin-bottom:12px">Section deleted.</div>
+<?php elseif ($_sec_flash === 'toggled'): ?>
+<div class="alert alert-success" style="margin-bottom:12px">Section visibility updated.</div>
 <?php endif; ?>
 
 <!-- Existing sections list -->
