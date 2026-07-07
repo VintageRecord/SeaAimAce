@@ -9,6 +9,7 @@
 
 $_sec_page  = $_sections_page ?? 'home';
 $_sec_flash = '';
+$db = get_db();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_sec_action'])) {
     $action = $_POST['_sec_action'];
