@@ -2,7 +2,7 @@
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
     $fields = ['site_name','site_logo','home_meta_title','home_meta_desc',
                'home_hero_heading','home_hero_sub','home_hero_btn1','home_hero_btn1url','home_hero_btn2','home_hero_btn2url',
                'home_sec2_heading','home_sec2_text',

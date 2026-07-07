@@ -2,7 +2,7 @@
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
     $fields = ['contact_meta_title','contact_hero_heading','contact_hero_sub','contact_form_heading',
                'contact_submit_btn','contact_success_msg',
                'contact_info1_title','contact_info1_text','contact_info2_title','contact_info2_text',
