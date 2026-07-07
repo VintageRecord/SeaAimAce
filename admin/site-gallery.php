@@ -90,4 +90,5 @@ require '_layout.php';
   </div>
 </div>
 
+<?php $_sections_page = 'gallery'; require '_sections_editor.php'; ?>
 <?php require '_layout_end.php'; ?>

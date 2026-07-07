@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fname = uniqid('sec_', true) . '.' . $ext;
                 $dest = dirname(__DIR__) . '/uploads/' . $fname;
                 if (move_uploaded_file($f['tmp_name'], $dest)) {
-                    $db->prepare('INSERT OR IGNORE INTO media (filename,mime,size) VALUES (?,?,?)')
+                    $db->prepare('INSERT OR IGNORE INTO media (filename,mime_type,file_size) VALUES (?,?,?)')
                        ->execute([$fname, mime_content_type($dest), $f['size']]);
                     $image = $fname;
                 }

@@ -154,4 +154,5 @@ require '_layout.php';
 </div>
 </form>
 
+<?php $_sections_page = 'home'; require '_sections_editor.php'; ?>
 <?php require '_layout_end.php'; ?>

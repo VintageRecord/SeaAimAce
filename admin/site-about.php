@@ -57,4 +57,5 @@ require '_layout.php';
   <span class="save-status" id="save-status"></span>
 </div>
 </form>
+<?php $_sections_page = 'about'; require '_sections_editor.php'; ?>
 <?php require '_layout_end.php'; ?>

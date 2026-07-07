@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!in_array($ext, $ALLOWED_EXT)) continue;
             $fname = uniqid('bg_', true) . '.' . $ext;
             if (move_uploaded_file($f['tmp_name'], $UPLOADS_DIR . '/' . $fname)) {
-                $db->prepare('INSERT OR IGNORE INTO media (filename,mime,size) VALUES (?,?,?)')
+                $db->prepare('INSERT OR IGNORE INTO media (filename,mime_type,file_size) VALUES (?,?,?)')
                    ->execute([$fname, mime_content_type($UPLOADS_DIR . '/' . $fname), $f['size']]);
                 save_setting($setting_key, $fname);
             }

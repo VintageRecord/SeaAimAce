@@ -49,4 +49,5 @@ foreach ($infos as $i => $def): $n = $i + 1; ?>
   <span class="save-status" id="save-status"></span>
 </div>
 </form>
+<?php $_sections_page = 'contact'; require '_sections_editor.php'; ?>
 <?php require '_layout_end.php'; ?>
