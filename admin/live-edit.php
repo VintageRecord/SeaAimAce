@@ -3,6 +3,18 @@ require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 
 $db = get_db();
+
+// Images for the picker modal
+$live_media_files = $db->query("SELECT filename FROM media ORDER BY id DESC")->fetchAll(PDO::FETCH_COLUMN);
+$live_new_images  = [];
+$_ni_dir = dirname(__DIR__) . '/new_images';
+if (is_dir($_ni_dir)) {
+    foreach (scandir($_ni_dir) as $_nf) {
+        $ext = strtolower(pathinfo($_nf, PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg','jpeg','png','gif','webp','svg'])) $live_new_images[] = $_nf;
+    }
+    sort($live_new_images);
+}
 ?>
 <!DOCTYPE html>
 <html style="font-size:16px;" lang="en">
@@ -131,6 +143,56 @@ body { padding-top: var(--bar-h) !important; }
 }
 #cms-link-popup input:focus { outline:none; border-color:var(--accent); }
 
+/* ── Image hover overlay ── */
+#cms-img-overlay {
+    position: fixed; z-index: 100000;
+    display: none; align-items: center; gap: 6px;
+    background: rgba(0,0,0,.82); border-radius: 7px;
+    padding: 5px 8px; pointer-events: auto;
+}
+.cms-img-btn {
+    background: var(--accent); color: #fff; border: none;
+    border-radius: 5px; padding: 5px 12px; font-size: .78rem;
+    font-family: inherit; font-weight: 600; cursor: pointer;
+}
+.cms-img-btn:hover { background: #c0303b; }
+
+/* ── Image picker modal ── */
+#cms-img-picker {
+    position: fixed; inset: 0; z-index: 100001;
+    background: rgba(0,0,0,.72);
+    display: none; align-items: center; justify-content: center;
+}
+.img-picker-box {
+    background: #1a1a1a; border: 1px solid #333; border-radius: 12px;
+    width: min(700px, 95vw); max-height: 82vh;
+    display: flex; flex-direction: column; overflow: hidden;
+}
+.img-picker-head {
+    padding: 14px 18px; border-bottom: 1px solid #333;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-shrink: 0;
+}
+.img-picker-head h3 { margin: 0; font-size: .95rem; color: #fff; }
+.img-picker-tabs { display: flex; border-bottom: 1px solid #333; flex-shrink: 0; }
+.img-picker-tab {
+    flex: 1; padding: 10px 0; background: none; border: none;
+    font-size: .82rem; color: #888; cursor: pointer;
+    border-bottom: 2px solid transparent; font-family: inherit;
+}
+.img-picker-tab.active { color: var(--accent2); border-bottom-color: var(--accent2); font-weight: 600; }
+.img-picker-grid {
+    padding: 14px; overflow-y: auto; flex: 1;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px;
+    background: #111;
+}
+.img-picker-thumb {
+    aspect-ratio: 1; object-fit: cover; border-radius: 6px;
+    cursor: pointer; border: 2px solid transparent; width: 100%;
+    transition: border-color .12s;
+}
+.img-picker-thumb:hover { border-color: var(--accent); }
+
 /* ── Click hint ── */
 #cms-hint {
     position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
@@ -231,8 +293,41 @@ body { padding-top: var(--bar-h) !important; }
     <button class="cms-btn cms-btn-outline" style="padding:5px 12px;font-size:.78rem" onmousedown="e(event)" onclick="closeLinkPopup()">Cancel</button>
 </div>
 
+<!-- Image hover overlay -->
+<div id="cms-img-overlay">
+    <button class="cms-img-btn" onclick="openImgPicker()">&#128247; Change Image</button>
+</div>
+
+<!-- Image picker modal -->
+<div id="cms-img-picker">
+  <div class="img-picker-box">
+    <div class="img-picker-head">
+      <h3>Choose Image</h3>
+      <button onclick="closeImgPicker()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;line-height:1">&#10005;</button>
+    </div>
+    <div class="img-picker-tabs">
+      <button class="img-picker-tab active" id="img-tab-site"    onclick="switchImgTab('site')">Site Images</button>
+      <button class="img-picker-tab"        id="img-tab-uploads" onclick="switchImgTab('uploads')">Uploaded</button>
+    </div>
+    <div class="img-picker-grid" id="img-pane-site">
+      <?php foreach ($live_new_images as $_f): ?>
+      <img src="../new_images/<?= h($_f) ?>" class="img-picker-thumb" title="<?= h($_f) ?>"
+           onclick="pickImg('new_images/<?= h(addslashes($_f)) ?>')">
+      <?php endforeach; ?>
+      <?php if (empty($live_new_images)): ?><p style="color:#666;font-size:.82rem;grid-column:1/-1">No images found.</p><?php endif; ?>
+    </div>
+    <div class="img-picker-grid" id="img-pane-uploads" style="display:none">
+      <?php foreach ($live_media_files as $_f): ?>
+      <img src="../uploads/<?= h($_f) ?>" class="img-picker-thumb" title="<?= h($_f) ?>"
+           onclick="pickImg('uploads/<?= h(addslashes($_f)) ?>')">
+      <?php endforeach; ?>
+      <?php if (empty($live_media_files)): ?><p style="color:#666;font-size:.82rem;grid-column:1/-1">No uploads yet.</p><?php endif; ?>
+    </div>
+  </div>
+</div>
+
 <!-- Hint -->
-<div id="cms-hint">Click any highlighted text to edit it</div>
+<div id="cms-hint">Click any highlighted text to edit · hover images to change them</div>
 
 <!-- ═══════════════════════════════════════════════
      SITE HTML (with data-editable attributes)
@@ -404,7 +499,7 @@ require dirname(__DIR__) . '/_nav.php';
         <div class="u-repeater u-repeater-1">
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-white u-list-item-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
-              <img class="u-expanded-width u-image u-image-default u-image-2" src="../new_images/32.jpg" alt="" data-image-width="900" data-image-height="600">
+              <img class="u-expanded-width u-image u-image-default u-image-2" src="<?= h('../' . setting('img_src_home_svc1', 'new_images/32.jpg')) ?>" alt="" data-image-width="900" data-image-height="600" data-img-key="home_svc1">
               <h4 class="u-hover-feature u-text u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-editable data-type="setting" data-key="home_svc1_title"><?= h(setting('home_svc1_title','Sport Activities')) ?></h4>
               <p class="u-hover-feature u-text u-text-3" data-editable data-type="setting" data-key="home_svc1_body"><?= h(setting('home_svc1_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
               <a href="#" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-1" data-editable data-type="setting" data-key="home_svc1_btn"><?= h(setting('home_svc1_btn','more')) ?></a>
@@ -412,7 +507,7 @@ require dirname(__DIR__) . '/_nav.php';
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3">
-              <img class="u-expanded-width u-image u-image-default u-image-3" src="../new_images/1.jpg" alt="" data-image-width="900" data-image-height="600">
+              <img class="u-expanded-width u-image u-image-default u-image-3" src="<?= h('../' . setting('img_src_home_svc2', 'new_images/1.jpg')) ?>" alt="" data-image-width="900" data-image-height="600" data-img-key="home_svc2">
               <h4 class="u-hover-feature u-text u-text-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-editable data-type="setting" data-key="home_svc2_title"><?= h(setting('home_svc2_title','Internet Access')) ?></h4>
               <p class="u-hover-feature u-text u-text-5" data-editable data-type="setting" data-key="home_svc2_body"><?= h(setting('home_svc2_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
               <a href="#" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-2" data-editable data-type="setting" data-key="home_svc2_btn"><?= h(setting('home_svc2_btn','more')) ?></a>
@@ -420,7 +515,7 @@ require dirname(__DIR__) . '/_nav.php';
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-3" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-4">
-              <img class="u-expanded-width u-image u-image-default u-image-4" src="../new_images/777.jpg" alt="" data-image-width="900" data-image-height="600">
+              <img class="u-expanded-width u-image u-image-default u-image-4" src="<?= h('../' . setting('img_src_home_svc3', 'new_images/777.jpg')) ?>" alt="" data-image-width="900" data-image-height="600" data-img-key="home_svc3">
               <h4 class="u-hover-feature u-text u-text-6" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-editable data-type="setting" data-key="home_svc3_title"><?= h(setting('home_svc3_title','Climbing Instructor')) ?></h4>
               <p class="u-hover-feature u-text u-text-7" data-editable data-type="setting" data-key="home_svc3_body"><?= h(setting('home_svc3_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
               <a href="#" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-3" data-editable data-type="setting" data-key="home_svc3_btn"><?= h(setting('home_svc3_btn','more')) ?></a>
@@ -428,7 +523,7 @@ require dirname(__DIR__) . '/_nav.php';
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-5">
-              <img class="u-expanded-width u-image u-image-default u-image-5" src="../new_images/dfdf.jpg" alt="" data-image-width="900" data-image-height="600">
+              <img class="u-expanded-width u-image u-image-default u-image-5" src="<?= h('../' . setting('img_src_home_svc4', 'new_images/dfdf.jpg')) ?>" alt="" data-image-width="900" data-image-height="600" data-img-key="home_svc4">
               <h4 class="u-hover-feature u-text u-text-8" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-editable data-type="setting" data-key="home_svc4_title"><?= h(setting('home_svc4_title','Mountain Bikes')) ?></h4>
               <p class="u-hover-feature u-text u-text-9" data-editable data-type="setting" data-key="home_svc4_body"><?= h(setting('home_svc4_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
               <a href="#" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-4" data-editable data-type="setting" data-key="home_svc4_btn"><?= h(setting('home_svc4_btn','more')) ?></a>
@@ -797,6 +892,56 @@ window.addEventListener('beforeunload', e => {
 
 // Hide hint after first interaction
 document.addEventListener('click', () => { hint.style.opacity = '0'; }, { once: true });
+
+// ── Image change on hover ──────────────────────────────────────
+const imgOverlay  = document.getElementById('cms-img-overlay');
+const imgPickerEl = document.getElementById('cms-img-picker');
+let activeImg = null;
+
+document.querySelectorAll('[data-img-key]').forEach(img => {
+    img.style.cursor = 'crosshair';
+    img.addEventListener('mouseenter', () => {
+        activeImg = img;
+        const rect = img.getBoundingClientRect();
+        const ow = imgOverlay.offsetWidth || 140;
+        imgOverlay.style.top  = (rect.top  + window.scrollY + 8) + 'px';
+        imgOverlay.style.left = (Math.max(8, rect.right + window.scrollX - ow - 8)) + 'px';
+        imgOverlay.style.display = 'flex';
+    });
+    img.addEventListener('mouseleave', e => {
+        if (!imgOverlay.contains(e.relatedTarget)) imgOverlay.style.display = 'none';
+    });
+});
+imgOverlay.addEventListener('mouseleave', e => {
+    if (!e.relatedTarget || !e.relatedTarget.closest('[data-img-key]')) imgOverlay.style.display = 'none';
+});
+
+function openImgPicker()  { imgPickerEl.style.display = 'flex'; }
+function closeImgPicker() { imgPickerEl.style.display = 'none'; }
+function switchImgTab(tab) {
+    document.getElementById('img-pane-site').style.display    = tab === 'site'    ? 'grid' : 'none';
+    document.getElementById('img-pane-uploads').style.display = tab === 'uploads' ? 'grid' : 'none';
+    document.getElementById('img-tab-site').classList.toggle('active',    tab === 'site');
+    document.getElementById('img-tab-uploads').classList.toggle('active', tab === 'uploads');
+}
+async function pickImg(src) {
+    if (!activeImg) return;
+    const displaySrc = '../' + src;
+    activeImg.src = displaySrc;
+    closeImgPicker();
+    imgOverlay.style.display = 'none';
+    const key = activeImg.dataset.imgKey;
+    try {
+        const res  = await fetch('live-edit-save.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Ajax': '1' },
+            body: JSON.stringify({ type: 'image_src', key, value: displaySrc })
+        });
+        const json = await res.json();
+        showIndicator(json.success ? 'Image updated' : (json.error || 'Save failed'), !json.success);
+    } catch(e) { showIndicator('Network error', true); }
+}
+imgPickerEl.addEventListener('click', e => { if (e.target === imgPickerEl) closeImgPicker(); });
 
 // Page switcher
 function switchPage(url) {

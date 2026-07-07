@@ -180,7 +180,7 @@ $current_page = 'home';
         <div class="u-repeater u-repeater-1">
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-white u-list-item-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
-              <img class="u-expanded-width u-image u-image-default u-image-2" src="new_images/32.jpg" alt="" data-image-width="900" data-image-height="600">
+              <img class="u-expanded-width u-image u-image-default u-image-2" src="<?= h(setting('img_src_home_svc1', 'new_images/32.jpg')) ?>" alt="" data-image-width="900" data-image-height="600">
               <h4 class="u-hover-feature u-text u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= sh(setting('home_svc1_title','Sport Activities')) ?></h4>
               <p class="u-hover-feature u-text u-text-3"><?= sh(setting('home_svc1_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
               <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-1"><?= sh(setting('home_svc1_btn','more')) ?></a>
@@ -188,7 +188,7 @@ $current_page = 'home';
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3">
-              <img class="u-expanded-width u-image u-image-default u-image-3" src="new_images/1.jpg" alt="" data-image-width="900" data-image-height="600">
+              <img class="u-expanded-width u-image u-image-default u-image-3" src="<?= h(setting('img_src_home_svc2', 'new_images/1.jpg')) ?>" alt="" data-image-width="900" data-image-height="600">
               <h4 class="u-hover-feature u-text u-text-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= sh(setting('home_svc2_title','Internet Access')) ?></h4>
               <p class="u-hover-feature u-text u-text-5"><?= sh(setting('home_svc2_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
               <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-2"><?= sh(setting('home_svc2_btn','more')) ?></a>
@@ -196,7 +196,7 @@ $current_page = 'home';
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-3" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-4">
-              <img class="u-expanded-width u-image u-image-default u-image-4" src="new_images/777.jpg" alt="" data-image-width="900" data-image-height="600">
+              <img class="u-expanded-width u-image u-image-default u-image-4" src="<?= h(setting('img_src_home_svc3', 'new_images/777.jpg')) ?>" alt="" data-image-width="900" data-image-height="600">
               <h4 class="u-hover-feature u-text u-text-6" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= sh(setting('home_svc3_title','Climbing Instructor')) ?></h4>
               <p class="u-hover-feature u-text u-text-7"><?= sh(setting('home_svc3_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
               <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-3"><?= sh(setting('home_svc3_btn','more')) ?></a>
@@ -204,7 +204,7 @@ $current_page = 'home';
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-5">
-              <img class="u-expanded-width u-image u-image-default u-image-5" src="new_images/dfdf.jpg" alt="" data-image-width="900" data-image-height="600">
+              <img class="u-expanded-width u-image u-image-default u-image-5" src="<?= h(setting('img_src_home_svc4', 'new_images/dfdf.jpg')) ?>" alt="" data-image-width="900" data-image-height="600">
               <h4 class="u-hover-feature u-text u-text-8" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= sh(setting('home_svc4_title','Mountain Bikes')) ?></h4>
               <p class="u-hover-feature u-text u-text-9"><?= sh(setting('home_svc4_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
               <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-4"><?= sh(setting('home_svc4_btn','more')) ?></a>

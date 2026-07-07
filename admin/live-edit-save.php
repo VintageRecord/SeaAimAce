@@ -67,6 +67,18 @@ try {
             $stmt->execute([json_encode($features), $id]);
             break;
 
+        case 'image_src':
+            $key = preg_replace('/[^a-z0-9_]/', '', $data['key'] ?? '');
+            if (!$key) throw new Exception('Invalid key');
+            $src = $data['value'] ?? '';
+            // Strip leading ../ so path is stored as new_images/file.jpg or uploads/file.jpg
+            $src = preg_replace('/^\.\.\//', '', $src);
+            if (!preg_match('/^(new_images|uploads)\/[^\/]+$/', $src)) {
+                throw new Exception('Invalid image path');
+            }
+            save_setting('img_src_' . $key, $src);
+            break;
+
         default:
             throw new Exception('Unknown type: ' . $type);
     }
