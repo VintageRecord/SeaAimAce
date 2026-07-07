@@ -60,7 +60,7 @@ $link_style = 'color:' . ($footer_text_col ?: '#aaaaaa') . ';text-decoration:non
 
     <!-- Bottom bar -->
     <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-bottom:28px;font-size:.78rem;opacity:.55">
-      <p style="margin:0"><?= h($footer_copyright) ?></p>
+      <p style="margin:0"><?= sh($footer_copyright) ?></p>
       <nav aria-label="Footer navigation" style="display:flex;flex-wrap:wrap;gap:18px">
         <?php
         $db2 = get_db();

@@ -21,19 +21,19 @@ $current_page = 'home';
  
     <section class="skrollable skrollable-between u-align-center u-clearfix u-container-align-center u-image u-shading u-section-1" src="" data-image-width="1622" data-image-height="1080" id="block-1">
       <div class="u-clearfix u-sheet u-sheet-1">
-        <h1 class="u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"><?= h(setting('home_hero_heading','Best Camping in the National Park')) ?></h1>
-        <p class="u-large-text u-text u-text-variant u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500"><?= h(setting('home_hero_subtext','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit')) ?></p>
+        <h1 class="u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"><?= sh(setting('home_hero_heading','Best Camping in the National Park')) ?></h1>
+        <p class="u-large-text u-text u-text-variant u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500"><?= sh(setting('home_hero_subtext','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit')) ?></p>
         <div class="u-clearfix u-expanded-width-xs u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
             <div class="u-layout-row">
               <div class="u-align-center-sm u-align-center-xs u-align-right-lg u-align-right-md u-align-right-xl u-container-align-right u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
                 <div class="u-container-layout u-valign-middle-xs u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xl u-container-layout-1">
-                  <a href="about.php" class="u-align-right u-border-2 u-border-palette-2-base u-btn u-btn-round u-button-style u-palette-2-base u-radius-50 u-btn-1"><?= h(setting('home_hero_btn1','Our story')) ?></a>
+                  <a href="about.php" class="u-align-right u-border-2 u-border-palette-2-base u-btn u-btn-round u-button-style u-palette-2-base u-radius-50 u-btn-1"><?= sh(setting('home_hero_btn1','Our story')) ?></a>
                 </div>
               </div>
               <div class="u-align-center-sm u-align-center-xs u-align-left-lg u-align-left-md u-align-left-xl u-container-align-left u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
                 <div class="u-container-layout u-valign-top u-container-layout-2">
-                  <a href="contact.php" class="u-active-white u-align-left u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2"><?= h(setting('home_hero_btn2','Contact Us')) ?></a>
+                  <a href="contact.php" class="u-active-white u-align-left u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2"><?= sh(setting('home_hero_btn2','Contact Us')) ?></a>
                 </div>
               </div>
             </div>
@@ -43,22 +43,22 @@ $current_page = 'home';
           <div class="u-repeater u-repeater-1">
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-list-item-1" data-animation-name="customAnimationIn" data-animation-duration="1500">
               <div class="u-container-layout u-similar-container u-container-layout-3"><span class="u-file-icon u-icon u-text-white u-icon-1"><img src="new_images/2325148-28c38e53.png" alt=""></span>
-                <h4 class="u-align-center u-custom-font u-text u-text-font u-text-3"><?= h(setting('home_icon1_label','Trekking')) ?></h4>
+                <h4 class="u-align-center u-custom-font u-text u-text-font u-text-3"><?= sh(setting('home_icon1_label','Trekking')) ?></h4>
               </div>
             </div>
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-list-item-2" data-animation-name="customAnimationIn" data-animation-duration="1500">
               <div class="u-container-layout u-similar-container u-container-layout-4"><span class="u-file-icon u-icon u-text-white u-icon-2"><img src="new_images/7401471-4294aa1a.png" alt=""></span>
-                <h4 class="u-align-center u-custom-font u-text u-text-font u-text-4"><?= h(setting('home_icon2_label','Camping')) ?></h4>
+                <h4 class="u-align-center u-custom-font u-text u-text-font u-text-4"><?= sh(setting('home_icon2_label','Camping')) ?></h4>
               </div>
             </div>
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-list-item-3" data-animation-name="customAnimationIn" data-animation-duration="1500">
               <div class="u-container-layout u-similar-container u-container-layout-5"><span class="u-file-icon u-icon u-text-white u-icon-3"><img src="new_images/931077-6ca510ad.png" alt=""></span>
-                <h4 class="u-align-center u-custom-font u-text u-text-font u-text-5"><?= h(setting('home_icon3_label','Beach Tents')) ?></h4>
+                <h4 class="u-align-center u-custom-font u-text u-text-font u-text-5"><?= sh(setting('home_icon3_label','Beach Tents')) ?></h4>
               </div>
             </div>
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-list-item-4" data-animation-name="customAnimationIn" data-animation-duration="1500">
               <div class="u-container-layout u-similar-container u-container-layout-6"><span class="u-file-icon u-icon u-text-white u-icon-4"><img src="new_images/2560416-11b1db70.png" alt=""></span>
-                <h4 class="u-align-center u-custom-font u-text u-text-font u-text-6"><?= h(setting('home_icon4_label','News &amp; Events')) ?></h4>
+                <h4 class="u-align-center u-custom-font u-text u-text-font u-text-6"><?= sh(setting('home_icon4_label','News &amp; Events')) ?></h4>
               </div>
             </div>
           </div>
@@ -74,9 +74,9 @@ $current_page = 'home';
                 <div class="u-layout-col">
                   <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
                     <div class="u-container-layout u-valign-middle u-container-layout-1">
-                      <h2 class="u-text u-text-1"><?= h(setting('home_sec2_heading','10 Amazing Camping Tours')) ?></h2>
-                      <p class="u-text u-text-2"><?= h(setting('home_sec2_body','Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')) ?></p>
-                      <a href="about.php" class="u-active-palette-2-light-1 u-border-none u-btn u-btn-round u-button-style u-hover-palette-2-light-1 u-palette-2-base u-radius-50 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-2"><?= h(setting('home_sec2_btn','learn more')) ?></a>
+                      <h2 class="u-text u-text-1"><?= sh(setting('home_sec2_heading','10 Amazing Camping Tours')) ?></h2>
+                      <p class="u-text u-text-2"><?= sh(setting('home_sec2_body','Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')) ?></p>
+                      <a href="about.php" class="u-active-palette-2-light-1 u-border-none u-btn u-btn-round u-button-style u-hover-palette-2-light-1 u-palette-2-base u-radius-50 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-2"><?= sh(setting('home_sec2_btn','learn more')) ?></a>
                     </div>
                   </div>
                   <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
@@ -144,24 +144,24 @@ $current_page = 'home';
             <div class="u-layout-row">
               <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
                 <div class="u-container-layout u-container-layout-1">
-                  <h3 class="u-text u-text-1"><?= h(setting('home_amenities_heading','Available to campsite guests:')) ?></h3>
+                  <h3 class="u-text u-text-1"><?= sh(setting('home_amenities_heading','Available to campsite guests:')) ?></h3>
                   <ul class="u-custom-list u-file-icon u-text u-text-2">
                     <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_amen_li1','store (with eco products)')) ?></li>
-                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_amen_li2',"children's playground with a climbing wall")) ?></li>
+                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= sh(setting('home_amen_li2',"children's playground with a climbing wall")) ?></li>
                     <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_amen_li3','climbing tower * (8 m high)')) ?></li>
-                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_amen_li4','volleyball court')) ?></li>
+                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= sh(setting('home_amen_li4','volleyball court')) ?></li>
                     <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_amen_li5','bike hire (also for children)')) ?></li>
-                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_amen_li6','internet access')) ?></li>
+                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= sh(setting('home_amen_li6','internet access')) ?></li>
                   </ul>
                 </div>
               </div>
               <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
                 <div class="u-container-layout u-container-layout-2">
-                  <h3 class="u-text u-text-3"><?= h(setting('home_camp_list_heading','In the campsite, you can:')) ?></h3>
+                  <h3 class="u-text u-text-3"><?= sh(setting('home_camp_list_heading','In the campsite, you can:')) ?></h3>
                   <ul class="u-custom-list u-text u-text-4">
-                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_camp_li1','hire a climbing instructor')) ?></li>
-                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_camp_li2','buy kayaking permits')) ?></li>
-                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= h(setting('home_camp_li3','tandem paragliding available')) ?></li>
+                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= sh(setting('home_camp_li1','hire a climbing instructor')) ?></li>
+                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= sh(setting('home_camp_li2','buy kayaking permits')) ?></li>
+                    <li><div class="u-list-icon u-text-palette-2-light-2"><svg class="u-svg-content" viewBox="0 0 512 512"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg></div><?= sh(setting('home_camp_li3','tandem paragliding available')) ?></li>
                   </ul>
                 </div>
               </div>
@@ -173,7 +173,7 @@ $current_page = 'home';
     <section class="u-align-center u-clearfix u-container-align-center u-section-4" id="block-4">
       <div class="u-container-style u-expanded-width u-group u-image u-shading u-image-1" data-image-width="1620" data-image-height="1080">
         <div class="u-container-layout u-valign-top u-container-layout-1">
-          <h2 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"><?= h(setting('home_activities_heading','Our Services')) ?></h2>
+          <h2 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"><?= sh(setting('home_activities_heading','Our Services')) ?></h2>
         </div>
       </div>
       <div class="u-list u-list-1">
@@ -181,33 +181,33 @@ $current_page = 'home';
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-white u-list-item-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
               <img class="u-expanded-width u-image u-image-default u-image-2" src="new_images/32.jpg" alt="" data-image-width="900" data-image-height="600">
-              <h4 class="u-hover-feature u-text u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= h(setting('home_svc1_title','Sport Activities')) ?></h4>
-              <p class="u-hover-feature u-text u-text-3"><?= h(setting('home_svc1_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
-              <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-1"><?= h(setting('home_svc1_btn','more')) ?></a>
+              <h4 class="u-hover-feature u-text u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= sh(setting('home_svc1_title','Sport Activities')) ?></h4>
+              <p class="u-hover-feature u-text u-text-3"><?= sh(setting('home_svc1_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
+              <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-1"><?= sh(setting('home_svc1_btn','more')) ?></a>
             </div>
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3">
               <img class="u-expanded-width u-image u-image-default u-image-3" src="new_images/1.jpg" alt="" data-image-width="900" data-image-height="600">
-              <h4 class="u-hover-feature u-text u-text-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= h(setting('home_svc2_title','Internet Access')) ?></h4>
-              <p class="u-hover-feature u-text u-text-5"><?= h(setting('home_svc2_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
-              <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-2"><?= h(setting('home_svc2_btn','more')) ?></a>
+              <h4 class="u-hover-feature u-text u-text-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= sh(setting('home_svc2_title','Internet Access')) ?></h4>
+              <p class="u-hover-feature u-text u-text-5"><?= sh(setting('home_svc2_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
+              <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-2"><?= sh(setting('home_svc2_btn','more')) ?></a>
             </div>
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-3" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-4">
               <img class="u-expanded-width u-image u-image-default u-image-4" src="new_images/777.jpg" alt="" data-image-width="900" data-image-height="600">
-              <h4 class="u-hover-feature u-text u-text-6" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= h(setting('home_svc3_title','Climbing Instructor')) ?></h4>
-              <p class="u-hover-feature u-text u-text-7"><?= h(setting('home_svc3_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
-              <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-3"><?= h(setting('home_svc3_btn','more')) ?></a>
+              <h4 class="u-hover-feature u-text u-text-6" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= sh(setting('home_svc3_title','Climbing Instructor')) ?></h4>
+              <p class="u-hover-feature u-text u-text-7"><?= sh(setting('home_svc3_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
+              <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-3"><?= sh(setting('home_svc3_btn','more')) ?></a>
             </div>
           </div>
           <div class="u-align-center u-border-1 u-border-palette-2-base u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-video-cover u-white u-list-item-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-5">
               <img class="u-expanded-width u-image u-image-default u-image-5" src="new_images/dfdf.jpg" alt="" data-image-width="900" data-image-height="600">
-              <h4 class="u-hover-feature u-text u-text-8" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= h(setting('home_svc4_title','Mountain Bikes')) ?></h4>
-              <p class="u-hover-feature u-text u-text-9"><?= h(setting('home_svc4_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
-              <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-4"><?= h(setting('home_svc4_btn','more')) ?></a>
+              <h4 class="u-hover-feature u-text u-text-8" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500"><?= sh(setting('home_svc4_title','Mountain Bikes')) ?></h4>
+              <p class="u-hover-feature u-text u-text-9"><?= sh(setting('home_svc4_body','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt')) ?></p>
+              <a href="gallery.php" class="u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-style u-hover-feature u-none u-radius-0 u-text-active-palette-2-base u-text-hover-palette-2-base u-text-palette-2-base u-top-left-radius-0 u-top-right-radius-0 u-btn-4"><?= sh(setting('home_svc4_btn','more')) ?></a>
             </div>
           </div>
         </div>
@@ -248,16 +248,16 @@ $current_page = 'home';
             <div class="u-layout-row">
               <div class="u-container-align-left u-container-style u-layout-cell u-shape-rectangle u-size-30 u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
                 <div class="u-container-layout u-valign-top u-container-layout-1">
-                  <h2 class="u-align-left u-text u-text-1"><?= h(setting('home_ourcamp_heading','Our Camping')) ?></h2>
-                  <p class="u-align-left u-text u-text-2"><?= h(setting('home_ourcamp_body','Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.')) ?></p>
-                  <a href="about.php" class="u-active-palette-2-light-1 u-align-left u-border-none u-btn u-btn-round u-button-style u-hover-palette-2-light-1 u-palette-2-base u-radius-50 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-1"><?= h(setting('home_ourcamp_btn','learn more')) ?></a>
+                  <h2 class="u-align-left u-text u-text-1"><?= sh(setting('home_ourcamp_heading','Our Camping')) ?></h2>
+                  <p class="u-align-left u-text u-text-2"><?= sh(setting('home_ourcamp_body','Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.')) ?></p>
+                  <a href="about.php" class="u-active-palette-2-light-1 u-align-left u-border-none u-btn u-btn-round u-button-style u-hover-palette-2-light-1 u-palette-2-base u-radius-50 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-1"><?= sh(setting('home_ourcamp_btn','learn more')) ?></a>
                 </div>
               </div>
               <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
                 <div class="u-container-layout u-valign-top u-container-layout-2">
-                  <h4 class="u-custom-font u-text u-text-font u-text-3"><?= h(setting('home_guide_heading','National Park Service Camping Guide')) ?></h4>
-                  <p class="u-text u-text-4"><?= h(setting('home_guide_body1','Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail.')) ?></p>
-                  <p class="u-text u-text-palette-2-base u-text-5"><?= h(setting('home_guide_body2','Article evident arrived express highest men did boy. Mistress sensible entirely am so. Quick can manor smart money hopes worth too.')) ?></p>
+                  <h4 class="u-custom-font u-text u-text-font u-text-3"><?= sh(setting('home_guide_heading','National Park Service Camping Guide')) ?></h4>
+                  <p class="u-text u-text-4"><?= sh(setting('home_guide_body1','Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail.')) ?></p>
+                  <p class="u-text u-text-palette-2-base u-text-5"><?= sh(setting('home_guide_body2','Article evident arrived express highest men did boy. Mistress sensible entirely am so. Quick can manor smart money hopes worth too.')) ?></p>
                 </div>
               </div>
             </div>
@@ -272,9 +272,9 @@ $current_page = 'home';
             <div class="u-layout-row">
               <div class="u-align-left u-container-align-left u-container-style u-layout-cell u-size-30 u-white u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
                 <div class="u-container-layout u-valign-middle u-container-layout-1">
-                  <h2 class="u-text u-text-1"><?= h(setting('home_family_heading','Family Camp')) ?></h2>
-                  <p class="u-text u-text-default u-text-2"><?= h(setting('home_family_body','The trekking in the enchanting mountains or rafting in the wild rivers, exploring the dense forest, canyoning in the refreshing waterfall, gliding across the highest peaks and the beautiful valley etc. are some of the adventures you can imagine.')) ?></p>
-                  <a href="about.php" class="u-active-palette-2-light-1 u-border-none u-btn u-btn-round u-button-style u-hover-palette-2-light-1 u-palette-2-base u-radius-50 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-2"><?= h(setting('home_family_btn','learn more')) ?></a>
+                  <h2 class="u-text u-text-1"><?= sh(setting('home_family_heading','Family Camp')) ?></h2>
+                  <p class="u-text u-text-default u-text-2"><?= sh(setting('home_family_body','The trekking in the enchanting mountains or rafting in the wild rivers, exploring the dense forest, canyoning in the refreshing waterfall, gliding across the highest peaks and the beautiful valley etc. are some of the adventures you can imagine.')) ?></p>
+                  <a href="about.php" class="u-active-palette-2-light-1 u-border-none u-btn u-btn-round u-button-style u-hover-palette-2-light-1 u-palette-2-base u-radius-50 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-2"><?= sh(setting('home_family_btn','learn more')) ?></a>
                 </div>
               </div>
               <div class="u-container-style u-image u-layout-cell u-size-30 u-image-1" data-image-width="721" data-image-height="1080" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
@@ -385,9 +385,9 @@ $current_page = 'home';
             <div class="u-layout-row">
               <div class="u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1750" data-animation-delay="250">
                 <div class="u-container-layout u-valign-middle u-container-layout-1">
-                  <h2 class="u-text u-text-1"><?= h(setting('home_contact_heading','Contact Us')) ?></h2>
-                  <p class="u-text u-text-body-alt-color u-text-2"><?= h(setting('home_contact_body','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.')) ?></p>
-                  <a href="contact.php" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2"><?= h(setting('home_contact_btn','Contact Us')) ?></a>
+                  <h2 class="u-text u-text-1"><?= sh(setting('home_contact_heading','Contact Us')) ?></h2>
+                  <p class="u-text u-text-body-alt-color u-text-2"><?= sh(setting('home_contact_body','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.')) ?></p>
+                  <a href="contact.php" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2"><?= sh(setting('home_contact_btn','Contact Us')) ?></a>
                 </div>
               </div>
               <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500">
@@ -430,4 +430,5 @@ $current_page = 'home';
     
     
     
+<?php require __DIR__ . '/_custom_sections.php'; ?>
     <?php require __DIR__ . '/_footer.php'; ?>

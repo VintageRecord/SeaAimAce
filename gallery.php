@@ -21,7 +21,7 @@ $current_page = 'gallery';
 
     <section class="skrollable skrollable-between u-align-center u-clearfix u-image u-shading u-section-1" src="" data-image-width="1980" data-image-height="1131" id="block-1">
       <div class="u-clearfix u-sheet u-valign-top-lg u-valign-top-xl u-sheet-1">
-        <h1 class="u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1000"> <?= h(setting('gallery_hero_heading','Where Can I Camp?')) ?></h1>
+        <h1 class="u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1000"> <?= sh(setting('gallery_hero_heading','Where Can I Camp?')) ?></h1>
         <p class="u-large-text u-text u-text-variant u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250"> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit&nbsp;</p>
         <div class="u-clearfix u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
@@ -321,4 +321,5 @@ $current_page = 'gallery';
     
     
     
+<?php require __DIR__ . '/_custom_sections.php'; ?>
     <?php require __DIR__ . '/_footer.php'; ?>

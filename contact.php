@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  
     <section class="skrollable skrollable-between u-align-center u-clearfix u-container-align-center u-image u-shading u-section-1" src="" data-image-width="1980" data-image-height="1320" id="block-1">
       <div class="u-clearfix u-sheet u-valign-middle-xs u-sheet-1">
-        <h1 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"> <?= h(setting('contact_hero_heading','Plan Your Camping Trip')) ?></h1>
+        <h1 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"> <?= sh(setting('contact_hero_heading','Plan Your Camping Trip')) ?></h1>
         <p class="u-align-center u-large-text u-text u-text-body-alt-color u-text-variant u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
         <div class="u-clearfix u-expanded-width-sm u-expanded-width-xs u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
@@ -278,4 +278,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     
     
+<?php require __DIR__ . '/_custom_sections.php'; ?>
     <?php require __DIR__ . '/_footer.php'; ?>

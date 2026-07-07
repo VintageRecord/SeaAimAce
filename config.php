@@ -154,6 +154,20 @@ function _ensure_schema(PDO $pdo): void {
             description TEXT NOT NULL DEFAULT '',
             sort_order  INTEGER NOT NULL DEFAULT 0
         );
+
+        CREATE TABLE IF NOT EXISTS custom_sections (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            page         TEXT NOT NULL DEFAULT 'home',
+            heading      TEXT NOT NULL DEFAULT '',
+            body         TEXT NOT NULL DEFAULT '',
+            image        TEXT NOT NULL DEFAULT '',
+            youtube_url  TEXT NOT NULL DEFAULT '',
+            bg_color     TEXT NOT NULL DEFAULT '#ffffff',
+            text_color   TEXT NOT NULL DEFAULT '#333333',
+            sort_order   INTEGER NOT NULL DEFAULT 0,
+            enabled      INTEGER NOT NULL DEFAULT 1,
+            created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+        );
     ");
 }
 
@@ -202,6 +216,19 @@ function admin_url(string $path = ''): string {
 
 function h(string $s): string {
     return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * Output a setting value as safe HTML (for content fields edited via live editor).
+ * The live-edit-save.php clean() function already strips scripts/iframes, so this
+ * just strips any remaining dangerous event handlers and returns the raw HTML.
+ */
+function sh(string $val): string {
+    // Strip on* event handlers (e.g. onclick="...")
+    $val = preg_replace('/\s+on\w+\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]*)/i', '', $val);
+    // Strip javascript: in href/src
+    $val = preg_replace('/\b(href|src)\s*=\s*["\']?\s*javascript:/i', '$1="#" data-blocked=', $val);
+    return $val;
 }
 
 function redirect(string $url): never {

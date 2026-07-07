@@ -21,7 +21,7 @@ $current_page = 'about';
 
     <section class="skrollable skrollable-between u-align-center u-clearfix u-container-align-center u-image u-shading u-section-1" src="" data-image-width="1980" data-image-height="1320" id="block-1">
       <div class="u-clearfix u-sheet u-valign-middle-xs u-sheet-1">
-        <h1 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"> <?= h(setting('about_hero_heading','Find yourself outside')) ?></h1>
+        <h1 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"> <?= sh(setting('about_hero_heading','Find yourself outside')) ?></h1>
         <p class="u-align-center u-large-text u-text u-text-body-alt-color u-text-variant u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
         <div class="u-clearfix u-expanded-width-sm u-expanded-width-xs u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
@@ -45,7 +45,7 @@ $current_page = 'about';
     </section>
     <section class="u-clearfix u-container-align-center u-section-2" id="block-2">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <h4 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"> <?= h(setting('about_mission_heading','Our mission')) ?></h4>
+        <h4 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500"> <?= sh(setting('about_mission_heading','Our mission')) ?></h4>
         <h2 class="u-align-center u-text u-text-default u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500"> Get more people outside</h2>
         <p class="u-align-center u-text u-text-3" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
         <h2 class="u-align-center u-text u-text-font u-text-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250"> Move with purposeful urgency.</h2>
@@ -338,4 +338,5 @@ $current_page = 'about';
     
     
     
+<?php require __DIR__ . '/_custom_sections.php'; ?>
     <?php require __DIR__ . '/_footer.php'; ?>

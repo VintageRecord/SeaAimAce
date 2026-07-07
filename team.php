@@ -28,7 +28,7 @@ $current_page = 'team';
             </div>
             <div class="u-align-left u-container-align-left u-container-style u-layout-cell u-right-cell u-shape-rectangle u-size-27-xl u-size-29-lg u-size-60-md u-size-60-sm u-size-60-xs u-size-xs-60 u-white u-layout-cell-2">
               <div class="u-container-layout u-valign-middle u-container-layout-2">
-                <h1 class="u-align-left u-font-titillium-Web u-text u-text-1"> <?= h(setting('team_hero_heading','Our team is looking forward')) ?> </h1>
+                <h1 class="u-align-left u-font-titillium-Web u-text u-text-1"> <?= sh(setting('team_hero_heading','Our team is looking forward')) ?> </h1>
                 <p class="u-align-left u-text u-text-2">Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.&nbsp;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 <p class="u-align-left u-text u-text-3">Image from <a href="https://www.freepik.com/photos/woman" class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-3-base u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-link u-button-style u-none u-radius-0 u-text-body-color u-top-left-radius-0 u-top-right-radius-0 u-btn-1">Freepik</a>
                 </p>
@@ -188,4 +188,5 @@ $current_page = 'team';
     
     
     
+<?php require __DIR__ . '/_custom_sections.php'; ?>
     <?php require __DIR__ . '/_footer.php'; ?>
