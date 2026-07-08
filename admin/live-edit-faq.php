@@ -2,6 +2,16 @@
 require_once dirname(__DIR__) . '/config.php';
 require_admin_login();
 $db = get_db();
+$live_media_files = $db->query("SELECT filename FROM media ORDER BY id DESC")->fetchAll(PDO::FETCH_COLUMN);
+$live_new_images  = [];
+$_ni_dir = dirname(__DIR__) . '/new_images';
+if (is_dir($_ni_dir)) {
+    foreach (scandir($_ni_dir) as $_nf) {
+        $ext = strtolower(pathinfo($_nf, PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg','jpeg','png','gif','webp','svg'])) $live_new_images[] = $_nf;
+    }
+    sort($live_new_images);
+}
 $cms_page_key   = 'live-edit-faq.php';
 $cms_page_title = 'FAQ';
 $cms_page_css   = '../FAQ-Page.css';
@@ -49,7 +59,7 @@ require dirname(__DIR__) . '/_nav.php';
     <section class="u-clearfix u-section-2" id="block-2">
       <div class="u-clearfix u-sheet u-sheet-1">
         <h2 class="u-text u-text-default u-text-1" data-editable data-type="setting" data-key="faq_section_heading"><?= h(setting('faq_section_heading','faq')) ?></h2>
-        <img class="u-image u-image-circle u-image-1" src="../new_images/photographer-man-smiling-while-h.jpg" alt="" data-image-width="740" data-image-height="1110">
+        <img class="u-image u-image-circle u-image-1" src="<?= h('../' . setting('img_src_faq_s2_img1', 'new_images/photographer-man-smiling-while-h.jpg')) ?>" alt="" data-image-width="740" data-image-height="1110" data-img-key="faq_s2_img1">
         <p class="u-text u-text-grey-30 u-text-2">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
         <?php if (!empty($faq_items)): ?>
         <div class="u-accordion u-expanded-width u-accordion-1">

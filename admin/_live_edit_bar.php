@@ -82,4 +82,41 @@ $_pages = [
     <button class="cms-btn cms-btn-outline" style="padding:5px 12px;font-size:.78rem" onmousedown="e(event)" onclick="closeLinkPopup()">Cancel</button>
 </div>
 
-<div id="cms-hint">Click any highlighted text to edit it</div>
+<div id="cms-hint">Click any highlighted text to edit · hover images to change them</div>
+
+<?php
+$_lm_files = $live_media_files ?? [];
+$_ni_files = $live_new_images  ?? [];
+?>
+<!-- Image hover overlay -->
+<div id="cms-img-overlay">
+    <button class="cms-img-btn" onclick="openImgPicker()">&#128247; Change Image</button>
+</div>
+
+<!-- Image picker modal -->
+<div id="cms-img-picker">
+  <div class="img-picker-box">
+    <div class="img-picker-head">
+      <h3>Choose Image</h3>
+      <button onclick="closeImgPicker()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;line-height:1">&#10005;</button>
+    </div>
+    <div class="img-picker-tabs">
+      <button class="img-picker-tab active" id="img-tab-site"    onclick="switchImgTab('site')">Site Images</button>
+      <button class="img-picker-tab"        id="img-tab-uploads" onclick="switchImgTab('uploads')">Uploaded</button>
+    </div>
+    <div class="img-picker-grid" id="img-pane-site">
+      <?php foreach ($_ni_files as $_f): ?>
+      <img src="../new_images/<?= h($_f) ?>" class="img-picker-thumb" title="<?= h($_f) ?>"
+           onclick="pickImg('new_images/<?= h(addslashes($_f)) ?>')">
+      <?php endforeach; ?>
+      <?php if (empty($_ni_files)): ?><p style="color:#666;font-size:.82rem;grid-column:1/-1">No images found.</p><?php endif; ?>
+    </div>
+    <div class="img-picker-grid" id="img-pane-uploads" style="display:none">
+      <?php foreach ($_lm_files as $_f): ?>
+      <img src="../uploads/<?= h($_f) ?>" class="img-picker-thumb" title="<?= h($_f) ?>"
+           onclick="pickImg('uploads/<?= h(addslashes($_f)) ?>')">
+      <?php endforeach; ?>
+      <?php if (empty($_lm_files)): ?><p style="color:#666;font-size:.82rem;grid-column:1/-1">No uploads yet.</p><?php endif; ?>
+    </div>
+  </div>
+</div>

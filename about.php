@@ -252,28 +252,28 @@ $current_page = 'about';
           <div class="u-repeater u-repeater-1">
             <div class="u-align-center u-container-align-center u-container-align-center-lg u-container-align-center-md u-container-align-center-sm u-container-align-center-xs u-container-style u-list-item u-palette-2-base u-repeater-item u-shape-rectangle u-video-cover u-list-item-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
               <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1">
-                <img class="u-expanded-width u-image u-image-default u-image-1" src="new_images/1244.jpg" alt="" data-image-width="800" data-image-height="533" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
+                <img class="u-expanded-width u-image u-image-default u-image-1" src="<?= h(setting('img_src_about_s6_img1', 'new_images/1244.jpg')) ?>" alt="" data-image-width="800" data-image-height="533" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
                 <h4 class="u-align-center u-text u-text-3" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500"> Best RV camping</h4>
                 <p class="u-align-center u-text u-text-4" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500">Sample text. Click to select the Text Element.</p>
               </div>
             </div>
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-palette-2-base u-repeater-item u-shape-rectangle u-list-item-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
               <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
-                <img class="u-expanded-width u-image u-image-default u-image-2" src="new_images/8.jpg" alt="" data-image-width="800" data-image-height="533" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
+                <img class="u-expanded-width u-image u-image-default u-image-2" src="<?= h(setting('img_src_about_s6_img2', 'new_images/8.jpg')) ?>" alt="" data-image-width="800" data-image-height="533" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
                 <h4 class="u-align-center u-text u-text-5" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500"> Lake camping</h4>
                 <p class="u-align-center u-text u-text-6" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500">Sample text. Click to select the Text Element.</p>
               </div>
             </div>
             <div class="u-align-center u-container-align-center u-container-align-center-lg u-container-align-center-md u-container-align-center-sm u-container-align-center-xs u-container-style u-list-item u-palette-2-base u-repeater-item u-shape-rectangle u-video-cover u-list-item-3" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
               <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3">
-                <img class="u-expanded-width u-image u-image-default u-image-3" src="new_images/7894.jpg" alt="" data-image-width="626" data-image-height="533" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
+                <img class="u-expanded-width u-image u-image-default u-image-3" src="<?= h(setting('img_src_about_s6_img3', 'new_images/7894.jpg')) ?>" alt="" data-image-width="626" data-image-height="533" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
                 <h4 class="u-align-center u-text u-text-7" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500"> Beach stays</h4>
                 <p class="u-align-center u-text u-text-8" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500">Sample text. Click to select the Text Element.</p>
               </div>
             </div>
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-palette-2-base u-repeater-item u-shape-rectangle u-video-cover u-list-item-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
               <div class="u-container-layout u-similar-container u-valign-top u-container-layout-4">
-                <img class="u-expanded-width u-image u-image-default u-image-4" src="new_images/53.jpg" alt="" data-image-width="800" data-image-height="533" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
+                <img class="u-expanded-width u-image u-image-default u-image-4" src="<?= h(setting('img_src_about_s6_img4', 'new_images/53.jpg')) ?>" alt="" data-image-width="800" data-image-height="533" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250">
                 <h4 class="u-align-center u-text u-text-9" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500"> Sequoia</h4>
                 <p class="u-align-center u-text u-text-10" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500">Sample text. Click to select the Text Element.</p>
               </div>

@@ -226,7 +226,7 @@ $current_page = 'gallery';
           <div class="u-repeater u-repeater-1">
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-1">
-                <img alt="" class="u-expanded-width u-image u-image-default u-image-1" data-image-width="700" data-image-height="652" src="new_images/young-rural-travellers-picnic3.jpg">
+                <img alt="" class="u-expanded-width u-image u-image-default u-image-1" data-image-width="700" data-image-height="652" src="<?= h(setting('img_src_gallery_s5_img1', 'new_images/young-rural-travellers-picnic3.jpg')) ?>">
                 <div class="u-align-center u-container-align-center u-container-style u-group u-palette-2-base u-group-1">
                   <div class="u-container-layout u-valign-middle u-container-layout-2">
                     <h4 class="u-align-center u-text u-text-default u-text-2"> Hidden gems</h4>
@@ -239,7 +239,7 @@ $current_page = 'gallery';
             </div>
             <div class="u-align-center u-container-align-center-sm u-container-align-center-xl u-container-align-center-xs u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-3">
-                <img alt="" class="u-expanded-width u-image u-image-default u-image-2" data-image-width="700" data-image-height="652" src="new_images/689.jpg">
+                <img alt="" class="u-expanded-width u-image u-image-default u-image-2" data-image-width="700" data-image-height="652" src="<?= h(setting('img_src_gallery_s5_img2', 'new_images/689.jpg')) ?>">
                 <div class="u-align-center u-container-align-center u-container-style u-group u-palette-2-base u-group-2">
                   <div class="u-container-layout u-valign-middle u-container-layout-4">
                     <h4 class="u-align-center u-text u-text-default u-text-5"> Cottage stays</h4>
@@ -252,7 +252,7 @@ $current_page = 'gallery';
             </div>
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-5">
-                <img alt="" class="u-expanded-width u-image u-image-default u-image-3" data-image-width="700" data-image-height="652" src="new_images/young-rural-travellers-picnic3t.jpg">
+                <img alt="" class="u-expanded-width u-image u-image-default u-image-3" data-image-width="700" data-image-height="652" src="<?= h(setting('img_src_gallery_s5_img3', 'new_images/young-rural-travellers-picnic3t.jpg')) ?>">
                 <div class="u-align-center u-container-align-center u-container-style u-group u-palette-2-base u-group-3">
                   <div class="u-container-layout u-valign-middle u-container-layout-6">
                     <h4 class="u-align-center u-text u-text-default u-text-8">Glamping</h4>

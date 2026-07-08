@@ -102,4 +102,52 @@ body { padding-top: var(--bar-h) !important; }
     font-family:system-ui,sans-serif; z-index:99998;
     pointer-events:none; transition:opacity .3s;
 }
+/* ── Image hover overlay ── */
+#cms-img-overlay {
+    position: fixed; z-index: 100000;
+    display: none; align-items: center; gap: 6px;
+    background: rgba(0,0,0,.82); border-radius: 7px;
+    padding: 5px 8px; pointer-events: auto;
+}
+.cms-img-btn {
+    background: var(--accent); color: #fff; border: none;
+    border-radius: 5px; padding: 5px 12px; font-size: .78rem;
+    font-family: inherit; font-weight: 600; cursor: pointer;
+}
+.cms-img-btn:hover { background: #c0303b; }
+/* ── Image picker modal ── */
+#cms-img-picker {
+    position: fixed; inset: 0; z-index: 100001;
+    background: rgba(0,0,0,.72);
+    display: none; align-items: center; justify-content: center;
+}
+.img-picker-box {
+    background: #1a1a1a; border: 1px solid #333; border-radius: 12px;
+    width: min(700px, 95vw); max-height: 82vh;
+    display: flex; flex-direction: column; overflow: hidden;
+}
+.img-picker-head {
+    padding: 14px 18px; border-bottom: 1px solid #333;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-shrink: 0;
+}
+.img-picker-head h3 { margin: 0; font-size: .95rem; color: #fff; }
+.img-picker-tabs { display: flex; border-bottom: 1px solid #333; flex-shrink: 0; }
+.img-picker-tab {
+    flex: 1; padding: 10px 0; background: none; border: none;
+    font-size: .82rem; color: #888; cursor: pointer;
+    border-bottom: 2px solid transparent; font-family: inherit;
+}
+.img-picker-tab.active { color: var(--accent2); border-bottom-color: var(--accent2); font-weight: 600; }
+.img-picker-grid {
+    padding: 14px; overflow-y: auto; flex: 1;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px;
+    background: #111;
+}
+.img-picker-thumb {
+    aspect-ratio: 1; object-fit: cover; border-radius: 6px;
+    cursor: pointer; border: 2px solid transparent; width: 100%;
+    transition: border-color .12s;
+}
+.img-picker-thumb:hover { border-color: var(--accent); }
 </style>

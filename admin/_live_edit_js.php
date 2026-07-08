@@ -183,6 +183,62 @@ window.addEventListener('beforeunload', e => {
 });
 document.addEventListener('click', () => { hint.style.opacity = '0'; }, { once: true });
 
+// ── Image change on hover ──────────────────────────────────────
+const imgOverlay  = document.getElementById('cms-img-overlay');
+const imgPickerEl = document.getElementById('cms-img-picker');
+let activeImg = null;
+
+document.querySelectorAll('[data-img-key]').forEach(img => {
+    img.style.cursor = 'crosshair';
+    img.addEventListener('mouseenter', () => {
+        activeImg = img;
+        const rect = img.getBoundingClientRect();
+        const ow = imgOverlay.offsetWidth || 140;
+        imgOverlay.style.top  = (rect.top  + 8) + 'px';
+        imgOverlay.style.left = (Math.max(8, rect.right - ow - 8)) + 'px';
+        imgOverlay.style.display = 'flex';
+    });
+    img.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+            if (!imgOverlay.matches(':hover') && !img.matches(':hover')) imgOverlay.style.display = 'none';
+        }, 80);
+    });
+});
+if (imgOverlay) {
+    imgOverlay.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+            const overAnyImg = [...document.querySelectorAll('[data-img-key]')].some(i => i.matches(':hover'));
+            if (!overAnyImg) imgOverlay.style.display = 'none';
+        }, 80);
+    });
+}
+function openImgPicker()  { if (imgPickerEl) imgPickerEl.style.display = 'flex'; }
+function closeImgPicker() { if (imgPickerEl) imgPickerEl.style.display = 'none'; }
+function switchImgTab(tab) {
+    document.getElementById('img-pane-site').style.display    = tab === 'site'    ? 'grid' : 'none';
+    document.getElementById('img-pane-uploads').style.display = tab === 'uploads' ? 'grid' : 'none';
+    document.getElementById('img-tab-site').classList.toggle('active',    tab === 'site');
+    document.getElementById('img-tab-uploads').classList.toggle('active', tab === 'uploads');
+}
+async function pickImg(src) {
+    if (!activeImg) return;
+    const displaySrc = '../' + src;
+    activeImg.src = displaySrc;
+    closeImgPicker();
+    if (imgOverlay) imgOverlay.style.display = 'none';
+    const key = activeImg.dataset.imgKey;
+    try {
+        const res  = await fetch('live-edit-save.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Ajax': '1' },
+            body: JSON.stringify({ type: 'image_src', key, value: displaySrc })
+        });
+        const json = await res.json();
+        showIndicator(json.success ? 'Image updated' : (json.error || 'Save failed'), !json.success);
+    } catch(e) { showIndicator('Network error', true); }
+}
+if (imgPickerEl) imgPickerEl.addEventListener('click', e => { if (e.target === imgPickerEl) closeImgPicker(); });
+
 function switchPage(url) {
     if (!url) return;
     if (Object.keys(pendingSaves).length > 0) {

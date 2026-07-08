@@ -46,7 +46,7 @@ $current_page = 'faq';
     <section class="u-align-center u-clearfix u-container-align-center u-section-2" id="block-2">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <h2 class="u-text u-text-default u-text-1">faq</h2>
-        <img class="u-image u-image-circle u-image-1" src="new_images/photographer-man-smiling-while-h.jpg" alt="" data-image-width="740" data-image-height="1110">
+        <img class="u-image u-image-circle u-image-1" src="<?= h(setting('img_src_faq_s2_img1', 'new_images/photographer-man-smiling-while-h.jpg')) ?>" alt="" data-image-width="740" data-image-height="1110">
         <p class="u-text u-text-grey-30 u-text-2">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
         <div class="custom-expanded u-accordion u-faq u-spacing-20 u-accordion-1">
           <div class="u-accordion-item">
