@@ -292,7 +292,6 @@ body { overflow: hidden; }
 
 <script src="https://unpkg.com/grapesjs@0.21.13/dist/grapes.min.js"></script>
 <script src="https://unpkg.com/grapesjs-blocks-basic@1.0.2/dist/index.js"></script>
-<script src="https://unpkg.com/grapesjs-preset-webpage@1.0.3/dist/index.js"></script>
 <script>
 const PAGE_ID   = <?= json_encode($id) ?>;
 const INIT_HTML = <?= json_encode($page['html_content'] ?? '') ?>;
@@ -303,10 +302,9 @@ const editor = grapesjs.init({
     height: '100%',
     width: '100%',
     storageManager: false,
-    plugins: ['gjs-blocks-basic', 'grapesjs-preset-webpage'],
+    plugins: ['gjs-blocks-basic'],
     pluginsOpts: {
-        'gjs-blocks-basic': {},
-        'grapesjs-preset-webpage': {}
+        'gjs-blocks-basic': {}
     },
     canvas: {
         styles: ['../tooplate-forge-style.css', 'body{margin:0;padding:0}']

@@ -39,11 +39,12 @@ $_nav_base    = '';
 <?php endif; ?>
 <style>
 body{margin:0;padding:0}
-header.u-header{background:#fff!important;color:#333!important}
-header.u-header .u-nav-link{color:#333!important}
-header.u-header .u-nav-link:hover{color:#000!important}
-/* Hide any duplicate/sticky nav nicepage.js generates on scroll */
-.u-sticky-wrapper, .u-header-sticky{display:none!important}
+/* Force site nav to white on custom pages */
+#sec-c67f,#sec-c67f *,.u-header,.u-header *{background:#fff!important}
+#sec-c67f .u-nav-link,#sec-c67f a,.u-header .u-nav-link,.u-header a{color:#333!important}
+#sec-c67f .u-btn,.u-header .u-btn{background:#c0303b!important;color:#fff!important;border-color:#c0303b!important}
+/* Hide any sticky/duplicate nav from nicepage.js or GrapesJS preset */
+.u-sticky-wrapper,.u-header-sticky,[class*="gjs-nav"]{display:none!important}
 </style>
 </head>
 <body data-path-to-root="./" class="u-body u-clearfix u-xl-mode" data-lang="en">
