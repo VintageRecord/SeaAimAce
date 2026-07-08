@@ -33,7 +33,6 @@ $_nav_base    = '';
 <title><?= h($title) ?></title>
 <?php if ($desc): ?><meta name="description" content="<?= h($desc) ?>"><?php endif; ?>
 <link rel="stylesheet" href="nicepage.css" media="screen">
-<link rel="stylesheet" href="tooplate-forge-style.css">
 <?php require __DIR__ . '/_bg_styles.php'; ?>
 <?php if (!empty($page['css_content'])): ?>
 <style><?= $page['css_content'] ?></style>
