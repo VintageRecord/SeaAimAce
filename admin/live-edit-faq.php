@@ -25,12 +25,32 @@ require dirname(__DIR__) . '/_nav.php';
       <div class="u-clearfix u-sheet u-valign-middle-xs u-sheet-1">
         <h1 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-editable data-type="setting" data-key="faq_hero_heading"><?= h(setting('faq_hero_heading','Plan Your Camping Trip')) ?></h1>
         <p class="u-align-center u-large-text u-text u-text-body-alt-color u-text-variant u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-editable data-type="setting" data-key="faq_hero_subtext"><?= h(setting('faq_hero_subtext','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')) ?></p>
+        <div class="data-layout-selected u-clearfix u-expanded-width-sm u-expanded-width-xs u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-row">
+              <div class="u-align-center-xs u-align-right-lg u-align-right-md u-align-right-sm u-align-right-xl u-container-align-center-sm u-container-align-center-xs u-container-style u-layout-cell u-left-cell u-size-30-lg u-size-30-md u-size-30-sm u-size-30-xl u-size-60-xs u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
+                <div class="u-container-layout u-valign-middle-xs u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xl u-container-layout-1">
+                  <a href="#" class="u-active-white u-align-center-xs u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-1">view More</a>
+                </div>
+              </div>
+              <div class="u-align-center-xs u-align-left-lg u-align-left-md u-align-left-sm u-align-left-xl u-container-align-center-xs u-container-align-left-lg u-container-align-left-md u-container-align-left-sm u-container-align-left-xl u-container-style u-layout-cell u-right-cell u-size-30-lg u-size-30-md u-size-30-sm u-size-30-xl u-size-60-xs u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
+                <div class="u-container-layout u-valign-top u-container-layout-2">
+                  <a href="#" class="u-active-palette-2-base u-align-center-xs u-align-left-lg u-align-left-md u-align-left-sm u-align-left-xl u-border-2 u-border-active-palette-2-base u-border-hover-palette-2-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-2-base u-radius-50 u-text-active-white u-text-hover-white u-white u-btn-2">Contact Us</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="u-align-center u-text u-text-body-alt-color u-text-default u-text-3" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="1000">Image from&nbsp;<a href="https://www.freepik.com" class="u-active-none u-border-1 u-border-active-palette-2-light-2 u-border-hover-palette-2-light-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-link u-button-style u-hover-none u-none u-radius-0 u-text-body-alt-color u-top-left-radius-0 u-top-right-radius-0 u-btn-3" target="_blank">Freepik</a>
+        </p>
       </div>
     </section>
 
     <section class="u-clearfix u-section-2" id="block-2">
       <div class="u-clearfix u-sheet u-sheet-1">
-        <h2 class="u-align-center u-text u-text-default u-text-1" data-editable data-type="setting" data-key="faq_section_heading"><?= h(setting('faq_section_heading','Frequently Asked Questions')) ?></h2>
+        <h2 class="u-text u-text-default u-text-1" data-editable data-type="setting" data-key="faq_section_heading"><?= h(setting('faq_section_heading','faq')) ?></h2>
+        <img class="u-image u-image-circle u-image-1" src="../new_images/photographer-man-smiling-while-h.jpg" alt="" data-image-width="740" data-image-height="1110">
+        <p class="u-text u-text-grey-30 u-text-2">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
         <?php if (!empty($faq_items)): ?>
         <div class="u-accordion u-expanded-width u-accordion-1">
           <?php foreach ($faq_items as $fi): ?>
@@ -56,7 +76,9 @@ require dirname(__DIR__) . '/_nav.php';
                 <div class="u-container-layout u-valign-middle u-container-layout-1">
                   <h2 class="u-text u-text-1">Contact Us</h2>
                   <p class="u-text u-text-body-alt-color u-text-2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                  <a href="../contact.php" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2">Contact Us</a>
+                  <p class="u-align-left u-text u-text-3">Images from <a href="https://www.freepik.com/photos/man-with-dog" class="u-border-1 u-border-active-palette-2-light-2 u-border-hover-palette-2-light-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-btn u-button-link u-button-style u-none u-text-body-alt-color u-btn-1">Freepik</a>
+                  </p>
+                  <a href="#" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2">Contact Us</a>
                 </div>
               </div>
               <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500">
