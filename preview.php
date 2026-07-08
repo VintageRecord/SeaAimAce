@@ -92,18 +92,6 @@ echo $page_body;
 <div style="height:52px"></div>
 <?php endif; ?>
 
-<script>
-// Run after nicepage.js (which is defer) to force nav white regardless of what it sets
-window.addEventListener('load', function() {
-    var h = document.getElementById('sec-c67f');
-    if (!h) return;
-    h.style.setProperty('background', '#fff', 'important');
-    h.style.setProperty('background-image', 'none', 'important');
-    h.style.setProperty('position', 'static', 'important');
-    h.style.setProperty('box-shadow', 'none', 'important');
-    h.style.setProperty('border-bottom', '1px solid #eee', 'important');
-});
-</script>
 <?php
 // _footer.php closes </body></html> and loads jquery.js + nicepage.js
 $_foot_base = '';
