@@ -681,6 +681,38 @@ require dirname(__DIR__) . '/_nav.php';
                   <a href="../contact.php" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2" data-editable data-type="setting" data-key="home_contact_btn"><?= h(setting('home_contact_btn','Contact Us')) ?></a>
                 </div>
               </div>
+              <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500">
+                <div class="u-container-layout u-valign-middle u-container-layout-2">
+                  <div class="u-form u-form-1">
+                    <form action="https://service.nicepagesrv.com/form/v4/form-process" class="u-clearfix u-form-spacing-30 u-form-vertical u-inner-form" style="padding: 10px" source="email" name="form">
+                      <div class="u-form-email u-form-group u-form-partition-factor-2">
+                        <label for="email-319a" class="u-label u-text-body-alt-color u-label-1">Email</label>
+                        <input type="email" placeholder="Enter a valid email address" id="email-319a" name="email" class="u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-group u-form-name u-form-partition-factor-2">
+                        <label for="name-319a" class="u-label u-text-body-alt-color u-label-2">Name</label>
+                        <input type="text" placeholder="Enter your Name" id="name-319a" name="name" class="u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-address u-form-group u-form-group-3">
+                        <label for="address-452f" class="u-label u-text-body-alt-color u-label-3">Address</label>
+                        <input type="text" placeholder="Enter your address" id="address-452f" name="address" class="u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-group u-form-message">
+                        <label for="message-319a" class="u-label u-text-body-alt-color u-label-4">Message</label>
+                        <textarea placeholder="Enter your message" rows="4" cols="50" id="message-319a" name="message" class="u-input u-input-rectangle" required=""></textarea>
+                      </div>
+                      <div class="u-align-left u-form-group u-form-submit">
+                        <a href="#" class="u-active-white u-border-none u-btn u-btn-round u-btn-submit u-button-style u-hover-white u-palette-2-base u-radius-50 u-btn-3">Submit</a>
+                        <input type="submit" value="submit" class="u-form-control-hidden">
+                      </div>
+                      <div class="u-form-send-message u-form-send-success">Thank you! Your message has been sent.</div>
+                      <div class="u-form-send-error u-form-send-message">Unable to send your message. Please fix errors then try again.</div>
+                      <input type="hidden" value="" name="recaptchaResponse">
+                      <input type="hidden" name="formServices" value="287d277f-d596-0f54-76da-095a5b7a32ec">
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
