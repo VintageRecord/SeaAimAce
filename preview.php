@@ -39,19 +39,13 @@ $_nav_base    = '';
 <style><?= $page['css_content'] ?></style>
 <?php endif; ?>
 <style>
-/* Preview-page overrides — must beat nicepage.css (0,3,0) !important rules */
-body{margin:0;padding:0;background:#fff!important}
-/* nicepage.js adds u-overlap/u-overlap-transparent at runtime — neutralise them */
-.u-overlap.u-overlap-transparent .u-header,
-.u-overlap.u-overlap-contrast .u-header,
-body .u-overlap .u-header,
-.u-header{background:#fff!important;background-image:none!important;border-bottom:1px solid #eee!important}
-.u-header .u-nav-link,.u-header a{color:#333!important;text-decoration:none!important}
-.u-header .u-nav-link:hover,.u-header a:hover{color:#000!important;text-decoration:none!important}
-.u-header .u-btn.u-palette-2-base,.u-header .u-border-palette-2-base{background:#c0303b!important;color:#fff!important;border-color:#c0303b!important;text-decoration:none!important}
+body{margin:0;padding:0;background:#fff}
+/* ID selector (1,0,0) beats any nicepage.css class rule no matter what nicepage.js adds */
+#sec-c67f{background:#fff!important;background-image:none!important;border-bottom:1px solid #eee!important;position:static!important;top:auto!important;box-shadow:none!important}
+#sec-c67f .u-nav-link,#sec-c67f a{color:#333!important;text-decoration:none!important}
+#sec-c67f .u-nav-link:hover,#sec-c67f a:hover{color:#000!important}
+#sec-c67f .u-btn.u-palette-2-base,#sec-c67f .u-border-palette-2-base{background:#c0303b!important;color:#fff!important;border-color:#c0303b!important}
 .u-nav-link-active{border-bottom:none!important}
-/* Prevent nicepage.js from making nav sticky/fixed on scroll */
-.u-header.u-sticky,.u-overlap .u-header.u-sticky{position:static!important;top:auto!important;box-shadow:none!important}
 </style>
 </head>
 <body data-path-to-root="./" class="u-body u-clearfix u-xl-mode" data-lang="en">
@@ -71,6 +65,11 @@ echo $_nav_html;
 // saved inside the page content from old drag-and-drop blocks
 // Strip any embedded nav/header blocks saved inside GrapesJS content
 $page_body = $page['html_content'];
+// Strip any wrapping html/head/body tags GrapesJS may have saved
+$page_body = preg_replace('/<\/?html[^>]*>/i', '', $page_body);
+$page_body = preg_replace('/<head\b[^>]*>.*?<\/head>/si', '', $page_body);
+$page_body = preg_replace('/<\/?body[^>]*>/i', '', $page_body);
+// Strip any embedded site nav saved inside old page content
 $page_body = preg_replace('/<header\b[^>]*>.*?<\/header>/si', '', $page_body);
 $page_body = preg_replace('/<nav\b[^>]*class="[^"]*u-menu[^"]*"[^>]*>.*?<\/nav>/si', '', $page_body);
 echo $page_body;
@@ -93,6 +92,18 @@ echo $page_body;
 <div style="height:52px"></div>
 <?php endif; ?>
 
+<script>
+// Run after nicepage.js (which is defer) to force nav white regardless of what it sets
+window.addEventListener('load', function() {
+    var h = document.getElementById('sec-c67f');
+    if (!h) return;
+    h.style.setProperty('background', '#fff', 'important');
+    h.style.setProperty('background-image', 'none', 'important');
+    h.style.setProperty('position', 'static', 'important');
+    h.style.setProperty('box-shadow', 'none', 'important');
+    h.style.setProperty('border-bottom', '1px solid #eee', 'important');
+});
+</script>
 <?php
 // _footer.php closes </body></html> and loads jquery.js + nicepage.js
 $_foot_base = '';
