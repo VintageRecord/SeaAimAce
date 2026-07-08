@@ -51,7 +51,18 @@ body{margin:0;padding:0}
 </head>
 <body data-path-to-root="./" class="u-body u-clearfix u-xl-mode" data-lang="en">
 
-<?php require_once __DIR__ . '/_nav.php'; ?>
+<?php
+ob_start();
+require_once __DIR__ . '/_nav.php';
+$_nav_html = ob_get_clean();
+// Force white background on the header regardless of nav_bg_color setting
+$_nav_html = preg_replace_callback('/(<header\b[^>]*)\sstyle="([^"]*)"/i', function($m) {
+    $style = preg_replace('/background\s*:[^;]+;?/i', '', $m[2]);
+    $style = 'background:#fff;color:#333;' . $style;
+    return $m[1] . ' style="' . $style . '"';
+}, $_nav_html);
+echo $_nav_html;
+?>
 
 <main>
 <?php
