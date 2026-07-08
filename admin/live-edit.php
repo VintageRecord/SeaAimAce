@@ -576,6 +576,99 @@ require dirname(__DIR__) . '/_nav.php';
         </div>
       </div>
     </section>
+    <section class="u-clearfix u-white u-section-7" id="block-7">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-clearfix u-expanded-width u-gutter-30 u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-row">
+              <div class="u-size-30 u-size-60-md">
+                <div class="u-layout-col">
+                  <div class="u-container-style u-layout-cell u-left-cell u-similar-fill u-size-40 u-layout-cell-1">
+                    <div class="u-container-layout u-valign-middle u-container-layout-1">
+                      <h2 class="u-custom-font u-text u-text-1"> Sport activities</h2>
+                      <ul class="u-custom-list u-text u-text-2">
+                        <li style="padding-left: 8px;">
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 512 512" id="svg-838e"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg>
+                          </div> Climbing tower
+                        </li>
+                        <li style="padding-left: 8px;">
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 512 512" id="svg-838e"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg>
+                          </div>Table tennis
+                        </li>
+                        <li style="padding-left: 8px;">
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 512 512" id="svg-838e"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg>
+                          </div>Volleyball
+                        </li>
+                        <li style="padding-left: 8px;">
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 512 512" id="svg-838e"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg>
+                          </div>Bowling
+                        </li>
+                        <li style="padding-left: 8px;">
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 512 512" id="svg-838e"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg>
+                          </div>Climbing wall for children
+                        </li>
+                        <li style="padding-left: 8px;">
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 512 512" id="svg-838e"><path d="m433.1 67.1-231.8 231.9c-6.2 6.2-16.4 6.2-22.6 0l-99.8-99.8-78.9 78.8 150.5 150.5c10.5 10.5 24.6 16.3 39.4 16.3 14.8 0 29-5.9 39.4-16.3l282.7-282.5z" fill="currentColor"></path></svg>
+                          </div>Gym room
+                        </li>
+                      </ul>
+                      <p class="u-text u-text-3" data-animation-name="customAnimationIn" data-animation-duration="1500">Images from <a href="https://www.freepik.com/photos/happy-couple" class="u-active-none u-border-1 u-border-active-palette-2-base u-border-black u-border-hover-palette-2-base u-border-no-left u-border-no-right u-border-no-top u-btn u-button-link u-button-style u-hover-none u-none u-text-body-color u-btn-1" target="_blank">Freepik</a>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="u-container-style u-image u-layout-cell u-left-cell u-similar-fill u-size-20 u-image-1" data-image-width="1380" data-image-height="920" data-animation-name="customAnimationIn" data-animation-duration="1500">
+                    <div class="u-container-layout"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-size-30 u-size-60-md">
+                <div class="u-layout-col">
+                  <div class="u-container-style u-image u-layout-cell u-right-cell u-similar-fill u-size-20 u-image-2" data-image-width="1380" data-image-height="920" data-animation-name="customAnimationIn" data-animation-duration="1500">
+                    <div class="u-container-layout"></div>
+                  </div>
+                  <div class="u-container-style u-layout-cell u-right-cell u-similar-fill u-size-40 u-layout-cell-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
+                    <div class="u-container-layout u-valign-middle u-container-layout-4">
+                      <p class="u-text u-text-default u-text-4"><span style="font-weight: 700;"> Amet luctus venenatis lectus magna fringilla urna porttitor rhoncus dolor. A lacus vestibulum sed arcu non. Dolor magna eget est lorem ipsum dolor sit amet consectetur.</span>
+                        <br><span class="u-text-palette-2-base">Nec feugiat nisl pretium fusce id. Justo laoreet sit amet cursus sit amet. Porta non pulvinar neque laoreet suspendisse interdum consectetur libero.</span>
+                      </p>
+                      <ul class="u-custom-font u-custom-list u-font-montserrat u-spacing-12 u-text u-text-5">
+                        <li>
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 415.994 415.994" id="svg-2b0f"><path d="m391.645 193.946-352-192c-4.96-2.688-10.976-2.592-15.808.288-4.864 2.88-7.84 8.128-7.84 13.76v384c0 5.664 2.976 10.88 7.84 13.76 2.496 1.504 5.344 2.24 8.16 2.24 2.656 0 5.28-.672 7.648-1.984l352-192c5.152-2.752 8.352-8.16 8.352-14.016s-3.2-11.264-8.352-14.048z" fill="currentColor"></path></svg>
+                          </div> Rhoncus urna neque viverra
+                        </li>
+                        <li>
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 415.994 415.994" id="svg-2b0f"><path d="m391.645 193.946-352-192c-4.96-2.688-10.976-2.592-15.808.288-4.864 2.88-7.84 8.128-7.84 13.76v384c0 5.664 2.976 10.88 7.84 13.76 2.496 1.504 5.344 2.24 8.16 2.24 2.656 0 5.28-.672 7.648-1.984l352-192c5.152-2.752 8.352-8.16 8.352-14.016s-3.2-11.264-8.352-14.048z" fill="currentColor"></path></svg>
+                          </div> Lobortis feugiat vivamus at augue
+                        </li>
+                        <li>
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 415.994 415.994" id="svg-2b0f"><path d="m391.645 193.946-352-192c-4.96-2.688-10.976-2.592-15.808.288-4.864 2.88-7.84 8.128-7.84 13.76v384c0 5.664 2.976 10.88 7.84 13.76 2.496 1.504 5.344 2.24 8.16 2.24 2.656 0 5.28-.672 7.648-1.984l352-192c5.152-2.752 8.352-8.16 8.352-14.016s-3.2-11.264-8.352-14.048z" fill="currentColor"></path></svg>
+                          </div> Eget lorem dolor sed viverra
+                        </li>
+                        <li>
+                          <div class="u-list-icon u-text-palette-2-base">
+                            <svg class="u-svg-content" viewBox="0 0 415.994 415.994" id="svg-2b0f"><path d="m391.645 193.946-352-192c-4.96-2.688-10.976-2.592-15.808.288-4.864 2.88-7.84 8.128-7.84 13.76v384c0 5.664 2.976 10.88 7.84 13.76 2.496 1.504 5.344 2.24 8.16 2.24 2.656 0 5.28-.672 7.648-1.984l352-192c5.152-2.752 8.352-8.16 8.352-14.016s-3.2-11.264-8.352-14.048z" fill="currentColor"></path></svg>
+                          </div>Odio facilisis mauris sit amet massa vitae&nbsp;<br>
+                        </li>
+                      </ul>
+                      <a href="about.php" class="u-active-palette-2-light-1 u-border-none u-btn u-btn-round u-button-style u-hover-palette-2-light-1 u-palette-2-base u-radius-50 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-2">learn more</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="u-clearfix u-image u-shading u-section-8" data-image-width="1620" data-image-height="1080" id="block-8">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="u-clearfix u-expanded-width u-gutter-0 u-layout-wrap u-layout-wrap-1">
