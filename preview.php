@@ -26,19 +26,19 @@ $current_page = 'landing';
 $_nav_base    = '';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html style="font-size:16px;" lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= h($title) ?></title>
 <?php if ($desc): ?><meta name="description" content="<?= h($desc) ?>"><?php endif; ?>
+<link rel="stylesheet" href="nicepage.css" media="screen">
 <link rel="stylesheet" href="tooplate-forge-style.css">
 <?php if (!empty($page['css_content'])): ?>
 <style><?= $page['css_content'] ?></style>
 <?php endif; ?>
-<style>body{margin:0;padding:0}</style>
 </head>
-<body>
+<body data-path-to-root="./" class="u-body u-clearfix u-xl-mode" data-lang="en">
 
 <?php require_once __DIR__ . '/_nav.php'; ?>
 
@@ -48,7 +48,7 @@ $_nav_base    = '';
 
 <?php if ($logged_in): ?>
 <div id="cms-admin-bar" style="
-    position:fixed;bottom:48px;left:0;right:0;
+    position:fixed;bottom:0;left:0;right:0;
     background:#161616;border-top:1px solid #2a2a2a;
     padding:10px 20px;
     display:flex;align-items:center;gap:12px;
@@ -59,10 +59,11 @@ $_nav_base    = '';
     <a href="admin/pages-edit.php?id=<?= $page['id'] ?>" style="padding:6px 14px;background:#E63946;color:#fff;border-radius:5px;text-decoration:none;font-weight:600">Edit Page</a>
     <a href="admin/index.php" style="padding:6px 14px;background:#1e1e1e;border:1px solid #2a2a2a;color:#e0e0e0;border-radius:5px;text-decoration:none">Dashboard</a>
 </div>
+<div style="height:52px"></div>
 <?php endif; ?>
 
 <?php
-// _footer.php outputs </body></html> itself
+// _footer.php closes </body></html> and loads jquery.js + nicepage.js
 $_foot_base = '';
 require_once __DIR__ . '/_footer.php';
 ?>
