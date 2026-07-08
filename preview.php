@@ -45,6 +45,7 @@ body{margin:0;padding:0;background:#fff}
 #sec-c67f .u-nav-link,#sec-c67f a{color:#333!important;text-decoration:none!important}
 #sec-c67f .u-nav-link:hover,#sec-c67f a:hover{color:#000!important}
 .u-nav-link-active{border-bottom:none!important}
+#sec-c67f .u-btn.u-palette-2-base{color:#fff!important}
 </style>
 </head>
 <body data-path-to-root="./" class="u-body u-clearfix u-xl-mode" data-lang="en">
