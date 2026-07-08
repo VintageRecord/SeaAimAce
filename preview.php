@@ -37,13 +37,24 @@ $_nav_base    = '';
 <?php if (!empty($page['css_content'])): ?>
 <style><?= $page['css_content'] ?></style>
 <?php endif; ?>
+<style>
+body{margin:0;padding:0}
+header.u-header{background:#fff!important;color:#333!important}
+header.u-header .u-nav-link{color:#333!important}
+header.u-header .u-nav-link:hover{color:#000!important}
+</style>
 </head>
 <body data-path-to-root="./" class="u-body u-clearfix u-xl-mode" data-lang="en">
 
 <?php require_once __DIR__ . '/_nav.php'; ?>
 
 <main>
-<?= $page['html_content'] ?>
+<?php
+// Strip any embedded site nav (<header id="sec-c67f"...>) that may have been
+// saved inside the page content from old drag-and-drop blocks
+$page_body = preg_replace('/<header\b[^>]*id=["\']sec-c67f["\'][^>]*>.*?<\/header>/si', '', $page['html_content']);
+echo $page_body;
+?>
 </main>
 
 <?php if ($logged_in): ?>
