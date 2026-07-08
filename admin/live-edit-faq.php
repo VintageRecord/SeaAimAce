@@ -47,6 +47,50 @@ require dirname(__DIR__) . '/_nav.php';
         <?php endif; ?>
       </div>
     </section>
+    <section class="u-clearfix u-image u-shading u-section-3" data-image-width="1620" data-image-height="1080" id="block-3">
+      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <div class="data-layout-selected u-clearfix u-expanded-width u-gutter-0 u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-row">
+              <div class="u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="0">
+                <div class="u-container-layout u-valign-middle u-container-layout-1">
+                  <h2 class="u-text u-text-1">Contact Us</h2>
+                  <p class="u-text u-text-body-alt-color u-text-2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                  <a href="../contact.php" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2">Contact Us</a>
+                </div>
+              </div>
+              <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500">
+                <div class="u-container-layout u-valign-middle u-container-layout-2">
+                  <div class="u-form u-form-1">
+                    <form action="https://service.nicepagesrv.com/form/v4/form-process" class="u-clearfix u-form-spacing-30 u-form-vertical u-inner-form" style="padding: 10px" source="email" name="form">
+                      <div class="u-form-email u-form-group u-form-partition-factor-2">
+                        <label class="u-label u-text-body-alt-color u-label-1">Email</label>
+                        <input type="email" placeholder="Enter a valid email address" name="email" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-group u-form-name u-form-partition-factor-2">
+                        <label class="u-label u-text-body-alt-color u-label-2">Name</label>
+                        <input type="text" placeholder="Enter your Name" name="name" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-address u-form-group u-form-group-3">
+                        <label class="u-label u-text-body-alt-color u-label-3">Address</label>
+                        <input type="text" placeholder="Enter your address" name="address" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-group u-form-message">
+                        <label class="u-label u-text-body-alt-color u-label-4">Message</label>
+                        <textarea placeholder="Enter your message" rows="4" cols="50" name="message" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required=""></textarea>
+                      </div>
+                      <div class="u-align-left u-form-group u-form-submit">
+                        <button type="submit" class="u-active-white u-border-none u-btn u-btn-round u-button-style u-hover-white u-palette-2-base u-radius-50">Submit</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
 <?php
 $footer_text = setting('footer_text', '© ' . date('Y') . ' CampForge. All rights reserved.');
