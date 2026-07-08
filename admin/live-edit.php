@@ -904,16 +904,21 @@ document.querySelectorAll('[data-img-key]').forEach(img => {
         activeImg = img;
         const rect = img.getBoundingClientRect();
         const ow = imgOverlay.offsetWidth || 140;
-        imgOverlay.style.top  = (rect.top  + window.scrollY + 8) + 'px';
-        imgOverlay.style.left = (Math.max(8, rect.right + window.scrollX - ow - 8)) + 'px';
+        imgOverlay.style.top  = (rect.top  + 8) + 'px';
+        imgOverlay.style.left = (Math.max(8, rect.right - ow - 8)) + 'px';
         imgOverlay.style.display = 'flex';
     });
     img.addEventListener('mouseleave', e => {
-        if (!imgOverlay.contains(e.relatedTarget)) imgOverlay.style.display = 'none';
+        setTimeout(() => {
+            if (!imgOverlay.matches(':hover') && !img.matches(':hover')) imgOverlay.style.display = 'none';
+        }, 80);
     });
 });
 imgOverlay.addEventListener('mouseleave', e => {
-    if (!e.relatedTarget || !e.relatedTarget.closest('[data-img-key]')) imgOverlay.style.display = 'none';
+    setTimeout(() => {
+        const overAnyImg = [...document.querySelectorAll('[data-img-key]')].some(i => i.matches(':hover'));
+        if (!overAnyImg) imgOverlay.style.display = 'none';
+    }, 80);
 });
 
 function openImgPicker()  { imgPickerEl.style.display = 'flex'; }
