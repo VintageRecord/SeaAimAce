@@ -74,14 +74,14 @@ require dirname(__DIR__) . '/_nav.php';
                 <div class="u-layout-col">
                   <div class="u-size-40">
                     <div class="u-layout-row">
-                      <div class="u-container-style u-image u-layout-cell u-left-cell u-size-60 u-image-1" src="" data-image-width="1380" data-image-height="920" style="background-image:url('../<?= h(setting('img_bg_about_s3_bg1','new_images/default.jpg')) ?>')">
+                      <div class="u-container-style u-image u-layout-cell u-left-cell u-size-60 u-image-1" src="" data-image-width="1380" data-image-height="920" data-bg-key="about_s3_bg1" style="background-image:url('../<?= h(setting('img_src_about_s3_bg1','new_images/3.jpg')) ?>')">
                         <div class="u-container-layout u-valign-middle u-container-layout-1"></div>
                       </div>
                     </div>
                   </div>
                   <div class="u-size-20">
                     <div class="u-layout-row">
-                      <div class="u-container-style u-image u-layout-cell u-left-cell u-size-30 u-image-2" src="" data-image-width="803" data-image-height="803" style="background-image:url('../<?= h(setting('img_bg_about_s3_bg2','new_images/default.jpg')) ?>')">
+                      <div class="u-container-style u-image u-layout-cell u-left-cell u-size-30 u-image-2" src="" data-image-width="803" data-image-height="803" data-bg-key="about_s3_bg2" style="background-image:url('../<?= h(setting('img_src_about_s3_bg2','new_images/37.jpg')) ?>')">
                         <div class="u-container-layout u-valign-middle u-container-layout-2"></div>
                       </div>
                       <div class="u-align-left u-black u-container-align-left u-container-style u-layout-cell u-size-30 u-layout-cell-3">
@@ -104,14 +104,14 @@ require dirname(__DIR__) . '/_nav.php';
                           <p class="u-align-left u-text u-text-5" data-editable data-type="setting" data-key="about_s3_lake_body"><?= h(setting('about_s3_lake_body','Sample text. Click to select the text box. Click again or double click to start editing the text.')) ?></p>
                         </div>
                       </div>
-                      <div class="u-container-style u-image u-layout-cell u-right-cell u-size-30 u-image-3" src="" data-image-width="732" data-image-height="754" style="background-image:url('../<?= h(setting('img_bg_about_s3_bg3','new_images/default.jpg')) ?>')">
+                      <div class="u-container-style u-image u-layout-cell u-right-cell u-size-30 u-image-3" src="" data-image-width="732" data-image-height="754" data-bg-key="about_s3_bg3" style="background-image:url('../<?= h(setting('img_src_about_s3_bg3','new_images/32.jpg')) ?>')">
                         <div class="u-container-layout u-valign-middle u-container-layout-5"></div>
                       </div>
                     </div>
                   </div>
                   <div class="u-size-40">
                     <div class="u-layout-row">
-                      <div class="u-container-style u-image u-layout-cell u-right-cell u-size-60 u-image-4" src="" data-image-width="1380" data-image-height="920" style="background-image:url('../<?= h(setting('img_bg_about_s3_bg4','new_images/default.jpg')) ?>')">
+                      <div class="u-container-style u-image u-layout-cell u-right-cell u-size-60 u-image-4" src="" data-image-width="1380" data-image-height="920" data-bg-key="about_s3_bg4" style="background-image:url('../<?= h(setting('img_src_about_s3_bg4','new_images/4.jpg')) ?>')">
                         <div class="u-container-layout u-valign-middle u-container-layout-6"></div>
                       </div>
                     </div>
@@ -156,7 +156,7 @@ require dirname(__DIR__) . '/_nav.php';
               </div>
               <div class="u-size-20 u-size-30-md">
                 <div class="u-layout-row">
-                  <div class="u-align-left u-container-align-left u-container-style u-image u-layout-cell u-size-60 u-image-1" src="" data-image-width="800" data-image-height="1200" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250" style="background-image:url('../<?= h(setting('img_bg_about_s4_bg1','new_images/default.jpg')) ?>')">
+                  <div class="u-align-left u-container-align-left u-container-style u-image u-layout-cell u-size-60 u-image-1" src="" data-image-width="800" data-image-height="1200" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250" data-bg-key="about_s4_bg1" style="background-image:url('../<?= h(setting('img_src_about_s4_bg1','new_images/14.jpg')) ?>')">
                     <div class="u-container-layout u-valign-top u-container-layout-4" src=""></div>
                   </div>
                 </div>
@@ -198,7 +198,7 @@ require dirname(__DIR__) . '/_nav.php';
             <div class="u-layout-row">
               <div class="u-size-30 u-size-60-md">
                 <div class="u-layout-col">
-                  <div class="u-container-style u-image u-layout-cell u-size-60 u-image-1" data-image-width="800" data-image-height="1200" style="background-image:url('../<?= h(setting('img_bg_about_s5_bg1','new_images/default.jpg')) ?>')">
+                  <div class="u-container-style u-image u-layout-cell u-size-60 u-image-1" data-image-width="800" data-image-height="1200" data-bg-key="about_s5_bg1" style="background-image:url('../<?= h(setting('img_src_about_s5_bg1','new_images/56.jpg')) ?>')">
                     <div class="u-container-layout u-valign-middle u-container-layout-1"></div>
                   </div>
                 </div>
@@ -207,7 +207,7 @@ require dirname(__DIR__) . '/_nav.php';
                 <div class="u-layout-col">
                   <div class="u-size-40">
                     <div class="u-layout-row">
-                      <div class="u-container-style u-image u-layout-cell u-size-60 u-image-2" data-image-width="740" data-image-height="1110" style="background-image:url('../<?= h(setting('img_bg_about_s5_bg2','new_images/default.jpg')) ?>')">
+                      <div class="u-container-style u-image u-layout-cell u-size-60 u-image-2" data-image-width="740" data-image-height="1110" data-bg-key="about_s5_bg2" style="background-image:url('../<?= h(setting('img_src_about_s5_bg2','new_images/1244.jpg')) ?>')">
                         <div class="u-container-layout u-valign-middle u-container-layout-2"></div>
                       </div>
                     </div>

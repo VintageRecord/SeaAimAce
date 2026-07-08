@@ -187,28 +187,32 @@ document.addEventListener('click', () => { hint.style.opacity = '0'; }, { once: 
 const imgOverlay  = document.getElementById('cms-img-overlay');
 const imgPickerEl = document.getElementById('cms-img-picker');
 let activeImg = null;
+let activeImgType = 'src'; // 'src' for <img data-img-key> or 'bg' for [data-bg-key]
 
-document.querySelectorAll('[data-img-key]').forEach(img => {
-    img.style.cursor = 'crosshair';
-    img.addEventListener('mouseenter', () => {
-        activeImg = img;
-        const rect = img.getBoundingClientRect();
+function attachImgHover(el, type) {
+    el.style.cursor = 'crosshair';
+    el.addEventListener('mouseenter', () => {
+        activeImg = el; activeImgType = type;
+        const rect = el.getBoundingClientRect();
         const ow = imgOverlay.offsetWidth || 140;
-        imgOverlay.style.top  = (rect.top  + 8) + 'px';
+        imgOverlay.style.top  = (rect.top  + 8 + window.scrollY) + 'px';
         imgOverlay.style.left = (Math.max(8, rect.right - ow - 8)) + 'px';
         imgOverlay.style.display = 'flex';
     });
-    img.addEventListener('mouseleave', () => {
+    el.addEventListener('mouseleave', () => {
         setTimeout(() => {
-            if (!imgOverlay.matches(':hover') && !img.matches(':hover')) imgOverlay.style.display = 'none';
+            if (!imgOverlay.matches(':hover') && !el.matches(':hover')) imgOverlay.style.display = 'none';
         }, 80);
     });
-});
+}
+document.querySelectorAll('[data-img-key]').forEach(el => attachImgHover(el, 'src'));
+document.querySelectorAll('[data-bg-key]').forEach(el => attachImgHover(el, 'bg'));
+
 if (imgOverlay) {
     imgOverlay.addEventListener('mouseleave', () => {
         setTimeout(() => {
-            const overAnyImg = [...document.querySelectorAll('[data-img-key]')].some(i => i.matches(':hover'));
-            if (!overAnyImg) imgOverlay.style.display = 'none';
+            const over = [...document.querySelectorAll('[data-img-key],[data-bg-key]')].some(i => i.matches(':hover'));
+            if (!over) imgOverlay.style.display = 'none';
         }, 80);
     });
 }
@@ -223,10 +227,15 @@ function switchImgTab(tab) {
 async function pickImg(src) {
     if (!activeImg) return;
     const displaySrc = '../' + src;
-    activeImg.src = displaySrc;
     closeImgPicker();
     if (imgOverlay) imgOverlay.style.display = 'none';
-    const key = activeImg.dataset.imgKey;
+    // Update the DOM element
+    if (activeImgType === 'bg') {
+        activeImg.style.backgroundImage = "url('" + displaySrc + "')";
+    } else {
+        activeImg.src = displaySrc;
+    }
+    const key = activeImgType === 'bg' ? activeImg.dataset.bgKey : activeImg.dataset.imgKey;
     try {
         const res  = await fetch('live-edit-save.php', {
             method: 'POST',
