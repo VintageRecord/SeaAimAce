@@ -52,7 +52,8 @@ header.u-header .u-nav-link:hover{color:#000!important}
 <?php
 // Strip any embedded site nav (<header id="sec-c67f"...>) that may have been
 // saved inside the page content from old drag-and-drop blocks
-$page_body = preg_replace('/<header\b[^>]*id=["\']sec-c67f["\'][^>]*>.*?<\/header>/si', '', $page['html_content']);
+// Strip any embedded nav/header blocks saved inside GrapesJS content
+$page_body = preg_replace('/<header\b[^>]*>.*?<\/header>/si', '', $page['html_content']);
 echo $page_body;
 ?>
 </main>
