@@ -42,6 +42,8 @@ body{margin:0;padding:0}
 header.u-header{background:#fff!important;color:#333!important}
 header.u-header .u-nav-link{color:#333!important}
 header.u-header .u-nav-link:hover{color:#000!important}
+/* Hide any duplicate/sticky nav nicepage.js generates on scroll */
+.u-sticky-wrapper, .u-header-sticky{display:none!important}
 </style>
 </head>
 <body data-path-to-root="./" class="u-body u-clearfix u-xl-mode" data-lang="en">
@@ -53,7 +55,9 @@ header.u-header .u-nav-link:hover{color:#000!important}
 // Strip any embedded site nav (<header id="sec-c67f"...>) that may have been
 // saved inside the page content from old drag-and-drop blocks
 // Strip any embedded nav/header blocks saved inside GrapesJS content
-$page_body = preg_replace('/<header\b[^>]*>.*?<\/header>/si', '', $page['html_content']);
+$page_body = $page['html_content'];
+$page_body = preg_replace('/<header\b[^>]*>.*?<\/header>/si', '', $page_body);
+$page_body = preg_replace('/<nav\b[^>]*class="[^"]*u-menu[^"]*"[^>]*>.*?<\/nav>/si', '', $page_body);
 echo $page_body;
 ?>
 </main>
