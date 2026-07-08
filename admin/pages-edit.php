@@ -582,15 +582,6 @@ function useSelectedTemplate() {
 fetch('get-site-blocks.php')
     .then(r => r.json())
     .then(data => {
-        // Inject nav responsive styles into the canvas iframe
-        if (data.nav_style) {
-            const frame = editor.Canvas.getFrameEl();
-            if (frame && frame.contentDocument) {
-                const s = frame.contentDocument.createElement('style');
-                s.textContent = data.nav_style;
-                frame.contentDocument.head.appendChild(s);
-            }
-        }
         const bm = editor.BlockManager;
 
         bm.add('site-nav', {
