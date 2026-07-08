@@ -39,15 +39,19 @@ $_nav_base    = '';
 <style><?= $page['css_content'] ?></style>
 <?php endif; ?>
 <style>
-body{margin:0;padding:0}
-/* Site nav: white background, dark text, no underlines */
-.u-header{background:#fff!important;border-bottom:1px solid #eee}
+/* Preview-page overrides — must beat nicepage.css (0,3,0) !important rules */
+body{margin:0;padding:0;background:#fff!important}
+/* nicepage.js adds u-overlap/u-overlap-transparent at runtime — neutralise them */
+.u-overlap.u-overlap-transparent .u-header,
+.u-overlap.u-overlap-contrast .u-header,
+body .u-overlap .u-header,
+.u-header{background:#fff!important;background-image:none!important;border-bottom:1px solid #eee!important}
 .u-header .u-nav-link,.u-header a{color:#333!important;text-decoration:none!important}
 .u-header .u-nav-link:hover,.u-header a:hover{color:#000!important;text-decoration:none!important}
 .u-header .u-btn.u-palette-2-base,.u-header .u-border-palette-2-base{background:#c0303b!important;color:#fff!important;border-color:#c0303b!important;text-decoration:none!important}
 .u-nav-link-active{border-bottom:none!important}
 /* Prevent nicepage.js from making nav sticky/fixed on scroll */
-.u-header.u-sticky{position:static!important;top:auto!important;box-shadow:none!important}
+.u-header.u-sticky,.u-overlap .u-header.u-sticky{position:static!important;top:auto!important;box-shadow:none!important}
 </style>
 </head>
 <body data-path-to-root="./" class="u-body u-clearfix u-xl-mode" data-lang="en">
