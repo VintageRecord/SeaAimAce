@@ -211,6 +211,10 @@ require dirname(__DIR__) . '/_nav.php';
                         <label class="u-label u-text-body-alt-color u-label-2">Name</label>
                         <input type="text" placeholder="Enter your Name" name="name" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required="">
                       </div>
+                      <div class="u-form-address u-form-group u-form-group-3">
+                        <label class="u-label u-text-body-alt-color u-label-3">Address</label>
+                        <input type="text" placeholder="Enter your address" name="address" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required="">
+                      </div>
                       <div class="u-form-group u-form-message">
                         <label class="u-label u-text-body-alt-color u-label-4">Message</label>
                         <textarea placeholder="Enter your message" rows="4" cols="50" name="message" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required=""></textarea>
