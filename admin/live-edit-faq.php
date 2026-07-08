@@ -60,7 +60,7 @@ require dirname(__DIR__) . '/_nav.php';
       <div class="u-clearfix u-sheet u-sheet-1">
         <h2 class="u-text u-text-default u-text-1" data-editable data-type="setting" data-key="faq_section_heading"><?= h(setting('faq_section_heading','faq')) ?></h2>
         <img class="u-image u-image-circle u-image-1" src="<?= h('../' . setting('img_src_faq_s2_img1', 'new_images/photographer-man-smiling-while-h.jpg')) ?>" alt="" data-image-width="740" data-image-height="1110" data-img-key="faq_s2_img1">
-        <p class="u-text u-text-grey-30 u-text-2">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
+        <p class="u-text u-text-grey-30 u-text-2" data-editable data-type="setting" data-key="faq_s2_body"><?= h(setting('faq_s2_body','Sample text. Click to select the text box. Click again or double click to start editing the text.')) ?></p>
         <?php if (!empty($faq_items)): ?>
         <div class="u-accordion u-expanded-width u-accordion-1">
           <?php foreach ($faq_items as $fi): ?>
@@ -84,11 +84,11 @@ require dirname(__DIR__) . '/_nav.php';
             <div class="u-layout-row">
               <div class="u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="0">
                 <div class="u-container-layout u-valign-middle u-container-layout-1">
-                  <h2 class="u-text u-text-1">Contact Us</h2>
-                  <p class="u-text u-text-body-alt-color u-text-2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                  <h2 class="u-text u-text-1" data-editable data-type="setting" data-key="faq_s3_heading"><?= h(setting('faq_s3_heading','Contact Us')) ?></h2>
+                  <p class="u-text u-text-body-alt-color u-text-2" data-editable data-type="setting" data-key="faq_s3_body"><?= h(setting('faq_s3_body','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')) ?></p>
                   <p class="u-align-left u-text u-text-3">Images from <a href="https://www.freepik.com/photos/man-with-dog" class="u-border-1 u-border-active-palette-2-light-2 u-border-hover-palette-2-light-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-btn u-button-link u-button-style u-none u-text-body-alt-color u-btn-1">Freepik</a>
                   </p>
-                  <a href="#" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2">Contact Us</a>
+                  <a href="#" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2" data-editable data-type="setting" data-key="faq_s3_btn"><?= h(setting('faq_s3_btn','Contact Us')) ?></a>
                 </div>
               </div>
               <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500">
