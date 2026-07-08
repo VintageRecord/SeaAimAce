@@ -33,6 +33,7 @@ $_nav_base    = '';
 <title><?= h($title) ?></title>
 <?php if ($desc): ?><meta name="description" content="<?= h($desc) ?>"><?php endif; ?>
 <link rel="stylesheet" href="nicepage.css" media="screen">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&family=Montserrat:wght@400;600;700">
 <?php require __DIR__ . '/_bg_styles.php'; ?>
 <?php if (!empty($page['css_content'])): ?>
 <style><?= $page['css_content'] ?></style>
@@ -43,7 +44,6 @@ body{margin:0;padding:0;background:#fff}
 #sec-c67f{background:#fff!important;background-image:none!important;border-bottom:1px solid #eee!important;position:static!important;top:auto!important;box-shadow:none!important}
 #sec-c67f .u-nav-link,#sec-c67f a{color:#333!important;text-decoration:none!important}
 #sec-c67f .u-nav-link:hover,#sec-c67f a:hover{color:#000!important}
-#sec-c67f .u-btn.u-palette-2-base,#sec-c67f .u-border-palette-2-base{background:#c0303b!important;color:#fff!important;border-color:#c0303b!important}
 .u-nav-link-active{border-bottom:none!important}
 </style>
 </head>
