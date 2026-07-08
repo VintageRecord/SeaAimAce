@@ -578,28 +578,6 @@ function useSelectedTemplate() {
     if (selectedTemplateId) pickTemplate(selectedTemplateId);
 }
 
-// ── Site Nav & Footer blocks ─────────────────────────────────────────────────
-fetch('get-site-blocks.php')
-    .then(r => r.json())
-    .then(data => {
-        const bm = editor.BlockManager;
-
-        bm.add('site-nav', {
-            label: 'Site Navigation',
-            category: 'Site Blocks',
-            content: data.nav,
-            media: '<svg viewBox="0 0 24 24" width="40"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>',
-        });
-
-        bm.add('site-footer', {
-            label: 'Site Footer',
-            category: 'Site Blocks',
-            content: data.footer,
-            media: '<svg viewBox="0 0 24 24" width="40"><path fill="currentColor" d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>',
-        });
-    })
-    .catch(() => {}); // silently ignore if endpoint unavailable
-
 // Init after editor is ready
 editor.on('load', () => { initTemplatePicker(); });
 </script>

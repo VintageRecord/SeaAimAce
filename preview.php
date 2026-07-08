@@ -19,9 +19,11 @@ if (!$page) {
     exit('Page not found: ' . h($slug));
 }
 
-$logged_in = is_admin_logged_in();
-$title = $page['meta_title'] ?: $page['title'];
-$desc  = $page['meta_description'];
+$logged_in    = is_admin_logged_in();
+$title        = $page['meta_title'] ?: $page['title'];
+$desc         = $page['meta_description'];
+$current_page = 'landing';
+$_nav_base    = '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,11 +39,16 @@ $desc  = $page['meta_description'];
 <style>body{margin:0;padding:0}</style>
 </head>
 <body>
+
+<?php require_once __DIR__ . '/_nav.php'; ?>
+
+<main>
 <?= $page['html_content'] ?>
+</main>
 
 <?php if ($logged_in): ?>
 <div id="cms-admin-bar" style="
-    position:fixed;bottom:0;left:0;right:0;
+    position:fixed;bottom:48px;left:0;right:0;
     background:#161616;border-top:1px solid #2a2a2a;
     padding:10px 20px;
     display:flex;align-items:center;gap:12px;
@@ -52,10 +59,10 @@ $desc  = $page['meta_description'];
     <a href="admin/pages-edit.php?id=<?= $page['id'] ?>" style="padding:6px 14px;background:#E63946;color:#fff;border-radius:5px;text-decoration:none;font-weight:600">Edit Page</a>
     <a href="admin/index.php" style="padding:6px 14px;background:#1e1e1e;border:1px solid #2a2a2a;color:#e0e0e0;border-radius:5px;text-decoration:none">Dashboard</a>
 </div>
-<div style="height:48px"></div>
 <?php endif; ?>
-<script src="jquery.js" defer></script>
-<script src="nicepage.js" defer></script>
-</body>
 
-</html>
+<?php
+// _footer.php outputs </body></html> itself
+$_foot_base = '';
+require_once __DIR__ . '/_footer.php';
+?>
