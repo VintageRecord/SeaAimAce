@@ -54,5 +54,8 @@ $desc  = $page['meta_description'];
 </div>
 <div style="height:48px"></div>
 <?php endif; ?>
+<script src="jquery.js" defer></script>
+<script src="nicepage.js" defer></script>
 </body>
+
 </html>
