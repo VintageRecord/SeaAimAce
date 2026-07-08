@@ -31,6 +31,10 @@ $desc  = $page['meta_description'];
 <title><?= h($title) ?></title>
 <?php if ($desc): ?><meta name="description" content="<?= h($desc) ?>"><?php endif; ?>
 <link rel="stylesheet" href="tooplate-forge-style.css">
+<?php if (!empty($page['css_content'])): ?>
+<style><?= $page['css_content'] ?></style>
+<?php endif; ?>
+<style>body{margin:0;padding:0}</style>
 </head>
 <body>
 <?= $page['html_content'] ?>

@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $meta_desc   = trim($_POST['meta_description'] ?? '');
     $status      = $_POST['status'] === 'published' ? 'published' : 'draft';
     $html        = $_POST['html_content']          ?? '';
+    $css         = $_POST['css_content']           ?? '';
     $json        = $_POST['editor_json']           ?? '{}';
 
     // Auto-generate slug from title if empty
@@ -38,11 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             if ($id) {
-                $stmt = $db->prepare('UPDATE pages SET title=?,slug=?,meta_title=?,meta_description=?,status=?,html_content=?,editor_json=?,updated_at=datetime(\'now\') WHERE id=?');
-                $stmt->execute([$title, $slug, $meta_title, $meta_desc, $status, $html, $json, $id]);
+                $stmt = $db->prepare('UPDATE pages SET title=?,slug=?,meta_title=?,meta_description=?,status=?,html_content=?,css_content=?,editor_json=?,updated_at=datetime(\'now\') WHERE id=?');
+                $stmt->execute([$title, $slug, $meta_title, $meta_desc, $status, $html, $css, $json, $id]);
             } else {
-                $stmt = $db->prepare('INSERT INTO pages (title,slug,meta_title,meta_description,status,html_content,editor_json) VALUES (?,?,?,?,?,?,?)');
-                $stmt->execute([$title, $slug, $meta_title, $meta_desc, $status, $html, $json]);
+                $stmt = $db->prepare('INSERT INTO pages (title,slug,meta_title,meta_description,status,html_content,css_content,editor_json) VALUES (?,?,?,?,?,?,?,?)');
+                $stmt->execute([$title, $slug, $meta_title, $meta_desc, $status, $html, $css, $json]);
                 $id = $db->lastInsertId();
             }
 
@@ -308,7 +309,7 @@ const editor = grapesjs.init({
         'grapesjs-preset-webpage': {}
     },
     canvas: {
-        styles: ['../tooplate-forge-style.css']
+        styles: ['../tooplate-forge-style.css', 'body{margin:0;padding:0}']
     },
     panels: { defaults: [] }
 });
@@ -375,6 +376,7 @@ async function savePage() {
     if (!title) { showStatus('Title is required', true); return; }
 
     const html     = editor.getHtml();
+    const css      = editor.getCss();
     const editorJson = JSON.stringify(editor.storeData());
 
     const fd = new FormData();
@@ -384,6 +386,7 @@ async function savePage() {
     fd.append('meta_description', metaDesc);
     fd.append('status',           status);
     fd.append('html_content',     html);
+    fd.append('css_content',      css);
     fd.append('editor_json',      editorJson);
     if (PAGE_ID) fd.append('id',  PAGE_ID);
 

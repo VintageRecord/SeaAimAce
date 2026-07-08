@@ -87,6 +87,7 @@ function _ensure_schema(PDO $pdo): void {
             meta_description TEXT NOT NULL DEFAULT '',
             status           TEXT NOT NULL DEFAULT 'draft',
             html_content     TEXT NOT NULL DEFAULT '',
+            css_content      TEXT NOT NULL DEFAULT '',
             editor_json      TEXT NOT NULL DEFAULT '{}',
             updated_at       TEXT NOT NULL DEFAULT (datetime('now'))
         );
@@ -169,6 +170,8 @@ function _ensure_schema(PDO $pdo): void {
             created_at   TEXT NOT NULL DEFAULT (datetime('now'))
         );
     ");
+    // Column migrations for existing databases
+    try { $pdo->exec("ALTER TABLE pages ADD COLUMN css_content TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
 }
 
 function setting(string $key, string $default = ''): string {
