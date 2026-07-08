@@ -24,6 +24,24 @@ require dirname(__DIR__) . '/_nav.php';
       <div class="u-clearfix u-sheet u-valign-middle-xs u-sheet-1">
         <h1 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-editable data-type="setting" data-key="about_hero_heading"><?= h(setting('about_hero_heading','Find yourself outside')) ?></h1>
         <p class="u-align-center u-large-text u-text u-text-body-alt-color u-text-variant u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-editable data-type="setting" data-key="about_hero_subtext"><?= h(setting('about_hero_subtext','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')) ?></p>
+        <div class="u-clearfix u-expanded-width-sm u-expanded-width-xs u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-row">
+              <div class="u-align-center-xs u-align-right-lg u-align-right-md u-align-right-sm u-align-right-xl u-container-align-center-sm u-container-align-center-xs u-container-style u-layout-cell u-left-cell u-size-30-lg u-size-30-md u-size-30-sm u-size-30-xl u-size-60-xs u-layout-cell-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
+                <div class="u-container-layout u-valign-middle-xs u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xl u-container-layout-1">
+                  <a href="#" class="u-active-white u-align-center-xs u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-1">view More</a>
+                </div>
+              </div>
+              <div class="u-align-center-xs u-align-left-lg u-align-left-md u-align-left-sm u-align-left-xl u-container-align-center-xs u-container-align-left-lg u-container-align-left-md u-container-align-left-sm u-container-align-left-xl u-container-style u-layout-cell u-right-cell u-size-30-lg u-size-30-md u-size-30-sm u-size-30-xl u-size-60-xs u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
+                <div class="u-container-layout u-valign-top u-container-layout-2">
+                  <a href="#" class="u-active-palette-2-base u-align-center-xs u-align-left-lg u-align-left-md u-align-left-sm u-align-left-xl u-border-2 u-border-active-palette-2-base u-border-hover-palette-2-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-2-base u-radius-50 u-text-active-white u-text-hover-white u-white u-btn-2">Contact Us</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="u-align-center u-text u-text-body-alt-color u-text-default u-text-3" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">Image from&nbsp;<a href="https://www.freepik.com" class="u-active-none u-border-1 u-border-active-palette-1-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-border-white u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-link u-button-style u-hover-none u-none u-radius-0 u-text-body-alt-color u-top-left-radius-0 u-top-right-radius-0 u-btn-3" target="_blank">Freepik</a>
+        </p>
       </div>
     </section>
     <section class="u-clearfix u-container-align-center u-section-2" id="block-2">
@@ -31,6 +49,9 @@ require dirname(__DIR__) . '/_nav.php';
         <h4 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-editable data-type="setting" data-key="about_mission_heading"><?= h(setting('about_mission_heading','Our mission')) ?></h4>
         <h2 class="u-align-center u-text u-text-default u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-editable data-type="setting" data-key="about_mission_subheading"><?= h(setting('about_mission_subheading','Get more people outside')) ?></h2>
         <p class="u-align-center u-text u-text-3" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="250" data-editable data-type="setting" data-key="about_mission_body"><?= h(setting('about_mission_body','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')) ?></p>
+        <h2 class="u-align-center u-text u-text-font u-text-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250"> Move with purposeful urgency.</h2>
+        <p class="u-align-center u-text u-text-5" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250"> We take action with the urgency that our mission deserves. We focus on learning faster so that we can invest in the most important things. We achieve more with less by creating systems at the right scale (sometimes with duct tape.) We are intentional about when we move fast and when we are more considered. </p>
+        <a href="#" class="u-active-palette-2-base u-border-2 u-border-active-white u-border-hover-white u-border-palette-2-base u-btn u-btn-round u-button-style u-hover-palette-2-base u-none u-radius-50 u-text-active-white u-text-hover-white u-btn-1" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="750">view More</a>
       </div>
     </section>
     <section class="u-clearfix u-container-align-center u-palette-2-base u-section-3" id="block-3">
@@ -162,6 +183,48 @@ require dirname(__DIR__) . '/_nav.php';
     <section class="u-black u-clearfix u-container-align-center u-section-5" id="block-5">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <h2 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250" data-editable data-type="setting" data-key="about_community_heading"><?= h(setting('about_community_heading','Build resilient communities')) ?></h2>
+        <div class="u-clearfix u-expanded-width u-gutter-32 u-layout-wrap u-layout-wrap-1" data-animation-name="customAnimationIn" data-animation-duration="1250" data-animation-delay="500">
+          <div class="u-gutter-0 u-layout">
+            <div class="u-layout-row">
+              <div class="u-size-30 u-size-60-md">
+                <div class="u-layout-col">
+                  <div class="u-container-style u-image u-layout-cell u-size-60 u-image-1" data-image-width="800" data-image-height="1200">
+                    <div class="u-container-layout u-valign-middle u-container-layout-1"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-size-30 u-size-60-md">
+                <div class="u-layout-col">
+                  <div class="u-size-40">
+                    <div class="u-layout-row">
+                      <div class="u-container-style u-image u-layout-cell u-size-60 u-image-2" data-image-width="740" data-image-height="1110">
+                        <div class="u-container-layout u-valign-middle u-container-layout-2"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="u-size-20">
+                    <div class="u-layout-row">
+                      <div class="u-align-left u-container-align-left u-container-style u-layout-cell u-palette-2-base u-size-30 u-layout-cell-3">
+                        <div class="u-container-layout u-valign-middle u-container-layout-3">
+                          <h3 class="u-align-left u-text u-text-2">People</h3>
+                          <p class="u-align-left u-text u-text-3">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
+                        </div>
+                      </div>
+                      <div class="u-align-left u-container-align-left u-container-style u-layout-cell u-size-30 u-white u-layout-cell-4">
+                        <div class="u-container-layout u-valign-middle u-container-layout-4">
+                          <h3 class="u-align-left u-text u-text-4">Our Values</h3>
+                          <p class="u-align-left u-text u-text-5">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="u-align-center u-text u-text-body-alt-color u-text-default u-text-6" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">Images from <a href="https://www.freepik.com/" class="u-border-1 u-border-active-palette-1-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-border-white u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-link u-button-style u-none u-radius-0 u-text-body-alt-color u-top-left-radius-0 u-top-right-radius-0 u-btn-1" target="_blank">Freepik</a>
+        </p>
       </div>
     </section>
     <section class="u-align-center u-clearfix u-container-align-center u-white u-section-6" id="block-6">
@@ -213,7 +276,41 @@ require dirname(__DIR__) . '/_nav.php';
                 <div class="u-container-layout u-valign-middle u-container-layout-1">
                   <h2 class="u-text u-text-1" data-editable data-type="setting" data-key="about_contact_heading"><?= h(setting('about_contact_heading','Contact Us')) ?></h2>
                   <p class="u-text u-text-body-alt-color u-text-2" data-editable data-type="setting" data-key="about_contact_body"><?= h(setting('about_contact_body','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')) ?></p>
+                  <p class="u-align-left u-text u-text-3">Images from <a href="https://www.freepik.com/photos/man-with-dog" class="u-border-1 u-border-no-left u-border-no-right u-border-no-top u-border-white u-btn u-button-link u-button-style u-none u-text-body-alt-color u-btn-1">Freepik</a>
+                  </p>
                   <a href="../contact.php" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2" data-editable data-type="setting" data-key="about_contact_btn"><?= h(setting('about_contact_btn','Contact Us')) ?></a>
+                </div>
+              </div>
+              <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
+                <div class="u-container-layout u-valign-middle u-container-layout-2">
+                  <div class="u-form u-form-1">
+                    <form action="https://service.nicepagesrv.com/form/v4/form-process" class="u-clearfix u-form-spacing-30 u-form-vertical u-inner-form" style="padding: 10px" source="email" name="form">
+                      <div class="u-form-email u-form-group u-form-partition-factor-2">
+                        <label for="email-319a" class="u-label u-text-body-alt-color u-label-1">Email</label>
+                        <input type="email" placeholder="Enter a valid email address" id="email-319a" name="email" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-group u-form-name u-form-partition-factor-2">
+                        <label for="name-319a" class="u-label u-text-body-alt-color u-label-2">Name</label>
+                        <input type="text" placeholder="Enter your Name" id="name-319a" name="name" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-address u-form-group u-form-group-3">
+                        <label for="address-452f" class="u-label u-text-body-alt-color u-label-3">Address</label>
+                        <input type="text" placeholder="Enter your address" id="address-452f" name="address" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required="">
+                      </div>
+                      <div class="u-form-group u-form-message">
+                        <label for="message-319a" class="u-label u-text-body-alt-color u-label-4">Message</label>
+                        <textarea placeholder="Enter your message" rows="4" cols="50" id="message-319a" name="message" class="u-border-2 u-border-no-left u-border-no-right u-border-no-top u-border-white u-input u-input-rectangle" required=""></textarea>
+                      </div>
+                      <div class="u-align-left u-form-group u-form-submit">
+                        <a href="#" class="u-active-white u-border-none u-btn u-btn-round u-btn-submit u-button-style u-hover-white u-palette-2-base u-radius-50 u-btn-3">Submit</a>
+                        <input type="submit" value="submit" class="u-form-control-hidden">
+                      </div>
+                      <div class="u-form-send-message u-form-send-success">Thank you! Your message has been sent.</div>
+                      <div class="u-form-send-error u-form-send-message">Unable to send your message. Please fix errors then try again.</div>
+                      <input type="hidden" value="" name="recaptchaResponse">
+                      <input type="hidden" name="formServices" value="">
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
