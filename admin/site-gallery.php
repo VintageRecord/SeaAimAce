@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $items = $db->query('SELECT * FROM gallery_items ORDER BY sort_order ASC')->fetchAll();
 $page_title = 'Gallery Page';
 $active_nav = 'site-gallery';
+$preview_url = '../gallery.php';
 require '_layout.php';
 ?>
 <?php if (isset($_GET['saved'])): ?><div class="alert alert-success">Saved.</div><?php endif; ?>

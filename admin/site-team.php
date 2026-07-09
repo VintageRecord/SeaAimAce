@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $members = $db->query('SELECT * FROM team_members ORDER BY sort_order ASC')->fetchAll();
 $page_title = 'Team Page';
 $active_nav = 'site-team';
+$preview_url = '../team.php';
 require '_layout.php';
 ?>
 <?php if (isset($_GET['saved'])): ?><div class="alert alert-success">Saved.</div><?php endif; ?>

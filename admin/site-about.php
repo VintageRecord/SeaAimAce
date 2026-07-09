@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
 
 $page_title = 'About Page';
 $active_nav = 'site-about';
+$preview_url = '../about.php';
 require '_layout.php';
 ?>
 <?php if (!empty($saved)): ?><div class="alert alert-success">Saved.</div><?php endif; ?>

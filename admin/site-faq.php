@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $faqs = $db->query('SELECT * FROM faq_items ORDER BY sort_order ASC')->fetchAll();
 $page_title = 'FAQ Page';
 $active_nav = 'site-faq';
+$preview_url = '../faq.php';
 require '_layout.php';
 ?>
 <?php if (isset($_GET['saved'])): ?><div class="alert alert-success">Saved.</div><?php endif; ?>

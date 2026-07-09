@@ -91,8 +91,17 @@ if (is_dir($ni_dir)) {
     }
 }
 
-$page_title = 'Custom Sections';
-$active_nav = 'custom-sections';
+$cs_page_urls = [
+    'home'    => '../index.php',
+    'about'   => '../about.php',
+    'gallery' => '../gallery.php',
+    'team'    => '../team.php',
+    'faq'     => '../faq.php',
+    'contact' => '../contact.php',
+];
+$page_title  = 'Custom Sections';
+$active_nav  = 'custom-sections';
+$preview_url = $cs_page_urls[$edit_row['page'] ?? 'home'] ?? '../index.php';
 include '_layout.php';
 ?>
 <style>
@@ -157,7 +166,7 @@ include '_layout.php';
       <div>
         <div class="cs-field">
           <label>Page</label>
-          <select name="page">
+          <select name="page" onchange="if (typeof setPreviewTarget === 'function') setPreviewTarget(CS_PAGE_URLS[this.value] || '../index.php')">
             <?php foreach ($pages_list as $k => $v): ?>
             <option value="<?= h($k) ?>" <?= ($edit_row && $edit_row['page'] === $k) ? 'selected' : '' ?>><?= h($v) ?></option>
             <?php endforeach; ?>
@@ -318,6 +327,7 @@ include '_layout.php';
 </div>
 
 <script>
+const CS_PAGE_URLS = <?= json_encode($cs_page_urls) ?>;
 // ---- Rich text body editor ----
 var _csEditable = document.getElementById('cs-body-editable');
 var _csBodyTA   = document.getElementById('cs-body-editor');

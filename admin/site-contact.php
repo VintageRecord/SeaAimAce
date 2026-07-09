@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
 
 $page_title = 'Contact Page';
 $active_nav = 'site-contact';
+$preview_url = '../contact.php';
 require '_layout.php';
 ?>
 <?php if (!empty($saved)): ?><div class="alert alert-success">Saved.</div><?php endif; ?>

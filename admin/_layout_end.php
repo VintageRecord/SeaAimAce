@@ -3,11 +3,11 @@
             <div class="preview-panel" id="preview-panel">
                 <div class="preview-toolbar">
                     <span>Preview</span>
-                    <input class="preview-url" id="preview-url" value="../index.php" readonly>
+                    <input class="preview-url" id="preview-url" value="<?= h($preview_url) ?>" readonly>
                     <button class="preview-refresh-btn" onclick="refreshPreview()">Refresh</button>
                 </div>
                 <div class="preview-loading" id="preview-loading"></div>
-                <iframe id="site-preview" src="../index.php" title="Site Preview"></iframe>
+                <iframe id="site-preview" src="<?= h($preview_url) ?>" title="Site Preview"></iframe>
             </div>
         </div><!-- /.split-layout -->
     </div><!-- /.main-content -->
@@ -40,7 +40,16 @@ function refreshPreview() {
         loadingEl && loadingEl.classList.add('done');
         setTimeout(() => loadingEl && loadingEl.classList.remove('done'), 400);
     };
-    previewEl.src = '../index.php?_=' + Date.now();
+    const previewUrlEl = document.getElementById('preview-url');
+    const base = (previewUrlEl ? previewUrlEl.value : '../index.php').split('?')[0];
+    previewEl.src = base + '?_=' + Date.now();
+}
+// Lets a page (e.g. custom-sections.php) point the preview at a different public page,
+// such as when its own "which page" selector changes.
+function setPreviewTarget(url) {
+    const previewUrlEl = document.getElementById('preview-url');
+    if (previewUrlEl) previewUrlEl.value = url;
+    if (previewOpen) refreshPreview();
 }
 
 // ── AJAX save for all forms with data-ajax ──

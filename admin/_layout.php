@@ -2,6 +2,7 @@
 $page_title ??= 'Admin';
 $active_nav ??= '';
 $show_preview ??= true; // set to false on pages where preview doesn't make sense
+$preview_url ??= '../index.php'; // set to the public page this admin screen edits, e.g. '../about.php'
 ?>
 <!DOCTYPE html>
 <html lang="en">
