@@ -38,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Settings
     foreach (['nav_logo_text','nav_book_btn_text','nav_book_btn_href',
               'nav_bg_color','nav_text_color','site_tagline',
-              'footer_copyright','footer_bg_color','footer_text_color'] as $f) {
+              'footer_copyright','footer_bg_color','footer_text_color',
+              'nav_template','footer_template'] as $f) {
         if (isset($_POST[$f])) save_setting($f, trim($_POST[$f]));
     }
 
@@ -82,6 +83,18 @@ if (isset($_GET['flash'])) {
 
 $nav_links      = $db->query('SELECT * FROM nav_links ORDER BY sort_order')->fetchAll();
 $footer_columns = $db->query('SELECT * FROM footer_columns ORDER BY sort_order')->fetchAll();
+
+$nav_template    = setting('nav_template', 'default');
+$footer_template = setting('footer_template', 'default');
+
+$nav_template_options = [
+    'default'  => ['label' => 'Default',  'desc' => 'Logo left, links right, mobile hamburger menu'],
+    'centered' => ['label' => 'Centered', 'desc' => 'Logo centered on top, links centered below'],
+];
+$footer_template_options = [
+    'default' => ['label' => 'Default', 'desc' => 'Brand + link columns, bottom bar'],
+    'minimal' => ['label' => 'Minimal', 'desc' => 'Single row — logo, copyright, links'],
+];
 
 $page_title = 'Navigation & Footer';
 $active_nav = 'navigation';
@@ -144,6 +157,20 @@ include '_layout.php';
     margin:0 0 12px;
 }
 .section-head h3 { margin:0; font-size:.95rem; font-weight:600; }
+
+/* ── Template swatch picker ── */
+.tpl-swatch-row { display:flex; gap:12px; flex-wrap:wrap; }
+.tpl-swatch {
+    position:relative; width:180px; border:2px solid var(--border);
+    border-radius:8px; padding:12px 14px; cursor:pointer;
+    background:var(--surface-2,#1e1e1e); transition:border-color .15s;
+}
+.tpl-swatch:hover { border-color:#555; }
+.tpl-swatch input[type="radio"] { position:absolute; top:10px; right:10px; margin:0; accent-color:var(--accent,#E63946); }
+.tpl-swatch input[type="radio"]:checked ~ .tpl-swatch-label { color:#fff; }
+.tpl-swatch:has(input:checked) { border-color:var(--accent,#E63946); }
+.tpl-swatch-label { display:block; font-size:.85rem; font-weight:600; margin-bottom:4px; padding-right:20px; }
+.tpl-swatch-desc { display:block; font-size:.72rem; color:var(--text-muted); line-height:1.4; }
 </style>
 
 <?php if ($flash === 'saved'): ?>
@@ -167,8 +194,20 @@ include '_layout.php';
     </div>
     <div class="card-body">
 
+        <!-- Layout Template -->
+        <p class="form-section-title" style="margin-top:0">Layout Template</p>
+        <div class="tpl-swatch-row" style="margin-bottom:20px">
+            <?php foreach ($nav_template_options as $key => $opt): ?>
+            <label class="tpl-swatch">
+                <input type="radio" name="nav_template" value="<?= h($key) ?>" <?= $nav_template === $key ? 'checked' : '' ?>>
+                <span class="tpl-swatch-label"><?= h($opt['label']) ?></span>
+                <span class="tpl-swatch-desc"><?= h($opt['desc']) ?></span>
+            </label>
+            <?php endforeach; ?>
+        </div>
+
         <!-- Appearance -->
-        <p class="form-section-title" style="margin-top:0">Appearance</p>
+        <p class="form-section-title">Appearance</p>
         <div class="form-grid">
             <div class="form-group">
                 <label>Logo Text <span style="font-size:.75rem;color:var(--text-muted)">(shown beside logo image)</span></label>
@@ -243,8 +282,20 @@ include '_layout.php';
     <div class="card-header"><h2>Footer</h2></div>
     <div class="card-body">
 
+        <!-- Layout Template -->
+        <p class="form-section-title" style="margin-top:0">Layout Template</p>
+        <div class="tpl-swatch-row" style="margin-bottom:20px">
+            <?php foreach ($footer_template_options as $key => $opt): ?>
+            <label class="tpl-swatch">
+                <input type="radio" name="footer_template" value="<?= h($key) ?>" <?= $footer_template === $key ? 'checked' : '' ?>>
+                <span class="tpl-swatch-label"><?= h($opt['label']) ?></span>
+                <span class="tpl-swatch-desc"><?= h($opt['desc']) ?></span>
+            </label>
+            <?php endforeach; ?>
+        </div>
+
         <!-- Footer settings -->
-        <p class="form-section-title" style="margin-top:0">Appearance & Text</p>
+        <p class="form-section-title">Appearance & Text</p>
         <div class="form-grid">
             <div class="form-group full-width">
                 <label>Copyright Text</label>

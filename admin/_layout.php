@@ -37,6 +37,9 @@ $show_preview ??= true; // set to false on pages where preview doesn't make sens
             <a href="pages-edit.php" class="<?= $active_nav === 'page-new' ? 'active' : '' ?>">
                 <span class="nav-dot"></span> New Page
             </a>
+            <a href="themed-pages.php" class="<?= $active_nav === 'themed-pages' ? 'active' : '' ?>">
+                <span class="nav-dot"></span> Themed Pages
+            </a>
             <div class="nav-group-label">Media</div>
             <a href="media.php" class="<?= $active_nav === 'media' ? 'active' : '' ?>">
                 <span class="nav-dot"></span> Media Library
