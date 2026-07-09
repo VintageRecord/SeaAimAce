@@ -22,12 +22,23 @@ if (empty($_cs_list)) return;
 
 $_cs_img_stmt = get_db()->prepare('SELECT * FROM custom_section_images WHERE section_id = ? ORDER BY sort_order');
 
+// Preset display sizes for a section's gallery images. small/medium/large don't grow
+// (flex-grow:0) so a couple of photos render at roughly their real size instead of always
+// stretching to fill the row; "full" grows to fill so each image takes the whole row.
+$_cs_sizes = [
+    'small'  => ['flex' => '0 1 140px', 'max_h' => '160px'],
+    'medium' => ['flex' => '0 1 240px', 'max_h' => '320px'],
+    'large'  => ['flex' => '0 1 380px', 'max_h' => '460px'],
+    'full'   => ['flex' => '1 1 100%',  'max_h' => '520px'],
+];
+
 $_cs_first = true;
 foreach ($_cs_list as $_cs) {
     $bg   = $_cs['bg_color']   ?: '#f4f6f8';
     $fg   = $_cs['text_color'] ?: '#333333';
     $yt   = trim($_cs['youtube_url']);
     $id   = (int)$_cs['id'];
+    $size = $_cs_sizes[$_cs['image_size']] ?? $_cs_sizes['medium'];
 
     $yt_id = '';
     if ($yt && preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $yt, $m)) {
@@ -56,15 +67,15 @@ foreach ($_cs_list as $_cs) {
         foreach ($_cs_images as $_i => $_ci) {
             $_ci_url = $_cs_base . (strpos($_ci['image'], '/') === false ? 'uploads/' . $_ci['image'] : $_ci['image']);
             $imgAttrs = $_cs_editable ? ' data-bg-key="custom_section_' . $id . '_img' . $_i . '" data-img-id="' . (int)$_ci['id'] . '"' : '';
-            echo '<div' . $imgAttrs . ' style="flex:1 1 240px;min-width:0;position:relative">';
-            echo '<img src="' . h($_ci_url) . '" alt="" style="width:100%;border-radius:10px;display:block;object-fit:cover;max-height:320px">';
+            echo '<div' . $imgAttrs . ' style="flex:' . $size['flex'] . ';min-width:0;position:relative">';
+            echo '<img src="' . h($_ci_url) . '" alt="" style="width:100%;border-radius:10px;display:block;object-fit:cover;max-height:' . $size['max_h'] . '">';
             echo '</div>';
         }
 
         // One extra empty slot in the Live Editor to add another image inline.
         if ($_cs_editable) {
             $_nextIdx = count($_cs_images);
-            echo '<div data-bg-key="custom_section_' . $id . '_img' . $_nextIdx . '" data-new-slot="1" style="flex:1 1 240px;min-width:0;min-height:120px;position:relative;border:2px dashed rgba(128,128,128,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.6;font-size:.85rem">+ Add image</div>';
+            echo '<div data-bg-key="custom_section_' . $id . '_img' . $_nextIdx . '" data-new-slot="1" style="flex:' . $size['flex'] . ';min-width:0;min-height:120px;position:relative;border:2px dashed rgba(128,128,128,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.6;font-size:.85rem">+ Add image</div>';
         }
 
         if ($yt_id) {

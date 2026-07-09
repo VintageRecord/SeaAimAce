@@ -181,6 +181,7 @@ function _ensure_schema(PDO $pdo): void {
     try { $pdo->exec("ALTER TABLE pages ADD COLUMN css_content TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN link_url TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN link_text TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
+    try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN image_size TEXT NOT NULL DEFAULT 'medium'"); } catch (\Exception $e) {}
 
     // Data migration: the team.php roster was static Nicepage markup that never matched the
     // team_members table, so early installs seeded generic placeholder rows (bio '', 01.png..06.png)

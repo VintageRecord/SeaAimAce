@@ -30,17 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fg        = trim($_POST['text_color']  ?? '#333333');
         $enabled   = isset($_POST['enabled']) ? 1 : 0;
         $sort      = (int)($_POST['sort_order'] ?? 0);
+        $img_size  = $_POST['image_size'] ?? 'medium';
 
         if (!in_array($page, array_keys($pages_list))) $page = 'home';
+        if (!in_array($img_size, ['small','medium','large','full'])) $img_size = 'medium';
 
         if ($id > 0) {
-            $db->prepare('UPDATE custom_sections SET page=?,heading=?,body=?,link_url=?,link_text=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=? WHERE id=?')
-               ->execute([$page,$heading,$body,$link_url,$link_text,$youtube,$bg,$fg,$sort,$enabled,$id]);
+            $db->prepare('UPDATE custom_sections SET page=?,heading=?,body=?,link_url=?,link_text=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=? WHERE id=?')
+               ->execute([$page,$heading,$body,$link_url,$link_text,$youtube,$bg,$fg,$sort,$enabled,$img_size,$id]);
             redirect('custom-sections.php?edit=' . $id . '&flash=saved');
         } else {
             $max = $db->query('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections')->fetchColumn();
-            $db->prepare('INSERT INTO custom_sections (page,heading,body,link_url,link_text,youtube_url,bg_color,text_color,sort_order,enabled) VALUES (?,?,?,?,?,?,?,?,?,?)')
-               ->execute([$page,$heading,$body,$link_url,$link_text,$youtube,$bg,$fg,$max,1]);
+            $db->prepare('INSERT INTO custom_sections (page,heading,body,link_url,link_text,youtube_url,bg_color,text_color,sort_order,enabled,image_size) VALUES (?,?,?,?,?,?,?,?,?,?,?)')
+               ->execute([$page,$heading,$body,$link_url,$link_text,$youtube,$bg,$fg,$max,1,$img_size]);
             $newId = $db->lastInsertId();
             redirect('custom-sections.php?edit=' . $newId . '&flash=saved');
         }
@@ -244,6 +246,17 @@ include '_layout.php';
           <?php else: ?>
           <p class="cs-info">Save the section first, then you'll be able to add one or more images to it.</p>
           <?php endif; ?>
+        </div>
+        <div class="cs-field">
+          <label>Image Size</label>
+          <?php $img_size_val = $edit_row['image_size'] ?? 'medium'; ?>
+          <select name="image_size">
+            <option value="small"  <?= $img_size_val === 'small'  ? 'selected' : '' ?>>Small</option>
+            <option value="medium" <?= $img_size_val === 'medium' ? 'selected' : '' ?>>Medium</option>
+            <option value="large"  <?= $img_size_val === 'large'  ? 'selected' : '' ?>>Large</option>
+            <option value="full"   <?= $img_size_val === 'full'   ? 'selected' : '' ?>>Full width</option>
+          </select>
+          <p class="cs-info">Applies to every photo in this section</p>
         </div>
         <div class="cs-field">
           <label>Link (optional button)</label>
