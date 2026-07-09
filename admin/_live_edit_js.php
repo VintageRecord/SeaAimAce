@@ -195,9 +195,9 @@ function injectImgBtn(el, type) {
     if (existed === 'static') anchor.style.position = 'relative';
 
     const btn = document.createElement('button');
-    btn.innerHTML = '&#128247;';
+    btn.innerHTML = '&#128247; Change Image';
     btn.title = 'Change image';
-    btn.style.cssText = 'position:absolute;top:6px;right:6px;z-index:9999;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:4px;padding:4px 7px;font-size:16px;cursor:pointer;line-height:1;';
+    btn.style.cssText = 'position:absolute;top:8px;right:8px;z-index:9999;background:#E63946;color:#fff;border:none;border-radius:6px;padding:7px 12px;font-size:13px;font-weight:700;font-family:system-ui,sans-serif;cursor:pointer;line-height:1;letter-spacing:.03em;box-shadow:0 2px 8px rgba(0,0,0,.45);display:flex;align-items:center;gap:5px;white-space:nowrap;';
     btn.addEventListener('click', e => {
         e.preventDefault(); e.stopPropagation();
         activeImg = el; activeImgType = type;
