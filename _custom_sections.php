@@ -34,12 +34,22 @@ $_cs_sizes = [
     'full'   => ['flex' => '1 1 100%',  'max_h' => '520px', 'stack_w' => '100%'],
 ];
 
+// Same idea for video, sized independently of the image preset. "medium" matches the
+// original hardcoded video size (flex:1 1 300px) so existing sections don't change.
+$_cs_video_sizes = [
+    'small'  => ['flex' => '0 1 220px', 'stack_w' => '300px'],
+    'medium' => ['flex' => '1 1 300px', 'stack_w' => '480px'],
+    'large'  => ['flex' => '0 1 480px', 'stack_w' => '640px'],
+    'full'   => ['flex' => '1 1 100%',  'stack_w' => '100%'],
+];
+
 $_cs_first = true;
 foreach ($_cs_list as $_cs) {
     $bg   = $_cs['bg_color']   ?: '#f4f6f8';
     $fg   = $_cs['text_color'] ?: '#333333';
     $id   = (int)$_cs['id'];
     $size = $_cs_sizes[$_cs['image_size']] ?? $_cs_sizes['medium'];
+    $vsize = $_cs_video_sizes[$_cs['video_size']] ?? $_cs_video_sizes['medium'];
 
     $_cs_yt_urls = json_decode($_cs['youtube_urls'], true);
     if (!is_array($_cs_yt_urls)) $_cs_yt_urls = [];
@@ -70,7 +80,7 @@ foreach ($_cs_list as $_cs) {
 
     $_cs_stacked = $_cs['media_layout'] === 'column';
     $_cs_imgItemStyle   = $_cs_stacked ? 'width:' . $size['stack_w'] . ';max-width:100%' : 'flex:' . $size['flex'];
-    $_cs_videoItemStyle = $_cs_stacked ? 'width:' . $size['stack_w'] . ';max-width:100%;aspect-ratio:16/9' : 'flex:1 1 300px;aspect-ratio:16/9';
+    $_cs_videoItemStyle = $_cs_stacked ? 'width:' . $vsize['stack_w'] . ';max-width:100%;aspect-ratio:16/9' : 'flex:' . $vsize['flex'] . ';aspect-ratio:16/9';
 
     $_cs_mediaHtml = '';
     if (!empty($_cs_images) || !empty($_cs_yt_ids) || $_cs_editable) {

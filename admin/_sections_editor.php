@@ -150,6 +150,18 @@ if (is_dir($_sec_ni_dir)) {
       </div>
 
       <div class="form-group">
+        <label>Video Size</label>
+        <?php $_sec_video_size = $_sec_edit['video_size'] ?? 'medium'; ?>
+        <select name="sec_video_size">
+          <option value="small"  <?= $_sec_video_size === 'small'  ? 'selected' : '' ?>>Small</option>
+          <option value="medium" <?= $_sec_video_size === 'medium' ? 'selected' : '' ?>>Medium</option>
+          <option value="large"  <?= $_sec_video_size === 'large'  ? 'selected' : '' ?>>Large</option>
+          <option value="full"   <?= $_sec_video_size === 'full'   ? 'selected' : '' ?>>Full width</option>
+        </select>
+        <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Applies to every YouTube video in this section</div>
+      </div>
+
+      <div class="form-group">
         <label>Text Position</label>
         <?php $_sec_text_pos = $_sec_edit['text_position'] ?? 'below'; ?>
         <select name="sec_text_position">
