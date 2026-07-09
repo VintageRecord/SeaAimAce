@@ -153,7 +153,7 @@ $current_page = 'gallery';
         <p class="u-align-center u-text u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <div class="u-expanded-width u-list u-list-1">
           <div class="u-repeater u-repeater-1">
-            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="800" data-image-height="533">
+            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="800" data-image-height="533" style="background-image:url('<?= h(setting('img_src_gallery_s4_bg1','new_images/1244.jpg')) ?>')">
               <div class="u-container-layout u-similar-container u-valign-bottom u-container-layout-1">
                 <div class="u-black u-container-align-center u-container-style u-expanded-width u-group u-opacity u-opacity-50 u-group-1">
                   <div class="u-container-layout u-valign-middle u-container-layout-2">
@@ -163,7 +163,7 @@ $current_page = 'gallery';
                 </div>
               </div>
             </div>
-            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="800" data-image-height="533">
+            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="800" data-image-height="533" style="background-image:url('<?= h(setting('img_src_gallery_s4_bg2','new_images/8.jpg')) ?>')">
               <div class="u-container-layout u-similar-container u-valign-bottom u-container-layout-3">
                 <div class="u-black u-container-style u-expanded-width u-group u-opacity u-opacity-50 u-group-2">
                   <div class="u-container-layout u-valign-middle u-container-layout-4">
@@ -173,7 +173,7 @@ $current_page = 'gallery';
                 </div>
               </div>
             </div>
-            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-3" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="626" data-image-height="533">
+            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-3" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="626" data-image-height="533" style="background-image:url('<?= h(setting('img_src_gallery_s4_bg3','new_images/7894.jpg')) ?>')">
               <div class="u-container-layout u-similar-container u-valign-bottom u-container-layout-5">
                 <div class="u-black u-container-align-center u-container-style u-expanded-width u-group u-opacity u-opacity-50 u-group-3">
                   <div class="u-container-layout u-valign-middle u-container-layout-6">
@@ -183,7 +183,7 @@ $current_page = 'gallery';
                 </div>
               </div>
             </div>
-            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="740" data-image-height="925">
+            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="740" data-image-height="925" style="background-image:url('<?= h(setting('img_src_gallery_s4_bg4','new_images/53.jpg')) ?>')">
               <div class="u-container-layout u-similar-container u-valign-bottom u-container-layout-7">
                 <div class="u-black u-container-style u-expanded-width u-group u-opacity u-opacity-50 u-group-4">
                   <div class="u-container-layout u-valign-middle u-container-layout-8">
@@ -193,7 +193,7 @@ $current_page = 'gallery';
                 </div>
               </div>
             </div>
-            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-5" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="740" data-image-height="925">
+            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-5" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="740" data-image-height="925" style="background-image:url('<?= h(setting('img_src_gallery_s4_bg5','new_images/45677.jpg')) ?>')">
               <div class="u-container-layout u-similar-container u-valign-bottom u-container-layout-9">
                 <div class="u-black u-container-style u-expanded-width u-group u-opacity u-opacity-50 u-group-5">
                   <div class="u-container-layout u-valign-middle u-container-layout-10">
@@ -203,7 +203,7 @@ $current_page = 'gallery';
                 </div>
               </div>
             </div>
-            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-6" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="740" data-image-height="925">
+            <div class="u-align-center u-container-align-center u-container-style u-image u-list-item u-repeater-item u-shading u-shape-rectangle u-image-6" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-image-width="740" data-image-height="925" style="background-image:url('<?= h(setting('img_src_gallery_s4_bg6','new_images/3570.jpg')) ?>')">
               <div class="u-container-layout u-similar-container u-valign-bottom u-container-layout-11">
                 <div class="u-black u-container-style u-expanded-width u-group u-opacity u-opacity-50 u-group-6">
                   <div class="u-container-layout u-valign-middle u-container-layout-12">

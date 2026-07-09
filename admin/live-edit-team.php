@@ -6,6 +6,16 @@ $cms_page_key   = 'live-edit-team.php';
 $cms_page_title = 'Our Team';
 $cms_page_css   = '../Team.css';
 $team_members = $db->query('SELECT * FROM team_members ORDER BY sort_order')->fetchAll();
+$live_media_files = $db->query("SELECT filename FROM media ORDER BY id DESC")->fetchAll(PDO::FETCH_COLUMN);
+$live_new_images  = [];
+$_ni_dir = dirname(__DIR__) . '/new_images';
+if (is_dir($_ni_dir)) {
+    foreach (scandir($_ni_dir) as $_nf) {
+        $ext = strtolower(pathinfo($_nf, PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg','jpeg','png','gif','webp','svg'])) $live_new_images[] = $_nf;
+    }
+    sort($live_new_images);
+}
 ?>
 <!DOCTYPE html>
 <html style="font-size:16px;" lang="en">
@@ -25,7 +35,7 @@ require dirname(__DIR__) . '/_nav.php';
       <div class="u-clearfix u-gutter-0 u-layout-wrap u-layout-wrap-1">
         <div class="u-layout">
           <div class="u-layout-row">
-            <div class="u-align-left u-container-align-left u-container-style u-image u-layout-cell u-left-cell u-size-31-lg u-size-33-xl u-size-60-md u-size-60-sm u-size-60-xs u-image-1" src="" data-image-width="1650" data-image-height="1100" style="background-image:url('../<?= h(setting('img_bg_team_s1_bg1','new_images/default.jpg')) ?>')">
+            <div class="u-align-left u-container-align-left u-container-style u-image u-layout-cell u-left-cell u-size-31-lg u-size-33-xl u-size-60-md u-size-60-sm u-size-60-xs u-image-1" src="" data-image-width="1650" data-image-height="1100" data-bg-key="team_s1_bg1" style="background-image:url('../<?= h(setting('img_src_team_s1_bg1','new_images/3570.jpg')) ?>')">
               <div class="u-container-layout u-container-layout-1"></div>
             </div>
             <div class="u-align-left u-container-align-left u-container-style u-layout-cell u-right-cell u-shape-rectangle u-size-27-xl u-size-29-lg u-size-60-md u-size-60-sm u-size-60-xs u-white u-layout-cell-2">
@@ -66,7 +76,7 @@ require dirname(__DIR__) . '/_nav.php';
         <?php endif; ?>
       </div>
     </section>
-    <section class="u-clearfix u-image u-shading u-section-3" data-image-width="1620" data-image-height="1080" id="block-3">
+    <section class="u-clearfix u-image u-shading u-section-3" data-image-width="1620" data-image-height="1080" id="block-3" data-bg-key="team_s3_bg" style="background-image:linear-gradient(0deg,rgba(0,0,0,.45),rgba(0,0,0,.45)),url('../<?= h(setting('img_src_team_s3_bg','new_images/gfgfggfggg-min.jpg')) ?>')">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="u-clearfix u-expanded-width u-gutter-0 u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">

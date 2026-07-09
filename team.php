@@ -23,7 +23,7 @@ $current_page = 'team';
       <div class="u-clearfix u-gutter-0 u-layout-wrap u-layout-wrap-1">
         <div class="u-layout" style="">
           <div class="u-layout-row" style="">
-            <div class="u-align-left u-container-align-left u-container-style u-image u-layout-cell u-left-cell u-size-31-lg u-size-33-xl u-size-60-md u-size-60-sm u-size-60-xs u-size-xs-60 u-image-1" src="" data-image-width="1650" data-image-height="1100">
+            <div class="u-align-left u-container-align-left u-container-style u-image u-layout-cell u-left-cell u-size-31-lg u-size-33-xl u-size-60-md u-size-60-sm u-size-60-xs u-size-xs-60 u-image-1" src="" data-image-width="1650" data-image-height="1100" style="background-image:url('<?= h(setting('img_src_team_s1_bg1','new_images/3570.jpg')) ?>')">
               <div class="u-container-layout u-container-layout-1" src=""></div>
             </div>
             <div class="u-align-left u-container-align-left u-container-style u-layout-cell u-right-cell u-shape-rectangle u-size-27-xl u-size-29-lg u-size-60-md u-size-60-sm u-size-60-xs u-size-xs-60 u-white u-layout-cell-2">
@@ -134,7 +134,7 @@ $current_page = 'team';
         </div>
       </div>
     </section>
-    <section class="u-clearfix u-image u-shading u-section-3" data-image-width="1620" data-image-height="1080" id="block-3">
+    <section class="u-clearfix u-image u-shading u-section-3" data-image-width="1620" data-image-height="1080" id="block-3" style="background-image:linear-gradient(0deg,rgba(0,0,0,.45),rgba(0,0,0,.45)),url('<?= h(setting('img_src_team_s3_bg','new_images/gfgfggfggg-min.jpg')) ?>')">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="u-clearfix u-expanded-width u-gutter-0 u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
