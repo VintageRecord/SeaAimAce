@@ -284,13 +284,10 @@ require dirname(__DIR__) . '/_nav.php';
     </section>
 
 <?php
-$footer_text = setting('footer_text', '© ' . date('Y') . ' CampForge. All rights reserved.');
+<?php
+$_foot_base = '../';
+require_once dirname(__DIR__) . '/_footer.php';
 ?>
-    <footer class="u-align-center u-clearfix u-container-align-center u-footer u-grey-80 u-footer" id="sec-b7f2">
-      <div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1" data-editable data-type="setting" data-key="footer_text"><?= h($footer_text) ?></p>
-      </div>
-    </footer>
     <script src="../jquery.js" defer></script>
     <script src="../nicepage.js" defer></script>
 
