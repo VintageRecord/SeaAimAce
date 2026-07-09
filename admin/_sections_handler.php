@@ -15,8 +15,6 @@ if ($action === 'save') {
     $id        = (int)($_POST['_sec_id'] ?? 0);
     $heading   = trim($_POST['sec_heading']    ?? '');
     $body      = trim($_POST['sec_body']       ?? '');
-    $link_url  = trim($_POST['sec_link_url']   ?? '');
-    $link_text = trim($_POST['sec_link_text']  ?? '');
     $youtube   = trim($_POST['sec_youtube']    ?? '');
     $bg        = trim($_POST['sec_bg_color']   ?? '#f4f6f8');
     $fg        = trim($_POST['sec_text_color'] ?? '#333333');
@@ -25,16 +23,24 @@ if ($action === 'save') {
     $img_size  = $_POST['sec_image_size'] ?? 'medium';
     if (!in_array($img_size, ['small','medium','large','full'])) $img_size = 'medium';
 
+    $links = [];
+    foreach (($_POST['sec_link_text'] ?? []) as $i => $lt) {
+        $lt = trim($lt);
+        $lu = trim($_POST['sec_link_url'][$i] ?? '');
+        if ($lu !== '') $links[] = ['text' => $lt, 'url' => $lu];
+    }
+    $links_json = json_encode($links);
+
     if ($id > 0) {
-        $db->prepare('UPDATE custom_sections SET heading=?,body=?,link_url=?,link_text=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=? WHERE id=? AND page=?')
-           ->execute([$heading, $body, $link_url, $link_text, $youtube, $bg, $fg, $sort, $enabled, $img_size, $id, $_sec_page]);
+        $db->prepare('UPDATE custom_sections SET heading=?,body=?,links=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=? WHERE id=? AND page=?')
+           ->execute([$heading, $body, $links_json, $youtube, $bg, $fg, $sort, $enabled, $img_size, $id, $_sec_page]);
         $redirect_id = $id;
     } else {
         $max = $db->prepare('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections WHERE page=?');
         $max->execute([$_sec_page]);
         $next_sort = (int)$max->fetchColumn();
-        $db->prepare('INSERT INTO custom_sections (page,heading,body,link_url,link_text,youtube_url,bg_color,text_color,sort_order,enabled,image_size) VALUES (?,?,?,?,?,?,?,?,?,1,?)')
-           ->execute([$_sec_page, $heading, $body, $link_url, $link_text, $youtube, $bg, $fg, $next_sort, $img_size]);
+        $db->prepare('INSERT INTO custom_sections (page,heading,body,links,youtube_url,bg_color,text_color,sort_order,enabled,image_size) VALUES (?,?,?,?,?,?,?,?,1,?)')
+           ->execute([$_sec_page, $heading, $body, $links_json, $youtube, $bg, $fg, $next_sort, $img_size]);
         $redirect_id = (int)$db->lastInsertId();
     }
 

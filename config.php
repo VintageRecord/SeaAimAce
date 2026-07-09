@@ -182,6 +182,7 @@ function _ensure_schema(PDO $pdo): void {
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN link_url TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN link_text TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN image_size TEXT NOT NULL DEFAULT 'medium'"); } catch (\Exception $e) {}
+    try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN links TEXT NOT NULL DEFAULT '[]'"); } catch (\Exception $e) {}
 
     // Data migration: the team.php roster was static Nicepage markup that never matched the
     // team_members table, so early installs seeded generic placeholder rows (bio '', 01.png..06.png)
@@ -246,6 +247,18 @@ function _ensure_schema(PDO $pdo): void {
             if ((int)$hasImages->fetchColumn() === 0) {
                 $insertImg->execute([$row['id'], $row['image']]);
             }
+        }
+    } catch (\Exception $e) {}
+
+    // Data migration: custom_sections used to support one link_url/link_text button. Sections
+    // now support any number of link buttons via the links JSON column. Carry each section's
+    // existing single link forward as the first entry, once — guarded by "links is still the
+    // default []" so it never re-adds a duplicate after someone manages the links list.
+    try {
+        $legacyLinks = $pdo->query("SELECT id, link_url, link_text FROM custom_sections WHERE link_url != '' AND links = '[]'")->fetchAll();
+        $setLinks = $pdo->prepare('UPDATE custom_sections SET links = ? WHERE id = ?');
+        foreach ($legacyLinks as $row) {
+            $setLinks->execute([json_encode([['text' => $row['link_text'] ?: 'Learn more', 'url' => $row['link_url']]]), $row['id']]);
         }
     } catch (\Exception $e) {}
 }

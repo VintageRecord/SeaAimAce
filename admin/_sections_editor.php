@@ -145,10 +145,20 @@ if (is_dir($_sec_ni_dir)) {
       </div>
 
       <div class="form-group">
-        <label>Link (optional button)</label>
-        <input type="text" name="sec_link_text" value="<?= h($_sec_edit['link_text'] ?? '') ?>" placeholder="Button text, e.g. Learn more" style="margin-bottom:6px">
-        <input type="url" name="sec_link_url" value="<?= h($_sec_edit['link_url'] ?? '') ?>" placeholder="https://... or a page like about.php">
-        <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Shown as a button under the section text when both are filled in</div>
+        <label>Links (optional buttons)</label>
+        <div id="sec-links-list">
+          <?php
+          $_sec_links = json_decode($_sec_edit['links'] ?? '[]', true) ?: [];
+          foreach ($_sec_links as $_slnk): ?>
+          <div class="sec-link-row" style="display:flex;gap:6px;margin-bottom:6px">
+            <input type="text" name="sec_link_text[]" value="<?= h($_slnk['text'] ?? '') ?>" placeholder="Button text, e.g. Learn more" style="flex:1">
+            <input type="url" name="sec_link_url[]" value="<?= h($_slnk['url'] ?? '') ?>" placeholder="https://... or a page like about.php" style="flex:1">
+            <button type="button" onclick="this.closest('.sec-link-row').remove()" style="background:#fee2e2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;width:32px;cursor:pointer;font-size:.72rem;flex-shrink:0">&#10005;</button>
+          </div>
+          <?php endforeach; ?>
+        </div>
+        <button type="button" class="sec-tb-btn" onclick="secAddLinkRow()">+ Add Link</button>
+        <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Each one shows as its own button under the section text</div>
       </div>
 
       <div class="form-group">
@@ -301,6 +311,16 @@ window.secPickImg = function(fname) {
   var pathEl = document.getElementById('sec-add-image-path');
   var formEl = document.getElementById('sec-add-image-form');
   if (pathEl && formEl) { pathEl.value = fname; formEl.submit(); }
+};
+
+window.secAddLinkRow = function() {
+  var row = document.createElement('div');
+  row.className = 'sec-link-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px';
+  row.innerHTML = '<input type="text" name="sec_link_text[]" placeholder="Button text, e.g. Learn more" style="flex:1">' +
+                   '<input type="url" name="sec_link_url[]" placeholder="https://... or a page like about.php" style="flex:1">' +
+                   '<button type="button" onclick="this.closest(\'.sec-link-row\').remove()" style="background:#fee2e2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;width:32px;cursor:pointer;font-size:.72rem;flex-shrink:0">&#10005;</button>';
+  document.getElementById('sec-links-list').appendChild(row);
 };
 
 window.secOpenPicker  = function() { document.getElementById('sec-picker-modal').style.display='flex'; };

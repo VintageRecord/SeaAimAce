@@ -112,6 +112,24 @@ try {
             $db->prepare('DELETE FROM custom_section_images WHERE id = ?')->execute([$imgId]);
             break;
 
+        case 'custom_section_link':
+            $parts = explode(':', $data['id'] ?? '');
+            if (count($parts) !== 2) throw new Exception('Invalid id');
+            $sectionId = (int)$parts[0];
+            $index     = (int)$parts[1];
+            if (!$sectionId) throw new Exception('Invalid id');
+
+            $row = $db->prepare('SELECT links FROM custom_sections WHERE id = ?');
+            $row->execute([$sectionId]);
+            $row = $row->fetch();
+            if (!$row) throw new Exception('Section not found');
+
+            $links = json_decode($row['links'], true);
+            if (!is_array($links) || !isset($links[$index])) throw new Exception('Invalid link index');
+            $links[$index]['text'] = clean($data['value'] ?? '');
+            $db->prepare('UPDATE custom_sections SET links = ? WHERE id = ?')->execute([json_encode($links), $sectionId]);
+            break;
+
         default:
             throw new Exception('Unknown type: ' . $type);
     }

@@ -23,8 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $page      = $_POST['page']      ?? 'home';
         $heading   = trim($_POST['heading']  ?? '');
         $body      = trim($_POST['body']     ?? '');
-        $link_url  = trim($_POST['link_url']  ?? '');
-        $link_text = trim($_POST['link_text'] ?? '');
         $youtube   = trim($_POST['youtube_url'] ?? '');
         $bg        = trim($_POST['bg_color']    ?? '#ffffff');
         $fg        = trim($_POST['text_color']  ?? '#333333');
@@ -32,17 +30,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sort      = (int)($_POST['sort_order'] ?? 0);
         $img_size  = $_POST['image_size'] ?? 'medium';
 
+        $links = [];
+        foreach (($_POST['link_text'] ?? []) as $i => $lt) {
+            $lt  = trim($lt);
+            $lu  = trim($_POST['link_url'][$i] ?? '');
+            if ($lu !== '') $links[] = ['text' => $lt, 'url' => $lu];
+        }
+        $links_json = json_encode($links);
+
         if (!in_array($page, array_keys($pages_list))) $page = 'home';
         if (!in_array($img_size, ['small','medium','large','full'])) $img_size = 'medium';
 
         if ($id > 0) {
-            $db->prepare('UPDATE custom_sections SET page=?,heading=?,body=?,link_url=?,link_text=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=? WHERE id=?')
-               ->execute([$page,$heading,$body,$link_url,$link_text,$youtube,$bg,$fg,$sort,$enabled,$img_size,$id]);
+            $db->prepare('UPDATE custom_sections SET page=?,heading=?,body=?,links=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=? WHERE id=?')
+               ->execute([$page,$heading,$body,$links_json,$youtube,$bg,$fg,$sort,$enabled,$img_size,$id]);
             redirect('custom-sections.php?edit=' . $id . '&flash=saved');
         } else {
             $max = $db->query('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections')->fetchColumn();
-            $db->prepare('INSERT INTO custom_sections (page,heading,body,link_url,link_text,youtube_url,bg_color,text_color,sort_order,enabled,image_size) VALUES (?,?,?,?,?,?,?,?,?,?,?)')
-               ->execute([$page,$heading,$body,$link_url,$link_text,$youtube,$bg,$fg,$max,1,$img_size]);
+            $db->prepare('INSERT INTO custom_sections (page,heading,body,links,youtube_url,bg_color,text_color,sort_order,enabled,image_size) VALUES (?,?,?,?,?,?,?,?,?,?)')
+               ->execute([$page,$heading,$body,$links_json,$youtube,$bg,$fg,$max,1,$img_size]);
             $newId = $db->lastInsertId();
             redirect('custom-sections.php?edit=' . $newId . '&flash=saved');
         }
@@ -175,6 +181,10 @@ include '_layout.php';
 .cs-image-item form { position:absolute;top:5px;right:5px; }
 .cs-image-remove { background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:.68rem;cursor:pointer;line-height:1; }
 
+.cs-link-row { display:flex;gap:6px;margin-bottom:6px; }
+.cs-link-row input { flex:1; }
+.cs-link-remove { background:#fee2e2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;width:32px;cursor:pointer;font-size:.72rem;flex-shrink:0; }
+
 /* picker modal */
 #cs-picker-modal { display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center; }
 #cs-picker-modal.open { display:flex; }
@@ -259,10 +269,20 @@ include '_layout.php';
           <p class="cs-info">Applies to every photo in this section</p>
         </div>
         <div class="cs-field">
-          <label>Link (optional button)</label>
-          <input type="text" name="link_text" value="<?= h($edit_row['link_text'] ?? '') ?>" placeholder="Button text, e.g. Learn more" style="margin-bottom:6px">
-          <input type="url" name="link_url" value="<?= h($edit_row['link_url'] ?? '') ?>" placeholder="https://... or a page like about.php">
-          <p class="cs-info">Shown as a button under the section text when both are filled in</p>
+          <label>Links (optional buttons)</label>
+          <div id="cs-links-list">
+            <?php
+            $_links = json_decode($edit_row['links'] ?? '[]', true) ?: [];
+            foreach ($_links as $_lnk): ?>
+            <div class="cs-link-row">
+              <input type="text" name="link_text[]" value="<?= h($_lnk['text'] ?? '') ?>" placeholder="Button text, e.g. Learn more">
+              <input type="url" name="link_url[]" value="<?= h($_lnk['url'] ?? '') ?>" placeholder="https://... or a page like about.php">
+              <button type="button" class="cs-link-remove" onclick="this.closest('.cs-link-row').remove()">&#10005;</button>
+            </div>
+            <?php endforeach; ?>
+          </div>
+          <button type="button" class="cs-pick-btn" onclick="csAddLinkRow()">+ Add Link</button>
+          <p class="cs-info">Each one shows as its own button under the section text</p>
         </div>
         <div class="cs-field">
           <label>YouTube URL</label>
@@ -475,6 +495,16 @@ document.querySelector('form').addEventListener('submit', function() {
 function csPickImg(fname) {
   document.getElementById('cs-add-image-path').value = fname;
   document.getElementById('cs-add-image-form').submit();
+}
+
+// ---- Links list ----
+function csAddLinkRow() {
+  var row = document.createElement('div');
+  row.className = 'cs-link-row';
+  row.innerHTML = '<input type="text" name="link_text[]" placeholder="Button text, e.g. Learn more">' +
+                   '<input type="url" name="link_url[]" placeholder="https://... or a page like about.php">' +
+                   '<button type="button" class="cs-link-remove" onclick="this.closest(\'.cs-link-row\').remove()">&#10005;</button>';
+  document.getElementById('cs-links-list').appendChild(row);
 }
 
 // ---- Picker modal ----

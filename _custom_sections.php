@@ -50,7 +50,9 @@ foreach ($_cs_list as $_cs) {
 
     $headingAttrs = $_cs_editable ? ' data-editable data-type="custom_section" data-id="' . $id . '" data-field="heading"' : '';
     $bodyAttrs    = $_cs_editable ? ' data-editable data-type="custom_section" data-id="' . $id . '" data-field="body"'    : '';
-    $linkAttrs    = $_cs_editable ? ' data-editable data-type="custom_section" data-id="' . $id . '" data-field="link_text"' : '';
+
+    $_cs_links = json_decode($_cs['links'], true);
+    if (!is_array($_cs_links)) $_cs_links = [];
 
     $anchor = $_cs_first ? ' id="custom-sections"' : '';
     echo '<section' . $anchor . ' style="background:' . h($bg) . ';color:' . h($fg) . ';padding:64px 24px;font-family:\'Segoe UI\',system-ui,sans-serif;border-top:4px solid #c0303b" class="custom-section">';
@@ -93,8 +95,15 @@ foreach ($_cs_list as $_cs) {
         echo '<div' . $bodyAttrs . ' style="font-size:1rem;line-height:1.7;color:' . h($fg) . '">' . sh($_cs['body']) . '</div>';
     }
 
-    if ($_cs['link_url']) {
-        echo '<a href="' . h($_cs['link_url']) . '"' . $linkAttrs . ' style="display:inline-block;margin-top:24px;padding:12px 28px;border-radius:50px;background:' . h($fg) . ';color:' . h($bg) . ';text-decoration:none;font-weight:700;font-size:.9rem">' . sh($_cs['link_text'] ?: 'Learn more') . '</a>';
+    if (!empty($_cs_links)) {
+        echo '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px">';
+        foreach ($_cs_links as $_li => $_link) {
+            $_linkUrl = trim($_link['url'] ?? '');
+            if ($_linkUrl === '') continue;
+            $_linkAttrs = $_cs_editable ? ' data-editable data-type="custom_section_link" data-id="' . $id . ':' . $_li . '" data-field="text"' : '';
+            echo '<a href="' . h($_linkUrl) . '"' . $_linkAttrs . ' style="display:inline-block;padding:12px 28px;border-radius:50px;background:' . h($fg) . ';color:' . h($bg) . ';text-decoration:none;font-weight:700;font-size:.9rem">' . sh($_link['text'] ?: 'Learn more') . '</a>';
+        }
+        echo '</div>';
     }
 
     echo '</div></section>';
