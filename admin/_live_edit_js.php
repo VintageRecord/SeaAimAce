@@ -205,13 +205,19 @@ function attachImgHover(el, type) {
         }, 80);
     });
 }
-document.querySelectorAll('[data-img-key]').forEach(el => attachImgHover(el, 'src'));
+document.querySelectorAll('[data-img-key]').forEach(el => {
+    // If the img is covered by a sibling overlay (e.g. u-over-slide), attach hover
+    // to the closest gallery-item or back-slide wrapper so the overlay doesn't block it
+    const wrapper = el.closest('.u-gallery-item') || el.closest('.u-back-slide') || el;
+    attachImgHover(wrapper, 'src');
+    wrapper._imgEl = el; // remember the actual <img> for src updates
+});
 document.querySelectorAll('[data-bg-key]').forEach(el => attachImgHover(el, 'bg'));
 
 if (imgOverlay) {
     imgOverlay.addEventListener('mouseleave', () => {
         setTimeout(() => {
-            const over = [...document.querySelectorAll('[data-img-key],[data-bg-key]')].some(i => i.matches(':hover'));
+            const over = [...document.querySelectorAll('[data-img-key],[data-bg-key],.u-gallery-item,.u-back-slide')].some(i => i.matches(':hover'));
             if (!over) imgOverlay.style.display = 'none';
         }, 80);
     });
@@ -229,6 +235,8 @@ async function pickImg(src) {
     const displaySrc = '../' + src;
     closeImgPicker();
     if (imgOverlay) imgOverlay.style.display = 'none';
+    // For src type: the activeImg may be a wrapper; the real <img> is in _imgEl
+    const imgEl = activeImgType === 'src' ? (activeImg._imgEl || activeImg) : activeImg;
     // Update the DOM element
     if (activeImgType === 'bg') {
         // Preserve any existing gradient prefix (e.g. linear-gradient(...), url(...))
@@ -237,9 +245,9 @@ async function pickImg(src) {
         const prefix = gradientMatch ? gradientMatch[1] : '';
         activeImg.style.backgroundImage = prefix + "url('" + displaySrc + "')";
     } else {
-        activeImg.src = displaySrc;
+        imgEl.src = displaySrc;
     }
-    const key = activeImgType === 'bg' ? activeImg.dataset.bgKey : activeImg.dataset.imgKey;
+    const key = activeImgType === 'bg' ? activeImg.dataset.bgKey : imgEl.dataset.imgKey;
     try {
         const res  = await fetch('live-edit-save.php', {
             method: 'POST',
