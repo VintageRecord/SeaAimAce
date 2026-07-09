@@ -125,7 +125,6 @@ require dirname(__DIR__) . '/_nav.php';
     </section>
 
 <?php
-<?php
 $_foot_base = '../';
 require_once dirname(__DIR__) . '/_footer.php';
 ?>
