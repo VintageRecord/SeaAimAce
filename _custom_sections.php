@@ -55,7 +55,7 @@ foreach ($_cs_list as $_cs) {
 
         foreach ($_cs_images as $_i => $_ci) {
             $_ci_url = $_cs_base . (strpos($_ci['image'], '/') === false ? 'uploads/' . $_ci['image'] : $_ci['image']);
-            $imgAttrs = $_cs_editable ? ' data-bg-key="custom_section_' . $id . '_img' . $_i . '"' : '';
+            $imgAttrs = $_cs_editable ? ' data-bg-key="custom_section_' . $id . '_img' . $_i . '" data-img-id="' . (int)$_ci['id'] . '"' : '';
             echo '<div' . $imgAttrs . ' style="flex:1 1 240px;min-width:0;position:relative">';
             echo '<img src="' . h($_ci_url) . '" alt="" style="width:100%;border-radius:10px;display:block;object-fit:cover;max-height:320px">';
             echo '</div>';
@@ -82,9 +82,8 @@ foreach ($_cs_list as $_cs) {
         echo '<div' . $bodyAttrs . ' style="font-size:1rem;line-height:1.7;color:' . h($fg) . '">' . sh($_cs['body']) . '</div>';
     }
 
-    if ($_cs['link_url'] || $_cs_editable) {
-        $linkHref = $_cs['link_url'] ? h($_cs['link_url']) : '#';
-        echo '<a href="' . $linkHref . '"' . $linkAttrs . ' style="display:inline-block;margin-top:24px;padding:12px 28px;border-radius:50px;background:' . h($fg) . ';color:' . h($bg) . ';text-decoration:none;font-weight:700;font-size:.9rem">' . sh($_cs['link_text'] ?: 'Learn more') . '</a>';
+    if ($_cs['link_url']) {
+        echo '<a href="' . h($_cs['link_url']) . '"' . $linkAttrs . ' style="display:inline-block;margin-top:24px;padding:12px 28px;border-radius:50px;background:' . h($fg) . ';color:' . h($bg) . ';text-decoration:none;font-weight:700;font-size:.9rem">' . sh($_cs['link_text'] ?: 'Learn more') . '</a>';
     }
 
     echo '</div></section>';

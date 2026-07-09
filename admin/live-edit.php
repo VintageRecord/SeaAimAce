@@ -1037,6 +1037,29 @@ function injectImgBtn(el, type) {
         openImgPicker();
     });
     anchor.appendChild(btn);
+
+    // Removable images (currently: custom section gallery photos) get a delete button too.
+    if (el.dataset.imgId) {
+        const delBtn = document.createElement('button');
+        delBtn.innerHTML = '&#10005;';
+        delBtn.title = 'Remove image';
+        delBtn.style.cssText = 'position:absolute;top:8px;left:8px;z-index:9999;background:#1e1e1e;color:#fff;border:none;border-radius:50%;width:26px;height:26px;font-size:12px;cursor:pointer;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.45);';
+        delBtn.addEventListener('click', async e => {
+            e.preventDefault(); e.stopPropagation();
+            if (!confirm('Remove this image?')) return;
+            try {
+                const res  = await fetch('live-edit-save.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Ajax': '1' },
+                    body: JSON.stringify({ type: 'custom_section_image_delete', id: el.dataset.imgId })
+                });
+                const json = await res.json();
+                if (json.success) location.reload(); // re-index remaining "+ Add image" slot
+                else showIndicator(json.error || 'Delete failed', true);
+            } catch(err) { showIndicator('Network error', true); }
+        });
+        anchor.appendChild(delBtn);
+    }
 }
 document.querySelectorAll('[data-img-key]').forEach(el => injectImgBtn(el, 'src'));
 document.querySelectorAll('[data-bg-key]').forEach(el => injectImgBtn(el, 'bg'));

@@ -106,6 +106,12 @@ try {
             }
             break;
 
+        case 'custom_section_image_delete':
+            $imgId = (int)($data['id'] ?? 0);
+            if (!$imgId) throw new Exception('Invalid id');
+            $db->prepare('DELETE FROM custom_section_images WHERE id = ?')->execute([$imgId]);
+            break;
+
         default:
             throw new Exception('Unknown type: ' . $type);
     }
