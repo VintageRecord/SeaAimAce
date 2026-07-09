@@ -404,37 +404,37 @@ require dirname(__DIR__) . '/_nav.php';
                         <div class="u-gallery-inner u-gallery-inner-1">
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="887" data-image-height="887">
-                              <img class="u-back-image u-expanded" src="../new_images/bnnnb.jpg">
+                              <img class="u-back-image u-expanded" src="<?= h('../' . setting('img_src_home_gal1','new_images/bnnnb.jpg')) ?>" data-img-key="home_gal1">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-1"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="696" data-image-height="696">
-                              <img class="u-back-image u-expanded" src="../new_images/nbbnbnnnnnnnnn.jpg">
+                              <img class="u-back-image u-expanded" src="<?= h('../' . setting('img_src_home_gal2','new_images/nbbnbnnnnnnnnn.jpg')) ?>" data-img-key="home_gal2">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-2"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="700" data-image-height="976">
-                              <img class="u-back-image u-expanded" src="../new_images/b4f5b21c-2998-57d4-57d9-d0089b671caa.jpg">
+                              <img class="u-back-image u-expanded" src="<?= h('../' . setting('img_src_home_gal3','new_images/b4f5b21c-2998-57d4-57d9-d0089b671caa.jpg')) ?>" data-img-key="home_gal3">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-3"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="1380" data-image-height="987">
-                              <img class="u-back-image u-expanded" src="../new_images/breathtaking-scenery-snowy-rocks-cloudy-sky-dolomiten-italy_181624-12706.webp">
+                              <img class="u-back-image u-expanded" src="<?= h('../' . setting('img_src_home_gal4','new_images/breathtaking-scenery-snowy-rocks-cloudy-sky-dolomiten-italy_181624-12706.webp')) ?>" data-img-key="home_gal4">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-4"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="1920" data-image-height="737">
-                              <img class="u-back-image u-expanded" src="../new_images/cvcvcv-min.jpg">
+                              <img class="u-back-image u-expanded" src="<?= h('../' . setting('img_src_home_gal5','new_images/cvcvcv-min.jpg')) ?>" data-img-key="home_gal5">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-5"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="720" data-image-height="1080">
-                              <img class="u-back-image u-expanded" src="../new_images/d3e5609c-0bf4-4df0-853d-5cced0ca48e1.jpeg">
+                              <img class="u-back-image u-expanded" src="<?= h('../' . setting('img_src_home_gal6','new_images/d3e5609c-0bf4-4df0-853d-5cced0ca48e1.jpeg')) ?>" data-img-key="home_gal6">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-6"></div>
                           </div>
@@ -446,7 +446,7 @@ require dirname(__DIR__) . '/_nav.php';
               </div>
               <div class="u-size-25-lg u-size-25-xl u-size-60-md u-size-60-sm u-size-60-xs">
                 <div class="u-layout-col">
-                  <div class="u-container-style u-image u-layout-cell u-size-60 u-image-1" data-image-width="717" data-image-height="1080" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
+                  <div class="u-container-style u-image u-layout-cell u-size-60 u-image-1" data-image-width="717" data-image-height="1080" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" data-bg-key="home_side_bg1" style="background-image:url('<?= h('../' . setting('img_src_home_side_bg1','new_images/56.jpg')) ?>')">
                     <div class="u-container-layout u-container-layout-3"></div>
                   </div>
                 </div>
@@ -1014,33 +1014,27 @@ window.addEventListener('beforeunload', e => {
 // Hide hint after first interaction
 document.addEventListener('click', () => { hint.style.opacity = '0'; }, { once: true });
 
-// ── Image change on hover ──────────────────────────────────────
-const imgOverlay  = document.getElementById('cms-img-overlay');
+// ── Image change buttons ──────────────────────────────────────
 const imgPickerEl = document.getElementById('cms-img-picker');
 let activeImg = null;
+let activeImgType = 'src';
 
-document.querySelectorAll('[data-img-key]').forEach(img => {
-    img.style.cursor = 'crosshair';
-    img.addEventListener('mouseenter', () => {
-        activeImg = img;
-        const rect = img.getBoundingClientRect();
-        const ow = imgOverlay.offsetWidth || 140;
-        imgOverlay.style.top  = (rect.top  + 8) + 'px';
-        imgOverlay.style.left = (Math.max(8, rect.right - ow - 8)) + 'px';
-        imgOverlay.style.display = 'flex';
+function injectImgBtn(el, type) {
+    const anchor = el.closest('.u-gallery-item') || el.closest('.u-back-slide') || el.parentElement || el;
+    if (getComputedStyle(anchor).position === 'static') anchor.style.position = 'relative';
+    const btn = document.createElement('button');
+    btn.innerHTML = '&#128247; Change Image';
+    btn.title = 'Change image';
+    btn.style.cssText = 'position:absolute;top:8px;right:8px;z-index:9999;background:#E63946;color:#fff;border:none;border-radius:6px;padding:7px 12px;font-size:13px;font-weight:700;font-family:system-ui,sans-serif;cursor:pointer;line-height:1;letter-spacing:.03em;box-shadow:0 2px 8px rgba(0,0,0,.45);white-space:nowrap;';
+    btn.addEventListener('click', e => {
+        e.preventDefault(); e.stopPropagation();
+        activeImg = el; activeImgType = type;
+        openImgPicker();
     });
-    img.addEventListener('mouseleave', e => {
-        setTimeout(() => {
-            if (!imgOverlay.matches(':hover') && !img.matches(':hover')) imgOverlay.style.display = 'none';
-        }, 80);
-    });
-});
-imgOverlay.addEventListener('mouseleave', e => {
-    setTimeout(() => {
-        const overAnyImg = [...document.querySelectorAll('[data-img-key]')].some(i => i.matches(':hover'));
-        if (!overAnyImg) imgOverlay.style.display = 'none';
-    }, 80);
-});
+    anchor.appendChild(btn);
+}
+document.querySelectorAll('[data-img-key]').forEach(el => injectImgBtn(el, 'src'));
+document.querySelectorAll('[data-bg-key]').forEach(el => injectImgBtn(el, 'bg'));
 
 function openImgPicker()  { imgPickerEl.style.display = 'flex'; }
 function closeImgPicker() { imgPickerEl.style.display = 'none'; }
@@ -1053,10 +1047,15 @@ function switchImgTab(tab) {
 async function pickImg(src) {
     if (!activeImg) return;
     const displaySrc = '../' + src;
-    activeImg.src = displaySrc;
     closeImgPicker();
-    imgOverlay.style.display = 'none';
-    const key = activeImg.dataset.imgKey;
+    if (activeImgType === 'bg') {
+        const existing = activeImg.style.backgroundImage || '';
+        const gradientMatch = existing.match(/^((?:linear-gradient|radial-gradient)\([^)]+\)\s*,\s*)/i);
+        activeImg.style.backgroundImage = (gradientMatch ? gradientMatch[1] : '') + "url('" + displaySrc + "')";
+    } else {
+        activeImg.src = displaySrc;
+    }
+    const key = activeImgType === 'bg' ? activeImg.dataset.bgKey : activeImg.dataset.imgKey;
     try {
         const res  = await fetch('live-edit-save.php', {
             method: 'POST',

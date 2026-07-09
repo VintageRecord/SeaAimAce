@@ -85,37 +85,37 @@ $current_page = 'home';
                         <div class="u-gallery-inner u-gallery-inner-1">
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="887" data-image-height="887">
-                              <img class="u-back-image u-expanded" src="new_images/bnnnb.jpg">
+                              <img class="u-back-image u-expanded" src="<?= h(setting('img_src_home_gal1','new_images/bnnnb.jpg')) ?>">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-1"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="696" data-image-height="696">
-                              <img class="u-back-image u-expanded" src="new_images/nbbnbnnnnnnnnn.jpg">
+                              <img class="u-back-image u-expanded" src="<?= h(setting('img_src_home_gal2','new_images/nbbnbnnnnnnnnn.jpg')) ?>">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-2"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="700" data-image-height="976">
-                              <img class="u-back-image u-expanded" src="new_images/b4f5b21c-2998-57d4-57d9-d0089b671caa.jpg">
+                              <img class="u-back-image u-expanded" src="<?= h(setting('img_src_home_gal3','new_images/b4f5b21c-2998-57d4-57d9-d0089b671caa.jpg')) ?>">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-3"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="1380" data-image-height="987">
-                              <img class="u-back-image u-expanded" src="new_images/breathtaking-scenery-snowy-rocks-cloudy-sky-dolomiten-italy_181624-12706.webp">
+                              <img class="u-back-image u-expanded" src="<?= h(setting('img_src_home_gal4','new_images/breathtaking-scenery-snowy-rocks-cloudy-sky-dolomiten-italy_181624-12706.webp')) ?>">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-4"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="1920" data-image-height="737">
-                              <img class="u-back-image u-expanded" src="new_images/cvcvcv-min.jpg">
+                              <img class="u-back-image u-expanded" src="<?= h(setting('img_src_home_gal5','new_images/cvcvcv-min.jpg')) ?>">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-5"></div>
                           </div>
                           <div class="u-effect-hover-zoom u-gallery-item">
                             <div class="u-back-slide" data-image-width="720" data-image-height="1080">
-                              <img class="u-back-image u-expanded" src="new_images/d3e5609c-0bf4-4df0-853d-5cced0ca48e1.jpeg">
+                              <img class="u-back-image u-expanded" src="<?= h(setting('img_src_home_gal6','new_images/d3e5609c-0bf4-4df0-853d-5cced0ca48e1.jpeg')) ?>">
                             </div>
                             <div class="u-over-slide u-shading u-over-slide-6"></div>
                           </div>
@@ -127,7 +127,7 @@ $current_page = 'home';
               </div>
               <div class="u-size-25-lg u-size-25-xl u-size-60-md u-size-60-sm u-size-60-xs">
                 <div class="u-layout-col">
-                  <div class="u-container-style u-image u-layout-cell u-size-60 u-image-1" data-image-width="717" data-image-height="1080" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
+                  <div class="u-container-style u-image u-layout-cell u-size-60 u-image-1" data-image-width="717" data-image-height="1080" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" style="background-image:url('<?= h(setting('img_src_home_side_bg1','new_images/56.jpg')) ?>')">
                     <div class="u-container-layout u-container-layout-3"></div>
                   </div>
                 </div>
