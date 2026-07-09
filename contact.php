@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
+  <meta name="description" content="<?= h(setting('contact_meta_title_desc','')) ?>">
   <title><?= h(setting('contact_meta_title','Contact Us')) ?> | <?= h(setting('site_name','CampForge')) ?></title>
   <link rel="stylesheet" href="nicepage.css" media="screen">
   <link rel="stylesheet" href="Contact.css" media="screen">

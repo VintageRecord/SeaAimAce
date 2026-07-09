@@ -9,7 +9,7 @@ $db = get_db();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     if ($action === 'save_settings') {
-        foreach (['team_meta_title','team_hero_heading','team_hero_sub','team_section_heading'] as $f) {
+        foreach (['team_meta_title','team_meta_title_desc','team_hero_heading','team_hero_sub','team_section_heading'] as $f) {
             save_setting($f, $_POST[$f] ?? '');
         }
     } elseif ($action === 'save_member') {
@@ -43,6 +43,7 @@ require '_layout.php';
 <div class="form-section-title">Page Settings</div>
 <div class="form-grid">
   <div class="form-group"><label>Meta Title</label><input type="text" name="team_meta_title" value="<?= h(setting('team_meta_title','Our Team')) ?>"></div>
+  <div class="form-group"><label>Meta Description</label><input type="text" name="team_meta_title_desc" value="<?= h(setting('team_meta_title_desc','')) ?>"></div>
   <div class="form-group full-width"><label>Hero Heading</label><input type="text" name="team_hero_heading" value="<?= h(setting('team_hero_heading','Our team is looking forward')) ?>"></div>
   <div class="form-group full-width"><label>Hero Subtext</label><textarea name="team_hero_sub" rows="2"><?= h(setting('team_hero_sub','We are a passionate team dedicated to delivering unforgettable camping experiences.')) ?></textarea></div>
   <div class="form-group full-width"><label>Section Heading</label><input type="text" name="team_section_heading" value="<?= h(setting('team_section_heading','Meet The Team')) ?>"></div>

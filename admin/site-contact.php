@@ -5,7 +5,7 @@ $_sections_page = 'contact';
 require '_sections_handler.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
-    $fields = ['contact_meta_title','contact_hero_heading','contact_hero_sub','contact_form_heading',
+    $fields = ['contact_meta_title','contact_meta_title_desc','contact_hero_heading','contact_hero_sub','contact_form_heading',
                'contact_submit_btn','contact_success_msg',
                'contact_info1_title','contact_info1_text','contact_info2_title','contact_info2_text',
                'contact_info3_title','contact_info3_text','contact_info4_title','contact_info4_text'];
@@ -23,6 +23,7 @@ require '_layout.php';
 <div class="form-section-title">Hero</div>
 <div class="form-grid">
   <div class="form-group"><label>Meta Title</label><input type="text" name="contact_meta_title" value="<?= h(setting('contact_meta_title','Contact Us')) ?>"></div>
+  <div class="form-group"><label>Meta Description</label><input type="text" name="contact_meta_title_desc" value="<?= h(setting('contact_meta_title_desc','')) ?>"></div>
   <div class="form-group full-width"><label>Hero Heading</label><input type="text" name="contact_hero_heading" value="<?= h(setting('contact_hero_heading','Plan Your Camping Trip')) ?>"></div>
   <div class="form-group full-width"><label>Hero Subtext</label><textarea name="contact_hero_sub" rows="2"><?= h(setting('contact_hero_sub','We\'d love to help you plan the perfect outdoor adventure.')) ?></textarea></div>
 </div>

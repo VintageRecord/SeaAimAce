@@ -5,7 +5,7 @@ $_sections_page = 'about';
 require '_sections_handler.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
-    $fields = ['about_meta_title','about_meta_desc','about_hero_heading','about_hero_sub','about_hero_btn1','about_hero_btn2',
+    $fields = ['about_meta_title','about_meta_title_desc','about_hero_heading','about_hero_sub','about_hero_btn1','about_hero_btn2',
                'about_mission_heading','about_mission_sub','about_mission_text',
                'about_act1_title','about_act1_text','about_act2_title','about_act2_text',
                'about_act3_title','about_act3_text','about_act4_title','about_act4_text',
@@ -25,7 +25,7 @@ require '_layout.php';
 <div class="form-section-title">Meta</div>
 <div class="form-grid">
   <div class="form-group"><label>Meta Title</label><input type="text" name="about_meta_title" value="<?= h(setting('about_meta_title','About Us')) ?>"></div>
-  <div class="form-group"><label>Meta Description</label><input type="text" name="about_meta_desc" value="<?= h(setting('about_meta_desc','About us - Find yourself outside')) ?>"></div>
+  <div class="form-group"><label>Meta Description</label><input type="text" name="about_meta_title_desc" value="<?= h(setting('about_meta_title_desc','About us - Find yourself outside')) ?>"></div>
 </div>
 <div class="form-section-title">Hero</div>
 <div class="form-grid">

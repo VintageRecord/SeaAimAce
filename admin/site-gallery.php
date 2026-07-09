@@ -9,7 +9,7 @@ $db = get_db();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     if ($action === 'save_settings') {
-        foreach (['gallery_meta_title','gallery_hero_heading','gallery_hero_sub','gallery_section_heading','gallery_cta_heading','gallery_cta_text','gallery_cta_btn'] as $f) {
+        foreach (['gallery_meta_title','gallery_meta_title_desc','gallery_hero_heading','gallery_hero_sub','gallery_section_heading','gallery_cta_heading','gallery_cta_text','gallery_cta_btn'] as $f) {
             save_setting($f, $_POST[$f] ?? '');
         }
     } elseif ($action === 'add_item') {
@@ -40,6 +40,7 @@ require '_layout.php';
 <div class="form-section-title">Page Settings</div>
 <div class="form-grid">
   <div class="form-group"><label>Meta Title</label><input type="text" name="gallery_meta_title" value="<?= h(setting('gallery_meta_title','Gallery')) ?>"></div>
+  <div class="form-group"><label>Meta Description</label><input type="text" name="gallery_meta_title_desc" value="<?= h(setting('gallery_meta_title_desc','')) ?>"></div>
   <div class="form-group full-width"><label>Hero Heading</label><input type="text" name="gallery_hero_heading" value="<?= h(setting('gallery_hero_heading','Where Can I Camp?')) ?>"></div>
   <div class="form-group full-width"><label>Hero Subtext</label><textarea name="gallery_hero_sub" rows="2"><?= h(setting('gallery_hero_sub','Explore our stunning collection of camping destinations.')) ?></textarea></div>
   <div class="form-group"><label>Section Heading</label><input type="text" name="gallery_section_heading" value="<?= h(setting('gallery_section_heading','Our Photo Gallery')) ?>"></div>

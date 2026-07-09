@@ -193,6 +193,21 @@ function _ensure_schema(PDO $pdo): void {
             $stmt->execute([$legacyBio, $newImage, $name, $oldImage]);
         }
     } catch (\Exception $e) {}
+
+    // Data migration: the Home/About dashboard forms used to save meta descriptions under
+    // *_meta_desc, but the pages have always read *_meta_title_desc — a different setting key
+    // — so saved descriptions silently never appeared in <meta name="description">. Carry
+    // forward anything already saved under the old key before the forms move to the new one.
+    try {
+        $rename = ['home_meta_desc' => 'home_meta_title_desc', 'about_meta_desc' => 'about_meta_title_desc'];
+        foreach ($rename as $old => $new) {
+            $row = $pdo->query("SELECT value FROM settings WHERE key = '{$old}'")->fetch();
+            if ($row && $row['value'] !== '') {
+                $pdo->prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value')
+                    ->execute([$new, $row['value']]);
+            }
+        }
+    } catch (\Exception $e) {}
 }
 
 function setting(string $key, string $default = ''): string {

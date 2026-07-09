@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
     if ($action === 'save_settings') {
-        foreach (['faq_meta_title','faq_hero_heading','faq_hero_sub','faq_section_heading','faq_cta_heading','faq_cta_text','faq_cta_btn'] as $f) {
+        foreach (['faq_meta_title','faq_meta_title_desc','faq_hero_heading','faq_hero_sub','faq_section_heading','faq_cta_heading','faq_cta_text','faq_cta_btn'] as $f) {
             save_setting($f, $_POST[$f] ?? '');
         }
     } elseif ($action === 'save_faq') {
@@ -44,6 +44,7 @@ require '_layout.php';
 <div class="form-section-title">Page Settings</div>
 <div class="form-grid">
   <div class="form-group"><label>Meta Title</label><input type="text" name="faq_meta_title" value="<?= h(setting('faq_meta_title','FAQ')) ?>"></div>
+  <div class="form-group"><label>Meta Description</label><input type="text" name="faq_meta_title_desc" value="<?= h(setting('faq_meta_title_desc','')) ?>"></div>
   <div class="form-group full-width"><label>Hero Heading</label><input type="text" name="faq_hero_heading" value="<?= h(setting('faq_hero_heading','Frequently Asked Questions')) ?>"></div>
   <div class="form-group full-width"><label>Hero Subtext</label><textarea name="faq_hero_sub" rows="2"><?= h(setting('faq_hero_sub','Find answers to common questions about our campsite below.')) ?></textarea></div>
   <div class="form-group"><label>Section Heading</label><input type="text" name="faq_section_heading" value="<?= h(setting('faq_section_heading','Common Questions')) ?>"></div>

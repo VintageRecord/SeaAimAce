@@ -5,7 +5,7 @@ $_sections_page = 'home';
 require '_sections_handler.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['_sec_action'])) {
-    $fields = ['site_name','site_logo','home_meta_title','home_meta_desc',
+    $fields = ['site_name','site_logo','home_meta_title','home_meta_title_desc',
                'home_hero_heading','home_hero_sub','home_hero_btn1','home_hero_btn1url','home_hero_btn2','home_hero_btn2url',
                'home_sec2_heading','home_sec2_text',
                'home_amenities_heading','home_amenities_list',
@@ -48,7 +48,7 @@ require '_layout.php';
   </div>
   <div class="form-group">
     <label>Home Meta Description</label>
-    <input type="text" name="home_meta_desc" value="<?= h(setting('home_meta_desc','Best Camping in the National Park')) ?>">
+    <input type="text" name="home_meta_title_desc" value="<?= h(setting('home_meta_title_desc','Best Camping in the National Park')) ?>">
   </div>
 </div>
 
