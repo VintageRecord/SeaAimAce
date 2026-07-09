@@ -12,6 +12,8 @@ foreach ($rows as $r) {
     $groups[$r['theme_group']][] = $r;
 }
 
+$nav_urls = $db->query('SELECT url FROM nav_links')->fetchAll(PDO::FETCH_COLUMN);
+
 $page_title  = 'Themed Pages';
 $active_nav  = 'themed-pages';
 $show_preview = false;
@@ -22,6 +24,12 @@ include '_layout.php';
     $applied_name = $THEME_BUNDLES[$_GET['applied']]['name'] ?? $_GET['applied'];
 ?>
 <div class="alert alert-success">"<?= h($applied_name) ?>" theme applied — new pages were created as drafts below. Edit each one, then publish and add it to your nav if you want it public.</div>
+<?php endif; ?>
+<?php if (isset($_GET['nav_added'])): ?>
+<div class="alert alert-success">Added to Navigation. <a href="navigation.php" style="text-decoration:underline">Manage nav links</a></div>
+<?php endif; ?>
+<?php if (isset($_GET['deleted'])): ?>
+<div class="alert alert-success">Page deleted.</div>
 <?php endif; ?>
 
 <div class="card" style="margin-bottom:20px">
@@ -63,7 +71,9 @@ include '_layout.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($pages as $p): ?>
+                    <?php foreach ($pages as $p):
+                        $_in_nav = in_array('preview.php?slug=' . $p['slug'], $nav_urls, true);
+                    ?>
                     <tr>
                         <td><strong><?= h($p['title']) ?></strong></td>
                         <td style="font-family:monospace;font-size:.8rem;color:var(--text-muted)"><?= h($p['slug']) ?></td>
@@ -78,7 +88,12 @@ include '_layout.php';
                         <td style="white-space:nowrap">
                             <a href="pages-edit.php?id=<?= $p['id'] ?>" class="btn btn-secondary btn-sm">Edit</a>
                             <a href="../preview.php?slug=<?= h($p['slug']) ?>" target="_blank" class="btn btn-secondary btn-sm">Preview</a>
-                            <a href="pages.php?delete=<?= $p['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Delete page \'<?= h(addslashes($p['title'])) ?>\'?')">Delete</a>
+                            <?php if ($_in_nav): ?>
+                            <span class="btn btn-secondary btn-sm" style="opacity:.6;cursor:default" title="Already in the nav menu">In Nav ✓</span>
+                            <?php else: ?>
+                            <a href="nav-quick-add.php?page_id=<?= $p['id'] ?>" class="btn btn-secondary btn-sm">+ Add to Nav</a>
+                            <?php endif; ?>
+                            <a href="pages.php?delete=<?= $p['id'] ?>&from=themed" class="btn btn-danger btn-sm" onclick="return confirm('Delete page \'<?= h(addslashes($p['title'])) ?>\'?')">Delete</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

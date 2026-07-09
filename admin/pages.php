@@ -7,7 +7,8 @@ $db = get_db();
 // Delete
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $db->prepare('DELETE FROM pages WHERE id = ?')->execute([(int)$_GET['delete']]);
-    redirect('pages.php?deleted=1');
+    $back = ($_GET['from'] ?? '') === 'themed' ? 'themed-pages.php?deleted=1' : 'pages.php?deleted=1';
+    redirect($back);
 }
 
 $search = trim($_GET['q'] ?? '');
