@@ -273,13 +273,14 @@ if ($navCount == 0) {
 // Seed team members
 $teamCount = $db->query('SELECT COUNT(*) FROM team_members')->fetchColumn();
 if ($teamCount == 0) {
+    $bio = 'Glavi amet ritnisl libero molestie ante ut fringilla purus eros quis glavrid from dolor amet iquam lorem bibendum';
     $members = [
-        ['Ann Brown',     'Camp Director',   '', 'new_images/01.png', '#','#','#'],
-        ['David Villegas','Lead Guide',       '', 'new_images/02.png', '#','#','#'],
-        ['Clayton Lane',  'Safety Officer',   '', 'new_images/03.png', '#','#','#'],
-        ['Robert Fifield','Activities Coach', '', 'new_images/04.png', '#','#','#'],
-        ['Dan Spinello',  'Chef',             '', 'new_images/05.png', '#','#','#'],
-        ['Dwight Atkins', 'Site Manager',     '', 'new_images/06.png', '#','#','#'],
+        ['Ann Brown',     'Camp Director',   $bio, 'new_images/portrait-woman-taking-photo-with-device-world-photography-day_23-2151704486.jpg', '','',''],
+        ['David Villegas','Lead Guide',       $bio, 'new_images/side-view-adventurous-man-bivoua.jpg', '','',''],
+        ['Clayton Lane',  'Safety Officer',   $bio, 'new_images/close-up-handsome-man-smiling.jpg', '','',''],
+        ['Robert Fifield','Activities Coach', $bio, 'new_images/close-up-man-smiling-nature_23-2.jpg', '','',''],
+        ['Dan Spinello',  'Chef',             $bio, 'new_images/photographer-man-smiling-while-h.jpg', '','',''],
+        ['Dwight Atkins', 'Site Manager',     $bio, 'new_images/front-view-man-posing-outdoors_2.jpg', '','',''],
     ];
     $mstmt = $db->prepare('INSERT INTO team_members (name,role,bio,image,fb_url,tw_url,ig_url,sort_order) VALUES (?,?,?,?,?,?,?,?)');
     foreach ($members as $i => $m) $mstmt->execute([...$m, $i]);

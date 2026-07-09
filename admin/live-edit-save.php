@@ -34,15 +34,17 @@ try {
         case 'space':
         case 'amenity':
         case 'pricing':
+        case 'team_member':
             $id    = (int)($data['id'] ?? 0);
             $field = preg_replace('/[^a-z0-9_]/', '', $data['field'] ?? '');
             if (!$id || !$field) throw new Exception('Invalid id/field');
 
             $table_map = [
-                'feature'  => 'features',
-                'space'    => 'spaces',
-                'amenity'  => 'amenities',
-                'pricing'  => 'pricing_plans',
+                'feature'     => 'features',
+                'space'       => 'spaces',
+                'amenity'     => 'amenities',
+                'pricing'     => 'pricing_plans',
+                'team_member' => 'team_members',
             ];
             $table = $table_map[$type];
 
@@ -52,6 +54,7 @@ try {
                 'spaces'        => ['title','description','tag1','tag2','tag3'],
                 'amenities'     => ['icon','title','description'],
                 'pricing_plans' => ['name','button_text'],
+                'team_members'  => ['name','role','bio'],
             ];
             if (!in_array($field, $allowed[$table] ?? [])) throw new Exception('Field not allowed');
 
@@ -76,7 +79,11 @@ try {
             if (!preg_match('/^(new_images|uploads)\/[^\/]+$/', $src)) {
                 throw new Exception('Invalid image path');
             }
-            save_setting('img_src_' . $key, $src);
+            if (preg_match('/^team_member_(\d+)$/', $key, $mm)) {
+                $db->prepare('UPDATE team_members SET image = ? WHERE id = ?')->execute([$src, (int)$mm[1]]);
+            } else {
+                save_setting('img_src_' . $key, $src);
+            }
             break;
 
         default:

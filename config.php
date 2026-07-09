@@ -172,6 +172,27 @@ function _ensure_schema(PDO $pdo): void {
     ");
     // Column migrations for existing databases
     try { $pdo->exec("ALTER TABLE pages ADD COLUMN css_content TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
+
+    // Data migration: the team.php roster was static Nicepage markup that never matched the
+    // team_members table, so early installs seeded generic placeholder rows (bio '', 01.png..06.png)
+    // that were never shown anywhere. Bring those untouched placeholder rows in line with the
+    // content that has always been live on team.php. Rows an admin has already edited (bio or
+    // image no longer match the placeholder) are left alone.
+    try {
+        $legacyBio = 'Glavi amet ritnisl libero molestie ante ut fringilla purus eros quis glavrid from dolor amet iquam lorem bibendum';
+        $legacy = [
+            ['Ann Brown',      'new_images/01.png', 'new_images/portrait-woman-taking-photo-with-device-world-photography-day_23-2151704486.jpg'],
+            ['David Villegas', 'new_images/02.png', 'new_images/side-view-adventurous-man-bivoua.jpg'],
+            ['Clayton Lane',   'new_images/03.png', 'new_images/close-up-handsome-man-smiling.jpg'],
+            ['Robert Fifield', 'new_images/04.png', 'new_images/close-up-man-smiling-nature_23-2.jpg'],
+            ['Dan Spinello',   'new_images/05.png', 'new_images/photographer-man-smiling-while-h.jpg'],
+            ['Dwight Atkins',  'new_images/06.png', 'new_images/front-view-man-posing-outdoors_2.jpg'],
+        ];
+        $stmt = $pdo->prepare("UPDATE team_members SET bio = ?, image = ? WHERE name = ? AND bio = '' AND image = ?");
+        foreach ($legacy as [$name, $oldImage, $newImage]) {
+            $stmt->execute([$legacyBio, $newImage, $name, $oldImage]);
+        }
+    } catch (\Exception $e) {}
 }
 
 function setting(string $key, string $default = ''): string {
