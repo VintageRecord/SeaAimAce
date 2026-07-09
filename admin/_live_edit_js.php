@@ -231,7 +231,11 @@ async function pickImg(src) {
     if (imgOverlay) imgOverlay.style.display = 'none';
     // Update the DOM element
     if (activeImgType === 'bg') {
-        activeImg.style.backgroundImage = "url('" + displaySrc + "')";
+        // Preserve any existing gradient prefix (e.g. linear-gradient(...), url(...))
+        const existing = activeImg.style.backgroundImage || '';
+        const gradientMatch = existing.match(/^((?:linear-gradient|radial-gradient)\([^)]+\)\s*,\s*)/i);
+        const prefix = gradientMatch ? gradientMatch[1] : '';
+        activeImg.style.backgroundImage = prefix + "url('" + displaySrc + "')";
     } else {
         activeImg.src = displaySrc;
     }

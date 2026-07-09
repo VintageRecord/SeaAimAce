@@ -5,6 +5,17 @@ $db = get_db();
 $cms_page_key   = 'live-edit-contact.php';
 $cms_page_title = 'Contact';
 $cms_page_css   = '../Contact.css';
+
+$live_media_files = $db->query("SELECT filename FROM media ORDER BY id DESC")->fetchAll(PDO::FETCH_COLUMN);
+$live_new_images  = [];
+$_ni_dir = dirname(__DIR__) . '/new_images';
+if (is_dir($_ni_dir)) {
+    foreach (scandir($_ni_dir) as $_nf) {
+        $ext = strtolower(pathinfo($_nf, PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg','jpeg','png','gif','webp','svg'])) $live_new_images[] = $_nf;
+    }
+    sort($live_new_images);
+}
 ?>
 <!DOCTYPE html>
 <html style="font-size:16px;" lang="en">
@@ -20,7 +31,7 @@ $_nav_base = '../';
 require dirname(__DIR__) . '/_nav.php';
 ?>
 
-    <section class="skrollable skrollable-between u-align-center u-clearfix u-container-align-center u-image u-shading u-section-1" src="" data-image-width="1980" data-image-height="1320" id="block-1">
+    <section class="skrollable skrollable-between u-align-center u-clearfix u-container-align-center u-image u-shading u-section-1" src="" data-image-width="1980" data-image-height="1320" id="block-1" data-bg-key="contact_s1_hero" style="background-image:linear-gradient(0deg,rgba(0,0,0,.3),rgba(0,0,0,.3)),url('../<?= h(setting('img_src_contact_s1_hero','new_images/new3-min.jpg')) ?>')">
       <div class="u-clearfix u-sheet u-valign-middle-xs u-sheet-1">
         <h1 class="u-align-center u-text u-text-default u-text-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-editable data-type="setting" data-key="contact_hero_heading"><?= h(setting('contact_hero_heading','Plan Your Camping Trip')) ?></h1>
         <p class="u-align-center u-large-text u-text u-text-body-alt-color u-text-variant u-text-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-editable data-type="setting" data-key="contact_hero_subtext"><?= h(setting('contact_hero_subtext','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')) ?></p>
@@ -129,7 +140,7 @@ require dirname(__DIR__) . '/_nav.php';
               <div class="u-layout-col">
                 <div class="u-size-40">
                   <div class="u-layout-row">
-                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-60 u-image-1" data-image-width="1380" data-image-height="920">
+                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-60 u-image-1" data-image-width="1380" data-image-height="920" data-bg-key="contact_s3_img1" style="background-image:linear-gradient(0deg,rgba(0,0,0,.3),rgba(0,0,0,.3)),url('../<?= h(setting('img_src_contact_s3_img1','new_images/t5.jpg')) ?>')">
                       <div class="u-container-layout u-valign-middle u-container-layout-2">
                         <h3 class="u-align-center u-text u-text-default u-text-2" data-editable data-type="setting" data-key="contact_s3_skill1"><?= h(setting('contact_s3_skill1','Develop Life Skills')) ?></h3>
                       </div>
@@ -138,12 +149,12 @@ require dirname(__DIR__) . '/_nav.php';
                 </div>
                 <div class="u-size-20">
                   <div class="u-layout-row">
-                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-30 u-image-2" data-image-width="800" data-image-height="800">
+                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-30 u-image-2" data-image-width="800" data-image-height="800" data-bg-key="contact_s3_img2" style="background-image:linear-gradient(0deg,rgba(0,0,0,.3),rgba(0,0,0,.3)),url('../<?= h(setting('img_src_contact_s3_img2','new_images/lifestyle-people-living-e.jpg')) ?>')">
                       <div class="u-container-layout u-valign-middle u-container-layout-3">
                         <h3 class="u-align-center u-text u-text-default u-text-3" data-editable data-type="setting" data-key="contact_s3_skill2"><?= h(setting('contact_s3_skill2','Tradition')) ?></h3>
                       </div>
                     </div>
-                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-30 u-image-3" data-image-width="740" data-image-height="925">
+                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-30 u-image-3" data-image-width="740" data-image-height="925" data-bg-key="contact_s3_img3" style="background-image:linear-gradient(0deg,rgba(0,0,0,.3),rgba(0,0,0,.3)),url('../<?= h(setting('img_src_contact_s3_img3','new_images/14.jpg')) ?>')">
                       <div class="u-container-layout u-valign-middle u-container-layout-4">
                         <h3 class="u-align-center u-text u-text-default u-text-4" data-editable data-type="setting" data-key="contact_s3_skill3"><?= h(setting('contact_s3_skill3','Digital Detox')) ?></h3>
                       </div>
@@ -156,12 +167,12 @@ require dirname(__DIR__) . '/_nav.php';
               <div class="u-layout-col">
                 <div class="u-size-20">
                   <div class="u-layout-row">
-                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-30 u-image-4" data-image-width="800" data-image-height="533">
+                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-30 u-image-4" data-image-width="800" data-image-height="533" data-bg-key="contact_s3_img4" style="background-image:linear-gradient(0deg,rgba(0,0,0,.3),rgba(0,0,0,.3)),url('../<?= h(setting('img_src_contact_s3_img4','new_images/1244.jpg')) ?>')">
                       <div class="u-container-layout u-valign-middle u-container-layout-5">
                         <h3 class="u-align-center u-text u-text-default u-text-5" data-editable data-type="setting" data-key="contact_s3_skill4"><?= h(setting('contact_s3_skill4','Improve Health')) ?></h3>
                       </div>
                     </div>
-                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-30 u-image-5" data-image-width="1480" data-image-height="833">
+                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-30 u-image-5" data-image-width="1480" data-image-height="833" data-bg-key="contact_s3_img5" style="background-image:linear-gradient(0deg,rgba(0,0,0,.3),rgba(0,0,0,.3)),url('../<?= h(setting('img_src_contact_s3_img5','new_images/37.jpg')) ?>')">
                       <div class="u-container-layout u-valign-middle u-container-layout-6">
                         <h3 class="u-align-center u-text u-text-default u-text-6" data-editable data-type="setting" data-key="contact_s3_skill5"><?= h(setting('contact_s3_skill5','Explore Nature')) ?></h3>
                       </div>
@@ -170,7 +181,7 @@ require dirname(__DIR__) . '/_nav.php';
                 </div>
                 <div class="u-size-40">
                   <div class="u-layout-row">
-                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-60 u-image-6" data-image-width="732" data-image-height="754">
+                    <div class="u-container-align-center u-container-style u-image u-layout-cell u-shading u-size-60 u-image-6" data-image-width="732" data-image-height="754" data-bg-key="contact_s3_img6" style="background-image:linear-gradient(0deg,rgba(0,0,0,.3),rgba(0,0,0,.3)),url('../<?= h(setting('img_src_contact_s3_img6','new_images/56.jpg')) ?>')">
                       <div class="u-container-layout u-valign-middle u-container-layout-7">
                         <h3 class="u-align-center u-text u-text-default u-text-7" data-editable data-type="setting" data-key="contact_s3_skill6"><?= h(setting('contact_s3_skill6','Strengthen Relationships')) ?></h3>
                       </div>
@@ -185,7 +196,7 @@ require dirname(__DIR__) . '/_nav.php';
       <p class="u-align-center u-text u-text-default u-text-8">Images from <a href="https://www.freepik.com/" class="u-active-none u-border-1 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-border-palette-5-dark-2 u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-link u-button-style u-hover-none u-none u-radius-0 u-text-active-black u-text-body-color u-text-hover-black u-top-left-radius-0 u-top-right-radius-0 u-btn-1" target="_blank">Freepik</a>
       </p>
     </section>
-    <section class="u-clearfix u-image u-shading u-section-4" data-image-width="1620" data-image-height="1080" id="block-4">
+    <section class="u-clearfix u-image u-shading u-section-4" data-image-width="1620" data-image-height="1080" id="block-4" data-bg-key="contact_s4_bg" style="background-image:linear-gradient(0deg,rgba(0,0,0,.45),rgba(0,0,0,.45)),url('../<?= h(setting('img_src_contact_s4_bg','new_images/gfgfggfggg-min.jpg')) ?>')">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="u-clearfix u-expanded-width u-gutter-0 u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
