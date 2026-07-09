@@ -159,11 +159,21 @@ if (is_dir($_sec_ni_dir)) {
       </div>
 
       <div class="form-group">
+        <label>Media Layout</label>
+        <?php $_sec_media_layout = $_sec_edit['media_layout'] ?? 'row'; ?>
+        <select name="sec_media_layout">
+          <option value="row"    <?= $_sec_media_layout === 'row'    ? 'selected' : '' ?>>Side by side</option>
+          <option value="column" <?= $_sec_media_layout === 'column' ? 'selected' : '' ?>>Stacked (one above the other)</option>
+        </select>
+        <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Only matters if this section has both images and video</div>
+      </div>
+
+      <div class="form-group">
         <label>Media Order</label>
         <?php $_sec_media_order = $_sec_edit['media_order'] ?? 'images_first'; ?>
         <select name="sec_media_order">
-          <option value="images_first" <?= $_sec_media_order === 'images_first' ? 'selected' : '' ?>>Images first, then video</option>
-          <option value="video_first"  <?= $_sec_media_order === 'video_first'  ? 'selected' : '' ?>>Video first, then images</option>
+          <option value="images_first" <?= $_sec_media_order === 'images_first' ? 'selected' : '' ?>>Images first (left / top)</option>
+          <option value="video_first"  <?= $_sec_media_order === 'video_first'  ? 'selected' : '' ?>>Video first (left / top)</option>
         </select>
         <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Only matters if this section has both</div>
       </div>

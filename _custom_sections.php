@@ -25,11 +25,13 @@ $_cs_img_stmt = get_db()->prepare('SELECT * FROM custom_section_images WHERE sec
 // Preset display sizes for a section's gallery images. small/medium/large don't grow
 // (flex-grow:0) so a couple of photos render at roughly their real size instead of always
 // stretching to fill the row; "full" grows to fill so each image takes the whole row.
+// stack_w is the equivalent width used when media_layout is "column" (stacked), since
+// flex-basis controls height rather than width once the container's direction is column.
 $_cs_sizes = [
-    'small'  => ['flex' => '0 1 140px', 'max_h' => '160px'],
-    'medium' => ['flex' => '0 1 240px', 'max_h' => '320px'],
-    'large'  => ['flex' => '0 1 380px', 'max_h' => '460px'],
-    'full'   => ['flex' => '1 1 100%',  'max_h' => '520px'],
+    'small'  => ['flex' => '0 1 140px', 'max_h' => '160px', 'stack_w' => '200px'],
+    'medium' => ['flex' => '0 1 240px', 'max_h' => '320px', 'stack_w' => '360px'],
+    'large'  => ['flex' => '0 1 380px', 'max_h' => '460px', 'stack_w' => '520px'],
+    'full'   => ['flex' => '1 1 100%',  'max_h' => '520px', 'stack_w' => '100%'],
 ];
 
 $_cs_first = true;
@@ -66,27 +68,31 @@ foreach ($_cs_list as $_cs) {
         echo '<h2' . $headingAttrs . ' style="font-size:2rem;font-weight:700;margin:0 0 20px;line-height:1.2;color:' . h($fg) . '">' . sh($_cs['heading']) . '</h2>';
     }
 
+    $_cs_stacked = $_cs['media_layout'] === 'column';
+    $_cs_imgItemStyle   = $_cs_stacked ? 'width:' . $size['stack_w'] . ';max-width:100%' : 'flex:' . $size['flex'];
+    $_cs_videoItemStyle = $_cs_stacked ? 'width:' . $size['stack_w'] . ';max-width:100%;aspect-ratio:16/9' : 'flex:1 1 300px;aspect-ratio:16/9';
+
     $_cs_mediaHtml = '';
     if (!empty($_cs_images) || !empty($_cs_yt_ids) || $_cs_editable) {
-        $_cs_mediaHtml .= '<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">';
+        $_cs_mediaHtml .= '<div style="display:flex;' . ($_cs_stacked ? 'flex-direction:column' : 'flex-wrap:wrap') . ';gap:20px;align-items:flex-start">';
 
         $_cs_imagesHtml = '';
         foreach ($_cs_images as $_i => $_ci) {
             $_ci_url = $_cs_base . (strpos($_ci['image'], '/') === false ? 'uploads/' . $_ci['image'] : $_ci['image']);
             $imgAttrs = $_cs_editable ? ' data-bg-key="custom_section_' . $id . '_img' . $_i . '" data-img-id="' . (int)$_ci['id'] . '"' : '';
-            $_cs_imagesHtml .= '<div' . $imgAttrs . ' style="flex:' . $size['flex'] . ';min-width:0;position:relative">';
+            $_cs_imagesHtml .= '<div' . $imgAttrs . ' style="' . $_cs_imgItemStyle . ';min-width:0;position:relative">';
             $_cs_imagesHtml .= '<img src="' . h($_ci_url) . '" alt="" style="width:100%;border-radius:10px;display:block;object-fit:cover;max-height:' . $size['max_h'] . '">';
             $_cs_imagesHtml .= '</div>';
         }
         // One extra empty slot in the Live Editor to add another image inline.
         if ($_cs_editable) {
             $_nextIdx = count($_cs_images);
-            $_cs_imagesHtml .= '<div data-bg-key="custom_section_' . $id . '_img' . $_nextIdx . '" data-new-slot="1" style="flex:' . $size['flex'] . ';min-width:0;min-height:120px;position:relative;border:2px dashed rgba(128,128,128,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.6;font-size:.85rem">+ Add image</div>';
+            $_cs_imagesHtml .= '<div data-bg-key="custom_section_' . $id . '_img' . $_nextIdx . '" data-new-slot="1" style="' . $_cs_imgItemStyle . ';min-width:0;min-height:120px;position:relative;border:2px dashed rgba(128,128,128,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.6;font-size:.85rem">+ Add image</div>';
         }
 
         $_cs_videoHtml = '';
         foreach ($_cs_yt_ids as $_yt_id) {
-            $_cs_videoHtml .= '<div style="flex:1 1 300px;min-width:0;aspect-ratio:16/9;border-radius:10px;overflow:hidden">';
+            $_cs_videoHtml .= '<div style="' . $_cs_videoItemStyle . ';min-width:0;border-radius:10px;overflow:hidden">';
             $_cs_videoHtml .= '<iframe src="https://www.youtube.com/embed/' . h($_yt_id) . '" title="Video" frameborder="0"';
             $_cs_videoHtml .= ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"';
             $_cs_videoHtml .= ' allowfullscreen style="width:100%;height:100%;display:block"></iframe>';

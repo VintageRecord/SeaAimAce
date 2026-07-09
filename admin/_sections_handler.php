@@ -25,6 +25,8 @@ if ($action === 'save') {
     if (!in_array($text_position, ['above','below'])) $text_position = 'below';
     $media_order = $_POST['sec_media_order'] ?? 'images_first';
     if (!in_array($media_order, ['images_first','video_first'])) $media_order = 'images_first';
+    $media_layout = $_POST['sec_media_layout'] ?? 'row';
+    if (!in_array($media_layout, ['row','column'])) $media_layout = 'row';
 
     $links = [];
     foreach (($_POST['sec_link_text'] ?? []) as $i => $lt) {
@@ -42,15 +44,15 @@ if ($action === 'save') {
     $youtube_json = json_encode($youtube_urls);
 
     if ($id > 0) {
-        $db->prepare('UPDATE custom_sections SET heading=?,body=?,links=?,youtube_urls=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=?,text_position=?,media_order=? WHERE id=? AND page=?')
-           ->execute([$heading, $body, $links_json, $youtube_json, $bg, $fg, $sort, $enabled, $img_size, $text_position, $media_order, $id, $_sec_page]);
+        $db->prepare('UPDATE custom_sections SET heading=?,body=?,links=?,youtube_urls=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=?,text_position=?,media_order=?,media_layout=? WHERE id=? AND page=?')
+           ->execute([$heading, $body, $links_json, $youtube_json, $bg, $fg, $sort, $enabled, $img_size, $text_position, $media_order, $media_layout, $id, $_sec_page]);
         $redirect_id = $id;
     } else {
         $max = $db->prepare('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections WHERE page=?');
         $max->execute([$_sec_page]);
         $next_sort = (int)$max->fetchColumn();
-        $db->prepare('INSERT INTO custom_sections (page,heading,body,links,youtube_urls,bg_color,text_color,sort_order,enabled,image_size,text_position,media_order) VALUES (?,?,?,?,?,?,?,?,1,?,?,?)')
-           ->execute([$_sec_page, $heading, $body, $links_json, $youtube_json, $bg, $fg, $next_sort, $img_size, $text_position, $media_order]);
+        $db->prepare('INSERT INTO custom_sections (page,heading,body,links,youtube_urls,bg_color,text_color,sort_order,enabled,image_size,text_position,media_order,media_layout) VALUES (?,?,?,?,?,?,?,?,1,?,?,?,?)')
+           ->execute([$_sec_page, $heading, $body, $links_json, $youtube_json, $bg, $fg, $next_sort, $img_size, $text_position, $media_order, $media_layout]);
         $redirect_id = (int)$db->lastInsertId();
 
         // Attach any images uploaded or picked from the library while creating this section,
