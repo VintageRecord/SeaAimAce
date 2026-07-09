@@ -21,6 +21,10 @@ if ($action === 'save') {
     $sort      = (int)($_POST['sec_sort']      ?? 0);
     $img_size  = $_POST['sec_image_size'] ?? 'medium';
     if (!in_array($img_size, ['small','medium','large','full'])) $img_size = 'medium';
+    $text_position = $_POST['sec_text_position'] ?? 'below';
+    if (!in_array($text_position, ['above','below'])) $text_position = 'below';
+    $media_order = $_POST['sec_media_order'] ?? 'images_first';
+    if (!in_array($media_order, ['images_first','video_first'])) $media_order = 'images_first';
 
     $links = [];
     foreach (($_POST['sec_link_text'] ?? []) as $i => $lt) {
@@ -38,16 +42,44 @@ if ($action === 'save') {
     $youtube_json = json_encode($youtube_urls);
 
     if ($id > 0) {
-        $db->prepare('UPDATE custom_sections SET heading=?,body=?,links=?,youtube_urls=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=? WHERE id=? AND page=?')
-           ->execute([$heading, $body, $links_json, $youtube_json, $bg, $fg, $sort, $enabled, $img_size, $id, $_sec_page]);
+        $db->prepare('UPDATE custom_sections SET heading=?,body=?,links=?,youtube_urls=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=?,text_position=?,media_order=? WHERE id=? AND page=?')
+           ->execute([$heading, $body, $links_json, $youtube_json, $bg, $fg, $sort, $enabled, $img_size, $text_position, $media_order, $id, $_sec_page]);
         $redirect_id = $id;
     } else {
         $max = $db->prepare('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections WHERE page=?');
         $max->execute([$_sec_page]);
         $next_sort = (int)$max->fetchColumn();
-        $db->prepare('INSERT INTO custom_sections (page,heading,body,links,youtube_urls,bg_color,text_color,sort_order,enabled,image_size) VALUES (?,?,?,?,?,?,?,?,1,?)')
-           ->execute([$_sec_page, $heading, $body, $links_json, $youtube_json, $bg, $fg, $next_sort, $img_size]);
+        $db->prepare('INSERT INTO custom_sections (page,heading,body,links,youtube_urls,bg_color,text_color,sort_order,enabled,image_size,text_position,media_order) VALUES (?,?,?,?,?,?,?,?,1,?,?,?)')
+           ->execute([$_sec_page, $heading, $body, $links_json, $youtube_json, $bg, $fg, $next_sort, $img_size, $text_position, $media_order]);
         $redirect_id = (int)$db->lastInsertId();
+
+        // Attach any images uploaded or picked from the library while creating this section,
+        // now that it finally has an id to attach them to.
+        $imgSort = 0;
+        $insertImg = $db->prepare('INSERT INTO custom_section_images (section_id,image,sort_order) VALUES (?,?,?)');
+
+        if (!empty($_FILES['sec_new_images']['name'])) {
+            foreach ($_FILES['sec_new_images']['name'] as $i => $origName) {
+                if ($_FILES['sec_new_images']['error'][$i] !== UPLOAD_ERR_OK) continue;
+                $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+                if (!in_array($ext, ['jpg','jpeg','png','gif','webp','svg'])) continue;
+                $fname = uniqid('sec_', true) . '.' . $ext;
+                $dest  = dirname(__DIR__) . '/uploads/' . $fname;
+                if (move_uploaded_file($_FILES['sec_new_images']['tmp_name'][$i], $dest)) {
+                    $db->prepare('INSERT OR IGNORE INTO media (filename,mime_type,file_size) VALUES (?,?,?)')
+                       ->execute([$fname, mime_content_type($dest), $_FILES['sec_new_images']['size'][$i]]);
+                    $insertImg->execute([$redirect_id, $fname, $imgSort]);
+                    $imgSort += 10;
+                }
+            }
+        }
+
+        foreach (($_POST['sec_staged_images'] ?? []) as $staged) {
+            if (preg_match('#^(new_images/|uploads/)?[A-Za-z0-9_.\-]+$#', $staged)) {
+                $insertImg->execute([$redirect_id, $staged, $imgSort]);
+                $imgSort += 10;
+            }
+        }
     }
 
     header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?sec_flash=saved&sec_edit=' . $redirect_id . '#sec-editor');

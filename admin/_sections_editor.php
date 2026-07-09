@@ -123,12 +123,17 @@ if (is_dir($_sec_ni_dir)) {
         <textarea name="sec_body" id="sec-body-ta" style="display:none"><?= h($_sec_edit['body'] ?? '') ?></textarea>
       </div>
 
-      <div class="form-group">
+      <div class="form-group full-width">
         <label>Images</label>
         <?php if ($_sec_edit): ?>
         <div style="font-size:.72rem;color:#94a3b8">Manage this section's photos in the Images panel below.</div>
         <?php else: ?>
-        <div style="background:#3a2e0a;color:#fde68a;border:1px solid #78350f;border-radius:6px;padding:8px 10px;font-size:.78rem">&#9888; Click <strong>Add Section</strong> below first — you can't add photos until the section exists. The Images panel will appear right here once it's added.</div>
+        <div id="sec-staged-images" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-bottom:8px"></div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+          <input type="file" name="sec_new_images[]" accept="image/*" multiple style="font-size:.78rem">
+          <button type="button" class="sec-tb-btn" onclick="secOpenPicker()">&#128247; Choose from Library</button>
+        </div>
+        <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Uploads and library picks are attached the moment you click "Add Section" below</div>
         <?php endif; ?>
       </div>
 
@@ -142,6 +147,25 @@ if (is_dir($_sec_ni_dir)) {
           <option value="full"   <?= $_sec_img_size === 'full'   ? 'selected' : '' ?>>Full width</option>
         </select>
         <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Applies to every photo in this section</div>
+      </div>
+
+      <div class="form-group">
+        <label>Text Position</label>
+        <?php $_sec_text_pos = $_sec_edit['text_position'] ?? 'below'; ?>
+        <select name="sec_text_position">
+          <option value="below" <?= $_sec_text_pos === 'below' ? 'selected' : '' ?>>Below image/video</option>
+          <option value="above" <?= $_sec_text_pos === 'above' ? 'selected' : '' ?>>Above image/video</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Media Order</label>
+        <?php $_sec_media_order = $_sec_edit['media_order'] ?? 'images_first'; ?>
+        <select name="sec_media_order">
+          <option value="images_first" <?= $_sec_media_order === 'images_first' ? 'selected' : '' ?>>Images first, then video</option>
+          <option value="video_first"  <?= $_sec_media_order === 'video_first'  ? 'selected' : '' ?>>Video first, then images</option>
+        </select>
+        <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Only matters if this section has both</div>
       </div>
 
       <div class="form-group">
@@ -320,7 +344,22 @@ document.querySelectorAll('form').forEach(function(f) {
 window.secPickImg = function(fname) {
   var pathEl = document.getElementById('sec-add-image-path');
   var formEl = document.getElementById('sec-add-image-form');
-  if (pathEl && formEl) { pathEl.value = fname; formEl.submit(); }
+  if (pathEl && formEl) {
+    // Editing an existing section: attach immediately.
+    pathEl.value = fname; formEl.submit();
+    return;
+  }
+  // Adding a new section: stage the pick client-side, submitted with the rest of the form.
+  var staged = document.getElementById('sec-staged-images');
+  if (!staged) { secClosePicker(); return; }
+  var url = fname.indexOf('/') === -1 ? '../uploads/' + fname : '../' + fname;
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--border)';
+  wrap.innerHTML = '<img src="' + url + '" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" alt="">' +
+                    '<input type="hidden" name="sec_staged_images[]" value="' + fname.replace(/"/g,'&quot;') + '">' +
+                    '<button type="button" style="position:absolute;top:4px;right:4px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:.65rem;cursor:pointer;line-height:1" onclick="this.closest(\'div\').remove()">&#10005;</button>';
+  staged.appendChild(wrap);
+  secClosePicker();
 };
 
 window.secAddLinkRow = function() {

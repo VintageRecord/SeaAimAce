@@ -184,6 +184,8 @@ function _ensure_schema(PDO $pdo): void {
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN image_size TEXT NOT NULL DEFAULT 'medium'"); } catch (\Exception $e) {}
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN links TEXT NOT NULL DEFAULT '[]'"); } catch (\Exception $e) {}
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN youtube_urls TEXT NOT NULL DEFAULT '[]'"); } catch (\Exception $e) {}
+    try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN text_position TEXT NOT NULL DEFAULT 'below'"); } catch (\Exception $e) {}
+    try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN media_order TEXT NOT NULL DEFAULT 'images_first'"); } catch (\Exception $e) {}
 
     // Data migration: the team.php roster was static Nicepage markup that never matched the
     // team_members table, so early installs seeded generic placeholder rows (bio '', 01.png..06.png)

@@ -66,37 +66,52 @@ foreach ($_cs_list as $_cs) {
         echo '<h2' . $headingAttrs . ' style="font-size:2rem;font-weight:700;margin:0 0 20px;line-height:1.2;color:' . h($fg) . '">' . sh($_cs['heading']) . '</h2>';
     }
 
+    $_cs_mediaHtml = '';
     if (!empty($_cs_images) || !empty($_cs_yt_ids) || $_cs_editable) {
-        $mb = $_cs['body'] ? '28px' : '0';
-        echo '<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin-bottom:' . $mb . '">';
+        $_cs_mediaHtml .= '<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">';
 
+        $_cs_imagesHtml = '';
         foreach ($_cs_images as $_i => $_ci) {
             $_ci_url = $_cs_base . (strpos($_ci['image'], '/') === false ? 'uploads/' . $_ci['image'] : $_ci['image']);
             $imgAttrs = $_cs_editable ? ' data-bg-key="custom_section_' . $id . '_img' . $_i . '" data-img-id="' . (int)$_ci['id'] . '"' : '';
-            echo '<div' . $imgAttrs . ' style="flex:' . $size['flex'] . ';min-width:0;position:relative">';
-            echo '<img src="' . h($_ci_url) . '" alt="" style="width:100%;border-radius:10px;display:block;object-fit:cover;max-height:' . $size['max_h'] . '">';
-            echo '</div>';
+            $_cs_imagesHtml .= '<div' . $imgAttrs . ' style="flex:' . $size['flex'] . ';min-width:0;position:relative">';
+            $_cs_imagesHtml .= '<img src="' . h($_ci_url) . '" alt="" style="width:100%;border-radius:10px;display:block;object-fit:cover;max-height:' . $size['max_h'] . '">';
+            $_cs_imagesHtml .= '</div>';
         }
-
         // One extra empty slot in the Live Editor to add another image inline.
         if ($_cs_editable) {
             $_nextIdx = count($_cs_images);
-            echo '<div data-bg-key="custom_section_' . $id . '_img' . $_nextIdx . '" data-new-slot="1" style="flex:' . $size['flex'] . ';min-width:0;min-height:120px;position:relative;border:2px dashed rgba(128,128,128,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.6;font-size:.85rem">+ Add image</div>';
+            $_cs_imagesHtml .= '<div data-bg-key="custom_section_' . $id . '_img' . $_nextIdx . '" data-new-slot="1" style="flex:' . $size['flex'] . ';min-width:0;min-height:120px;position:relative;border:2px dashed rgba(128,128,128,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.6;font-size:.85rem">+ Add image</div>';
         }
 
+        $_cs_videoHtml = '';
         foreach ($_cs_yt_ids as $_yt_id) {
-            echo '<div style="flex:1 1 300px;min-width:0;aspect-ratio:16/9;border-radius:10px;overflow:hidden">';
-            echo '<iframe src="https://www.youtube.com/embed/' . h($_yt_id) . '" title="Video" frameborder="0"';
-            echo ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"';
-            echo ' allowfullscreen style="width:100%;height:100%;display:block"></iframe>';
-            echo '</div>';
+            $_cs_videoHtml .= '<div style="flex:1 1 300px;min-width:0;aspect-ratio:16/9;border-radius:10px;overflow:hidden">';
+            $_cs_videoHtml .= '<iframe src="https://www.youtube.com/embed/' . h($_yt_id) . '" title="Video" frameborder="0"';
+            $_cs_videoHtml .= ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"';
+            $_cs_videoHtml .= ' allowfullscreen style="width:100%;height:100%;display:block"></iframe>';
+            $_cs_videoHtml .= '</div>';
         }
 
-        echo '</div>';
+        $_cs_mediaHtml .= ($_cs['media_order'] === 'video_first')
+            ? $_cs_videoHtml . $_cs_imagesHtml
+            : $_cs_imagesHtml . $_cs_videoHtml;
+        $_cs_mediaHtml .= '</div>';
     }
 
+    $_cs_bodyHtml = '';
     if ($_cs['body'] || $_cs_editable) {
-        echo '<div' . $bodyAttrs . ' style="font-size:1rem;line-height:1.7;color:' . h($fg) . '">' . sh($_cs['body']) . '</div>';
+        $_cs_bodyHtml = '<div' . $bodyAttrs . ' style="font-size:1rem;line-height:1.7;color:' . h($fg) . '">' . sh($_cs['body']) . '</div>';
+    }
+
+    // Whichever block renders first gets the gap as margin-bottom; if only one exists, no gap needed.
+    $_cs_gap = ($_cs_mediaHtml && $_cs_bodyHtml) ? 'margin-bottom:28px' : '';
+    if ($_cs['text_position'] === 'above') {
+        if ($_cs_bodyHtml) echo '<div style="' . $_cs_gap . '">' . $_cs_bodyHtml . '</div>';
+        echo $_cs_mediaHtml;
+    } else {
+        if ($_cs_mediaHtml) echo '<div style="' . $_cs_gap . '">' . $_cs_mediaHtml . '</div>';
+        echo $_cs_bodyHtml;
     }
 
     if (!empty($_cs_links)) {
