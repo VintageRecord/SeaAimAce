@@ -307,9 +307,8 @@ const editor = grapesjs.init({
         'gjs-blocks-basic': {}
     },
     canvas: {
-        styles: ['../tooplate-forge-style.css', 'body{margin:0;padding:0}']
-    },
-    panels: { defaults: [] }
+        styles: ['body{margin:0;padding:0}']
+    }
 });
 
 // Load saved content
