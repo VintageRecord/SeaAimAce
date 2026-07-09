@@ -189,10 +189,9 @@ let activeImg = null;
 let activeImgType = 'src';
 
 function injectImgBtn(el, type) {
-    // Find a positioned ancestor to attach the button to
-    const anchor = el.closest('.u-gallery-item') || el.closest('.u-back-slide') || el.parentElement || el;
-    const existed = getComputedStyle(anchor).position;
-    if (existed === 'static') anchor.style.position = 'relative';
+    // For bg-key divs use the element itself; for img-key use a gallery wrapper if present
+    const anchor = type === 'bg' ? el : (el.closest('.u-gallery-item') || el.closest('.u-back-slide') || el.parentElement || el);
+    if (getComputedStyle(anchor).position === 'static') anchor.style.position = 'relative';
 
     const btn = document.createElement('button');
     btn.innerHTML = '&#128247; Change Image';
