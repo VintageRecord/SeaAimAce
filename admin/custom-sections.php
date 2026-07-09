@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $page      = $_POST['page']      ?? 'home';
         $heading   = trim($_POST['heading']  ?? '');
         $body      = trim($_POST['body']     ?? '');
-        $youtube   = trim($_POST['youtube_url'] ?? '');
         $bg        = trim($_POST['bg_color']    ?? '#ffffff');
         $fg        = trim($_POST['text_color']  ?? '#333333');
         $enabled   = isset($_POST['enabled']) ? 1 : 0;
@@ -38,17 +37,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $links_json = json_encode($links);
 
+        $youtube_urls = [];
+        foreach (($_POST['youtube_url'] ?? []) as $yu) {
+            $yu = trim($yu);
+            if ($yu !== '') $youtube_urls[] = $yu;
+        }
+        $youtube_json = json_encode($youtube_urls);
+
         if (!in_array($page, array_keys($pages_list))) $page = 'home';
         if (!in_array($img_size, ['small','medium','large','full'])) $img_size = 'medium';
 
         if ($id > 0) {
-            $db->prepare('UPDATE custom_sections SET page=?,heading=?,body=?,links=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=? WHERE id=?')
-               ->execute([$page,$heading,$body,$links_json,$youtube,$bg,$fg,$sort,$enabled,$img_size,$id]);
+            $db->prepare('UPDATE custom_sections SET page=?,heading=?,body=?,links=?,youtube_urls=?,bg_color=?,text_color=?,sort_order=?,enabled=?,image_size=? WHERE id=?')
+               ->execute([$page,$heading,$body,$links_json,$youtube_json,$bg,$fg,$sort,$enabled,$img_size,$id]);
             redirect('custom-sections.php?edit=' . $id . '&flash=saved');
         } else {
             $max = $db->query('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections')->fetchColumn();
-            $db->prepare('INSERT INTO custom_sections (page,heading,body,links,youtube_url,bg_color,text_color,sort_order,enabled,image_size) VALUES (?,?,?,?,?,?,?,?,?,?)')
-               ->execute([$page,$heading,$body,$links_json,$youtube,$bg,$fg,$max,1,$img_size]);
+            $db->prepare('INSERT INTO custom_sections (page,heading,body,links,youtube_urls,bg_color,text_color,sort_order,enabled,image_size) VALUES (?,?,?,?,?,?,?,?,?,?)')
+               ->execute([$page,$heading,$body,$links_json,$youtube_json,$bg,$fg,$max,1,$img_size]);
             $newId = $db->lastInsertId();
             redirect('custom-sections.php?edit=' . $newId . '&flash=saved');
         }
@@ -254,7 +260,7 @@ include '_layout.php';
           <?php if ($edit_row): ?>
           <p class="cs-info">Manage this section's photos in the Images panel below — you can add as many as you like.</p>
           <?php else: ?>
-          <p class="cs-info">Save the section first, then you'll be able to add one or more images to it.</p>
+          <p style="background:#fef9c3;color:#854d0e;border:1px solid #fde68a;border-radius:6px;padding:8px 10px;font-size:.78rem;margin:0">&#9888; Click <strong>Save Section</strong> below first — you can't add photos until the section exists. The Images panel will appear right here once it's saved.</p>
           <?php endif; ?>
         </div>
         <div class="cs-field">
@@ -285,8 +291,18 @@ include '_layout.php';
           <p class="cs-info">Each one shows as its own button under the section text</p>
         </div>
         <div class="cs-field">
-          <label>YouTube URL</label>
-          <input type="url" name="youtube_url" value="<?= h($edit_row['youtube_url'] ?? '') ?>" placeholder="https://www.youtube.com/watch?v=...">
+          <label>YouTube Videos</label>
+          <div id="cs-youtube-list">
+            <?php
+            $_yts = json_decode($edit_row['youtube_urls'] ?? '[]', true) ?: [];
+            foreach ($_yts as $_yt): ?>
+            <div class="cs-yt-row" style="display:flex;gap:6px;margin-bottom:6px">
+              <input type="url" name="youtube_url[]" value="<?= h($_yt) ?>" placeholder="https://www.youtube.com/watch?v=..." style="flex:1">
+              <button type="button" class="cs-link-remove" onclick="this.closest('.cs-yt-row').remove()">&#10005;</button>
+            </div>
+            <?php endforeach; ?>
+          </div>
+          <button type="button" class="cs-pick-btn" onclick="csAddYoutubeRow()">+ Add Video</button>
           <p class="cs-info">Paste any YouTube link — full URL or short link</p>
         </div>
         <div class="cs-field">
@@ -505,6 +521,16 @@ function csAddLinkRow() {
                    '<input type="url" name="link_url[]" placeholder="https://... or a page like about.php">' +
                    '<button type="button" class="cs-link-remove" onclick="this.closest(\'.cs-link-row\').remove()">&#10005;</button>';
   document.getElementById('cs-links-list').appendChild(row);
+}
+
+// ---- YouTube videos list ----
+function csAddYoutubeRow() {
+  var row = document.createElement('div');
+  row.className = 'cs-yt-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px';
+  row.innerHTML = '<input type="url" name="youtube_url[]" placeholder="https://www.youtube.com/watch?v=..." style="flex:1">' +
+                   '<button type="button" class="cs-link-remove" onclick="this.closest(\'.cs-yt-row\').remove()">&#10005;</button>';
+  document.getElementById('cs-youtube-list').appendChild(row);
 }
 
 // ---- Picker modal ----

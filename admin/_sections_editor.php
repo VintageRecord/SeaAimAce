@@ -128,7 +128,7 @@ if (is_dir($_sec_ni_dir)) {
         <?php if ($_sec_edit): ?>
         <div style="font-size:.72rem;color:#94a3b8">Manage this section's photos in the Images panel below.</div>
         <?php else: ?>
-        <div style="font-size:.72rem;color:#94a3b8">Save the section first, then you can add one or more images to it.</div>
+        <div style="background:#3a2e0a;color:#fde68a;border:1px solid #78350f;border-radius:6px;padding:8px 10px;font-size:.78rem">&#9888; Click <strong>Add Section</strong> below first — you can't add photos until the section exists. The Images panel will appear right here once it's added.</div>
         <?php endif; ?>
       </div>
 
@@ -162,8 +162,18 @@ if (is_dir($_sec_ni_dir)) {
       </div>
 
       <div class="form-group">
-        <label>YouTube URL</label>
-        <input type="url" name="sec_youtube" value="<?= h($_sec_edit['youtube_url'] ?? '') ?>" placeholder="https://www.youtube.com/watch?v=...">
+        <label>YouTube Videos</label>
+        <div id="sec-youtube-list">
+          <?php
+          $_sec_yts = json_decode($_sec_edit['youtube_urls'] ?? '[]', true) ?: [];
+          foreach ($_sec_yts as $_syt): ?>
+          <div class="sec-yt-row" style="display:flex;gap:6px;margin-bottom:6px">
+            <input type="url" name="sec_youtube[]" value="<?= h($_syt) ?>" placeholder="https://www.youtube.com/watch?v=..." style="flex:1">
+            <button type="button" onclick="this.closest('.sec-yt-row').remove()" style="background:#fee2e2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;width:32px;cursor:pointer;font-size:.72rem;flex-shrink:0">&#10005;</button>
+          </div>
+          <?php endforeach; ?>
+        </div>
+        <button type="button" class="sec-tb-btn" onclick="secAddYoutubeRow()">+ Add Video</button>
         <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Paste any YouTube link</div>
 
         <label style="margin-top:12px;display:block">Background Colour</label>
@@ -321,6 +331,15 @@ window.secAddLinkRow = function() {
                    '<input type="url" name="sec_link_url[]" placeholder="https://... or a page like about.php" style="flex:1">' +
                    '<button type="button" onclick="this.closest(\'.sec-link-row\').remove()" style="background:#fee2e2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;width:32px;cursor:pointer;font-size:.72rem;flex-shrink:0">&#10005;</button>';
   document.getElementById('sec-links-list').appendChild(row);
+};
+
+window.secAddYoutubeRow = function() {
+  var row = document.createElement('div');
+  row.className = 'sec-yt-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px';
+  row.innerHTML = '<input type="url" name="sec_youtube[]" placeholder="https://www.youtube.com/watch?v=..." style="flex:1">' +
+                   '<button type="button" onclick="this.closest(\'.sec-yt-row\').remove()" style="background:#fee2e2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;width:32px;cursor:pointer;font-size:.72rem;flex-shrink:0">&#10005;</button>';
+  document.getElementById('sec-youtube-list').appendChild(row);
 };
 
 window.secOpenPicker  = function() { document.getElementById('sec-picker-modal').style.display='flex'; };

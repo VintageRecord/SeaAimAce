@@ -183,6 +183,7 @@ function _ensure_schema(PDO $pdo): void {
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN link_text TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN image_size TEXT NOT NULL DEFAULT 'medium'"); } catch (\Exception $e) {}
     try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN links TEXT NOT NULL DEFAULT '[]'"); } catch (\Exception $e) {}
+    try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN youtube_urls TEXT NOT NULL DEFAULT '[]'"); } catch (\Exception $e) {}
 
     // Data migration: the team.php roster was static Nicepage markup that never matched the
     // team_members table, so early installs seeded generic placeholder rows (bio '', 01.png..06.png)
@@ -259,6 +260,17 @@ function _ensure_schema(PDO $pdo): void {
         $setLinks = $pdo->prepare('UPDATE custom_sections SET links = ? WHERE id = ?');
         foreach ($legacyLinks as $row) {
             $setLinks->execute([json_encode([['text' => $row['link_text'] ?: 'Learn more', 'url' => $row['link_url']]]), $row['id']]);
+        }
+    } catch (\Exception $e) {}
+
+    // Data migration: custom_sections used to support one youtube_url. Sections now support
+    // any number of videos via the youtube_urls JSON column. Same one-time-backfill guard as
+    // the links migration above.
+    try {
+        $legacyYt = $pdo->query("SELECT id, youtube_url FROM custom_sections WHERE youtube_url != '' AND youtube_urls = '[]'")->fetchAll();
+        $setYt = $pdo->prepare('UPDATE custom_sections SET youtube_urls = ? WHERE id = ?');
+        foreach ($legacyYt as $row) {
+            $setYt->execute([json_encode([$row['youtube_url']]), $row['id']]);
         }
     } catch (\Exception $e) {}
 }

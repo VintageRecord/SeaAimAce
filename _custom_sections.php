@@ -36,13 +36,17 @@ $_cs_first = true;
 foreach ($_cs_list as $_cs) {
     $bg   = $_cs['bg_color']   ?: '#f4f6f8';
     $fg   = $_cs['text_color'] ?: '#333333';
-    $yt   = trim($_cs['youtube_url']);
     $id   = (int)$_cs['id'];
     $size = $_cs_sizes[$_cs['image_size']] ?? $_cs_sizes['medium'];
 
-    $yt_id = '';
-    if ($yt && preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $yt, $m)) {
-        $yt_id = $m[1];
+    $_cs_yt_urls = json_decode($_cs['youtube_urls'], true);
+    if (!is_array($_cs_yt_urls)) $_cs_yt_urls = [];
+    $_cs_yt_ids = [];
+    foreach ($_cs_yt_urls as $_yt) {
+        $_yt = trim($_yt);
+        if ($_yt && preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $_yt, $m)) {
+            $_cs_yt_ids[] = $m[1];
+        }
     }
 
     $_cs_img_stmt->execute([$id]);
@@ -62,7 +66,7 @@ foreach ($_cs_list as $_cs) {
         echo '<h2' . $headingAttrs . ' style="font-size:2rem;font-weight:700;margin:0 0 20px;line-height:1.2;color:' . h($fg) . '">' . sh($_cs['heading']) . '</h2>';
     }
 
-    if (!empty($_cs_images) || $yt_id || $_cs_editable) {
+    if (!empty($_cs_images) || !empty($_cs_yt_ids) || $_cs_editable) {
         $mb = $_cs['body'] ? '28px' : '0';
         echo '<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin-bottom:' . $mb . '">';
 
@@ -80,9 +84,9 @@ foreach ($_cs_list as $_cs) {
             echo '<div data-bg-key="custom_section_' . $id . '_img' . $_nextIdx . '" data-new-slot="1" style="flex:' . $size['flex'] . ';min-width:0;min-height:120px;position:relative;border:2px dashed rgba(128,128,128,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.6;font-size:.85rem">+ Add image</div>';
         }
 
-        if ($yt_id) {
+        foreach ($_cs_yt_ids as $_yt_id) {
             echo '<div style="flex:1 1 300px;min-width:0;aspect-ratio:16/9;border-radius:10px;overflow:hidden">';
-            echo '<iframe src="https://www.youtube.com/embed/' . h($yt_id) . '" title="Video" frameborder="0"';
+            echo '<iframe src="https://www.youtube.com/embed/' . h($_yt_id) . '" title="Video" frameborder="0"';
             echo ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"';
             echo ' allowfullscreen style="width:100%;height:100%;display:block"></iframe>';
             echo '</div>';
