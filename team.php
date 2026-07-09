@@ -30,7 +30,7 @@ $team_members = $db->query('SELECT * FROM team_members ORDER BY sort_order ASC')
             <div class="u-align-left u-container-align-left u-container-style u-layout-cell u-right-cell u-shape-rectangle u-size-27-xl u-size-29-lg u-size-60-md u-size-60-sm u-size-60-xs u-size-xs-60 u-white u-layout-cell-2">
               <div class="u-container-layout u-valign-middle u-container-layout-2">
                 <h1 class="u-align-left u-font-titillium-Web u-text u-text-1"> <?= sh(setting('team_hero_heading','Our team is looking forward')) ?> </h1>
-                <p class="u-align-left u-text u-text-2">Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.&nbsp;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p class="u-align-left u-text u-text-2"><?= sh(setting('team_hero_body','Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam nunc justo sagittis suscipit ultrices.&nbsp;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')) ?></p>
                 <p class="u-align-left u-text u-text-3">Image from <a href="https://www.freepik.com/photos/woman" class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-3-base u-border-no-left u-border-no-right u-border-no-top u-border-palette-2-base u-bottom-left-radius-0 u-bottom-right-radius-0 u-btn u-button-link u-button-style u-none u-radius-0 u-text-body-color u-top-left-radius-0 u-top-right-radius-0 u-btn-1">Freepik</a>
                 </p>
                 <a href="#" class="u-align-left u-border-2 u-border-palette-2-base u-btn u-btn-round u-button-style u-palette-2-base u-radius-50 u-btn-2"> Our team</a>
@@ -42,7 +42,7 @@ $team_members = $db->query('SELECT * FROM team_members ORDER BY sort_order ASC')
     </section>
     <section class="u-align-center u-clearfix u-container-align-center u-grey-5 u-section-2" id="block-2">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <h2 class="u-align-center u-custom-font u-font-montserrat u-text u-text-default u-text-1">Our Team</h2>
+        <h2 class="u-align-center u-custom-font u-font-montserrat u-text u-text-default u-text-1"><?= sh(setting('team_section_heading','Our Team')) ?></h2>
         <p class="u-align-center u-text u-text-default u-text-2">Images from&nbsp;<a href="https://freepik.com" class="u-active-none u-border-1 u-border-active-palette-2-base u-border-grey-75 u-border-hover-palette-2-base u-border-no-left u-border-no-right u-border-no-top u-btn u-button-link u-button-style u-hover-none u-none u-text-body-color u-btn-1" data-animation-name="" data-animation-duration="0" data-animation-delay="0" data-animation-direction="">Freepik</a>
         </p>
         <?php if (!empty($team_members)): ?>
@@ -76,11 +76,11 @@ $team_members = $db->query('SELECT * FROM team_members ORDER BY sort_order ASC')
             <div class="u-layout-row">
               <div class="u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1">
                 <div class="u-container-layout u-valign-middle u-container-layout-1">
-                  <h2 class="u-text u-text-1">Contact Us</h2>
-                  <p class="u-text u-text-body-alt-color u-text-2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                  <h2 class="u-text u-text-1"><?= sh(setting('team_s3_heading','Contact Us')) ?></h2>
+                  <p class="u-text u-text-body-alt-color u-text-2"><?= sh(setting('team_s3_body','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')) ?></p>
                   <p class="u-align-left u-text u-text-3">Images from <a href="https://www.freepik.com/photos/man-with-dog" class="u-border-1 u-border-no-left u-border-no-right u-border-no-top u-border-white u-btn u-button-link u-button-style u-none u-text-body-alt-color u-btn-1">Freepik</a>
                   </p>
-                  <a href="#" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2">Contact Us</a>
+                  <a href="contact.php" class="u-active-white u-border-2 u-border-active-white u-border-hover-white u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2"><?= sh(setting('team_s3_btn','Contact Us')) ?></a>
                 </div>
               </div>
               <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">

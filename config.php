@@ -199,13 +199,27 @@ function _ensure_schema(PDO $pdo): void {
     // — so saved descriptions silently never appeared in <meta name="description">. Carry
     // forward anything already saved under the old key before the forms move to the new one.
     try {
-        $rename = ['home_meta_desc' => 'home_meta_title_desc', 'about_meta_desc' => 'about_meta_title_desc'];
+        $rename = [
+            'home_meta_desc' => 'home_meta_title_desc',
+            'about_meta_desc' => 'about_meta_title_desc',
+            // team.php's hero subtext was never wired to a setting at all (hardcoded text), and
+            // the dashboard/Live Editor disagreed on the key to use once it was (team_hero_sub
+            // vs team_hero_body). team_hero_body won since that's what the Live Editor writes.
+            'team_hero_sub' => 'team_hero_body',
+        ];
         foreach ($rename as $old => $new) {
-            $row = $pdo->query("SELECT value FROM settings WHERE key = '{$old}'")->fetch();
-            if ($row && $row['value'] !== '') {
+            $oldRow = $pdo->query("SELECT value FROM settings WHERE key = '{$old}'")->fetch();
+            if (!$oldRow) continue;
+            // Don't clobber a value already saved under the new key (e.g. the Live Editor may
+            // already have written team_hero_body directly) — only backfill if it's unset.
+            $newRow = $pdo->query("SELECT value FROM settings WHERE key = '{$new}'")->fetch();
+            if (!$newRow && $oldRow['value'] !== '') {
                 $pdo->prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value')
-                    ->execute([$new, $row['value']]);
+                    ->execute([$new, $oldRow['value']]);
             }
+            // Delete the old key either way so this migration is a true one-time backfill and
+            // never re-runs to stomp on a later, deliberate edit to the new key.
+            $pdo->prepare('DELETE FROM settings WHERE key = ?')->execute([$old]);
         }
     } catch (\Exception $e) {}
 }
