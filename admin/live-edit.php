@@ -568,7 +568,7 @@ require dirname(__DIR__) . '/_nav.php';
                   <a href="#" class="u-active-palette-2-light-1 u-border-none u-btn u-btn-round u-button-style u-hover-palette-2-light-1 u-palette-2-base u-radius-50 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-2" data-editable data-type="setting" data-key="home_family_btn"><?= h(setting('home_family_btn','learn more')) ?></a>
                 </div>
               </div>
-              <div class="u-container-style u-image u-layout-cell u-size-30 u-image-1" data-image-width="721" data-image-height="1080" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
+              <div class="u-container-style u-image u-layout-cell u-size-30 u-image-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250" data-bg-key="home_family_img1" style="background-image:url('<?= h('../' . setting('img_src_home_family_img1','new_images/bnbnbnn.jpg')) ?>')">
                 <div class="u-border-20 u-border-white u-container-layout u-container-layout-2"></div>
               </div>
             </div>
@@ -622,14 +622,14 @@ require dirname(__DIR__) . '/_nav.php';
                       </p>
                     </div>
                   </div>
-                  <div class="u-container-style u-image u-layout-cell u-left-cell u-similar-fill u-size-20 u-image-1" data-image-width="1380" data-image-height="920" data-animation-name="customAnimationIn" data-animation-duration="1500">
+                  <div class="u-container-style u-image u-layout-cell u-left-cell u-similar-fill u-size-20 u-image-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-bg-key="home_sport_img1" style="background-image:url('<?= h('../' . setting('img_src_home_sport_img1','new_images/rrer.jpg')) ?>')">
                     <div class="u-container-layout"></div>
                   </div>
                 </div>
               </div>
               <div class="u-size-30 u-size-60-md">
                 <div class="u-layout-col">
-                  <div class="u-container-style u-image u-layout-cell u-right-cell u-similar-fill u-size-20 u-image-2" data-image-width="1380" data-image-height="920" data-animation-name="customAnimationIn" data-animation-duration="1500">
+                  <div class="u-container-style u-image u-layout-cell u-right-cell u-similar-fill u-size-20 u-image-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-bg-key="home_sport_img2" style="background-image:url('<?= h('../' . setting('img_src_home_sport_img2','new_images/fff.jpg')) ?>')">
                     <div class="u-container-layout"></div>
                   </div>
                   <div class="u-container-style u-layout-cell u-right-cell u-similar-fill u-size-40 u-layout-cell-4" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="250">
@@ -1020,7 +1020,7 @@ let activeImg = null;
 let activeImgType = 'src';
 
 function injectImgBtn(el, type) {
-    const anchor = el.closest('.u-gallery-item') || el.closest('.u-back-slide') || el.parentElement || el;
+    const anchor = type === 'bg' ? el : (el.closest('.u-gallery-item') || el.closest('.u-back-slide') || el.parentElement || el);
     if (getComputedStyle(anchor).position === 'static') anchor.style.position = 'relative';
     const btn = document.createElement('button');
     btn.innerHTML = '&#128247; Change Image';
