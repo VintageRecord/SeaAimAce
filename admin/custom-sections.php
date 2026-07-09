@@ -169,7 +169,7 @@ include '_layout.php';
         </div>
         <div class="cs-field">
           <label>Body Text (supports <b>bold</b>, <i>italic</i>, links)</label>
-          <textarea name="body" id="cs-body-editor" placeholder="Section body text…"><?= h($edit_row['body'] ?? '') ?></textarea>
+          <textarea name="body" id="cs-body-editor" placeholder="Section body text…" style="display:none"><?= h($edit_row['body'] ?? '') ?></textarea>
           <div id="cs-body-toolbar" style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
             <button type="button" class="cs-pick-btn" onclick="csExec('bold')"><b>B</b></button>
             <button type="button" class="cs-pick-btn" onclick="csExec('italic')"><i>I</i></button>
