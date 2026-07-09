@@ -1,6 +1,13 @@
 <?php
 // Renders custom sections for $current_page.
 // Include near the bottom of each public page, just before _footer.php
+//
+// $_cs_base:     optional prefix for asset/page URLs (e.g. '../' when included from admin/)
+// $_cs_editable: when true (Live Editor pages), adds data-editable/data-bg-key hooks so
+//                heading/body text and the image can be edited in place.
+
+$_cs_base     ??= '';
+$_cs_editable ??= false;
 
 $_cs_page = $current_page ?? '';
 if (!$_cs_page) return;
@@ -13,39 +20,51 @@ $_cs_list = $_cs_rows->fetchAll();
 
 if (empty($_cs_list)) return;
 
+$_cs_img_stmt = get_db()->prepare('SELECT * FROM custom_section_images WHERE section_id = ? ORDER BY sort_order');
+
 $_cs_first = true;
 foreach ($_cs_list as $_cs) {
     $bg   = $_cs['bg_color']   ?: '#f4f6f8';
     $fg   = $_cs['text_color'] ?: '#333333';
     $yt   = trim($_cs['youtube_url']);
-    $img  = trim($_cs['image']);
+    $id   = (int)$_cs['id'];
 
     $yt_id = '';
     if ($yt && preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/', $yt, $m)) {
         $yt_id = $m[1];
     }
 
-    $img_url = '';
-    if ($img) {
-        $img_url = (strpos($img, '/') === false) ? 'uploads/' . $img : $img;
-    }
+    $_cs_img_stmt->execute([$id]);
+    $_cs_images = $_cs_img_stmt->fetchAll();
+
+    $headingAttrs = $_cs_editable ? ' data-editable data-type="custom_section" data-id="' . $id . '" data-field="heading"' : '';
+    $bodyAttrs    = $_cs_editable ? ' data-editable data-type="custom_section" data-id="' . $id . '" data-field="body"'    : '';
+    $linkAttrs    = $_cs_editable ? ' data-editable data-type="custom_section" data-id="' . $id . '" data-field="link_text"' : '';
 
     $anchor = $_cs_first ? ' id="custom-sections"' : '';
     echo '<section' . $anchor . ' style="background:' . h($bg) . ';color:' . h($fg) . ';padding:64px 24px;font-family:\'Segoe UI\',system-ui,sans-serif;border-top:4px solid #c0303b" class="custom-section">';
     echo '<div style="max-width:1100px;margin:0 auto">';
 
-    if ($_cs['heading']) {
-        echo '<h2 style="font-size:2rem;font-weight:700;margin:0 0 20px;line-height:1.2;color:' . h($fg) . '">' . sh($_cs['heading']) . '</h2>';
+    if ($_cs['heading'] || $_cs_editable) {
+        echo '<h2' . $headingAttrs . ' style="font-size:2rem;font-weight:700;margin:0 0 20px;line-height:1.2;color:' . h($fg) . '">' . sh($_cs['heading']) . '</h2>';
     }
 
-    if ($img_url || $yt_id) {
+    if (!empty($_cs_images) || $yt_id || $_cs_editable) {
         $mb = $_cs['body'] ? '28px' : '0';
-        echo '<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;margin-bottom:' . $mb . '">';
+        echo '<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin-bottom:' . $mb . '">';
 
-        if ($img_url) {
-            echo '<div style="flex:1 1 300px;min-width:0">';
-            echo '<img src="' . h($img_url) . '" alt="" style="width:100%;border-radius:10px;display:block;object-fit:cover;max-height:400px">';
+        foreach ($_cs_images as $_i => $_ci) {
+            $_ci_url = $_cs_base . (strpos($_ci['image'], '/') === false ? 'uploads/' . $_ci['image'] : $_ci['image']);
+            $imgAttrs = $_cs_editable ? ' data-bg-key="custom_section_' . $id . '_img' . $_i . '"' : '';
+            echo '<div' . $imgAttrs . ' style="flex:1 1 240px;min-width:0;position:relative">';
+            echo '<img src="' . h($_ci_url) . '" alt="" style="width:100%;border-radius:10px;display:block;object-fit:cover;max-height:320px">';
             echo '</div>';
+        }
+
+        // One extra empty slot in the Live Editor to add another image inline.
+        if ($_cs_editable) {
+            $_nextIdx = count($_cs_images);
+            echo '<div data-bg-key="custom_section_' . $id . '_img' . $_nextIdx . '" data-new-slot="1" style="flex:1 1 240px;min-width:0;min-height:120px;position:relative;border:2px dashed rgba(128,128,128,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:inherit;opacity:.6;font-size:.85rem">+ Add image</div>';
         }
 
         if ($yt_id) {
@@ -59,8 +78,13 @@ foreach ($_cs_list as $_cs) {
         echo '</div>';
     }
 
-    if ($_cs['body']) {
-        echo '<div style="font-size:1rem;line-height:1.7;color:' . h($fg) . '">' . sh($_cs['body']) . '</div>';
+    if ($_cs['body'] || $_cs_editable) {
+        echo '<div' . $bodyAttrs . ' style="font-size:1rem;line-height:1.7;color:' . h($fg) . '">' . sh($_cs['body']) . '</div>';
+    }
+
+    if ($_cs['link_url'] || $_cs_editable) {
+        $linkHref = $_cs['link_url'] ? h($_cs['link_url']) : '#';
+        echo '<a href="' . $linkHref . '"' . $linkAttrs . ' style="display:inline-block;margin-top:24px;padding:12px 28px;border-radius:50px;background:' . h($fg) . ';color:' . h($bg) . ';text-decoration:none;font-weight:700;font-size:.9rem">' . sh($_cs['link_text'] ?: 'Learn more') . '</a>';
     }
 
     echo '</div></section>';

@@ -284,6 +284,11 @@ require dirname(__DIR__) . '/_nav.php';
     </section>
 
 <?php
+$current_page = 'gallery';
+$_cs_base     = '../';
+$_cs_editable = true;
+require dirname(__DIR__) . '/_custom_sections.php';
+
 $_foot_base = '../';
 require_once dirname(__DIR__) . '/_footer.php';
 ?>

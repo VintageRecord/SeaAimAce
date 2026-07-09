@@ -169,9 +169,18 @@ function _ensure_schema(PDO $pdo): void {
             enabled      INTEGER NOT NULL DEFAULT 1,
             created_at   TEXT NOT NULL DEFAULT (datetime('now'))
         );
+
+        CREATE TABLE IF NOT EXISTS custom_section_images (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            section_id INTEGER NOT NULL,
+            image      TEXT NOT NULL DEFAULT '',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        );
     ");
     // Column migrations for existing databases
     try { $pdo->exec("ALTER TABLE pages ADD COLUMN css_content TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
+    try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN link_url TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
+    try { $pdo->exec("ALTER TABLE custom_sections ADD COLUMN link_text TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
 
     // Data migration: the team.php roster was static Nicepage markup that never matched the
     // team_members table, so early installs seeded generic placeholder rows (bio '', 01.png..06.png)
@@ -220,6 +229,22 @@ function _ensure_schema(PDO $pdo): void {
             // Delete the old key either way so this migration is a true one-time backfill and
             // never re-runs to stomp on a later, deliberate edit to the new key.
             $pdo->prepare('DELETE FROM settings WHERE key = ?')->execute([$old]);
+        }
+    } catch (\Exception $e) {}
+
+    // Data migration: custom_sections.image only ever held one photo. Custom sections now
+    // support a gallery of images via custom_section_images. Carry each section's existing
+    // single image forward as the first row of its gallery, once — guarded by "no rows for
+    // this section yet" so it never re-adds a duplicate after someone manages the gallery.
+    try {
+        $legacyImgs = $pdo->query("SELECT id, image FROM custom_sections WHERE image != ''")->fetchAll();
+        $hasImages  = $pdo->prepare('SELECT COUNT(*) FROM custom_section_images WHERE section_id = ?');
+        $insertImg  = $pdo->prepare('INSERT INTO custom_section_images (section_id, image, sort_order) VALUES (?, ?, 0)');
+        foreach ($legacyImgs as $row) {
+            $hasImages->execute([$row['id']]);
+            if ((int)$hasImages->fetchColumn() === 0) {
+                $insertImg->execute([$row['id'], $row['image']]);
+            }
         }
     } catch (\Exception $e) {}
 }

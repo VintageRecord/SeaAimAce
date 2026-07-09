@@ -20,18 +20,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'save') {
         $id = (int)($_POST['id'] ?? 0);
-        $page     = $_POST['page']      ?? 'home';
-        $heading  = trim($_POST['heading']  ?? '');
-        $body     = trim($_POST['body']     ?? '');
-        $image    = trim($_POST['image']    ?? '');
-        $youtube  = trim($_POST['youtube_url'] ?? '');
-        $bg       = trim($_POST['bg_color']    ?? '#ffffff');
-        $fg       = trim($_POST['text_color']  ?? '#333333');
-        $enabled  = isset($_POST['enabled']) ? 1 : 0;
-        $sort     = (int)($_POST['sort_order'] ?? 0);
+        $page      = $_POST['page']      ?? 'home';
+        $heading   = trim($_POST['heading']  ?? '');
+        $body      = trim($_POST['body']     ?? '');
+        $link_url  = trim($_POST['link_url']  ?? '');
+        $link_text = trim($_POST['link_text'] ?? '');
+        $youtube   = trim($_POST['youtube_url'] ?? '');
+        $bg        = trim($_POST['bg_color']    ?? '#ffffff');
+        $fg        = trim($_POST['text_color']  ?? '#333333');
+        $enabled   = isset($_POST['enabled']) ? 1 : 0;
+        $sort      = (int)($_POST['sort_order'] ?? 0);
 
-        // Handle image upload
-        if (!empty($_FILES['image_upload']) && $_FILES['image_upload']['error'] === UPLOAD_ERR_OK) {
+        if (!in_array($page, array_keys($pages_list))) $page = 'home';
+
+        if ($id > 0) {
+            $db->prepare('UPDATE custom_sections SET page=?,heading=?,body=?,link_url=?,link_text=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=? WHERE id=?')
+               ->execute([$page,$heading,$body,$link_url,$link_text,$youtube,$bg,$fg,$sort,$enabled,$id]);
+            redirect('custom-sections.php?edit=' . $id . '&flash=saved');
+        } else {
+            $max = $db->query('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections')->fetchColumn();
+            $db->prepare('INSERT INTO custom_sections (page,heading,body,link_url,link_text,youtube_url,bg_color,text_color,sort_order,enabled) VALUES (?,?,?,?,?,?,?,?,?,?)')
+               ->execute([$page,$heading,$body,$link_url,$link_text,$youtube,$bg,$fg,$max,1]);
+            $newId = $db->lastInsertId();
+            redirect('custom-sections.php?edit=' . $newId . '&flash=saved');
+        }
+
+    } elseif ($action === 'delete') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            $db->prepare('DELETE FROM custom_sections WHERE id=?')->execute([$id]);
+            $db->prepare('DELETE FROM custom_section_images WHERE section_id=?')->execute([$id]);
+        }
+        redirect('custom-sections.php?flash=deleted');
+
+    } elseif ($action === 'toggle') {
+        $id = (int)($_POST['id'] ?? 0);
+        $db->prepare('UPDATE custom_sections SET enabled = 1 - enabled WHERE id=?')->execute([$id]);
+        redirect('custom-sections.php');
+
+    } elseif ($action === 'add_image') {
+        $section_id = (int)($_POST['section_id'] ?? 0);
+        $image      = trim($_POST['image'] ?? '');
+
+        if ($section_id && !empty($_FILES['image_upload']) && $_FILES['image_upload']['error'] === UPLOAD_ERR_OK) {
             $f = $_FILES['image_upload'];
             $ALLOWED_EXT = ['jpg','jpeg','png','gif','webp','svg'];
             $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
@@ -46,27 +77,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        if (!in_array($page, array_keys($pages_list))) $page = 'home';
-
-        if ($id > 0) {
-            $db->prepare('UPDATE custom_sections SET page=?,heading=?,body=?,image=?,youtube_url=?,bg_color=?,text_color=?,sort_order=?,enabled=? WHERE id=?')
-               ->execute([$page,$heading,$body,$image,$youtube,$bg,$fg,$sort,$enabled,$id]);
-        } else {
-            $max = $db->query('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_sections')->fetchColumn();
-            $db->prepare('INSERT INTO custom_sections (page,heading,body,image,youtube_url,bg_color,text_color,sort_order,enabled) VALUES (?,?,?,?,?,?,?,?,?)')
-               ->execute([$page,$heading,$body,$image,$youtube,$bg,$fg,$max,1]);
+        if ($section_id && $image !== '') {
+            $max = $db->prepare('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_section_images WHERE section_id=?');
+            $max->execute([$section_id]);
+            $db->prepare('INSERT INTO custom_section_images (section_id,image,sort_order) VALUES (?,?,?)')
+               ->execute([$section_id, $image, $max->fetchColumn()]);
         }
-        redirect('custom-sections.php?flash=saved');
+        redirect('custom-sections.php?edit=' . $section_id . '&flash=saved');
 
-    } elseif ($action === 'delete') {
-        $id = (int)($_POST['id'] ?? 0);
-        if ($id) $db->prepare('DELETE FROM custom_sections WHERE id=?')->execute([$id]);
-        redirect('custom-sections.php?flash=deleted');
-
-    } elseif ($action === 'toggle') {
-        $id = (int)($_POST['id'] ?? 0);
-        $db->prepare('UPDATE custom_sections SET enabled = 1 - enabled WHERE id=?')->execute([$id]);
-        redirect('custom-sections.php');
+    } elseif ($action === 'delete_image') {
+        $id         = (int)($_POST['id'] ?? 0);
+        $section_id = (int)($_POST['section_id'] ?? 0);
+        if ($id) $db->prepare('DELETE FROM custom_section_images WHERE id=?')->execute([$id]);
+        redirect('custom-sections.php?edit=' . $section_id);
     }
 }
 
@@ -74,13 +97,22 @@ if (isset($_GET['flash'])) $flash = $_GET['flash'];
 
 $edit_id = isset($_GET['edit']) ? (int)$_GET['edit'] : 0;
 $edit_row = null;
+$edit_images = [];
 if ($edit_id) {
     $edit_row = $db->prepare('SELECT * FROM custom_sections WHERE id=?');
     $edit_row->execute([$edit_id]);
     $edit_row = $edit_row->fetch();
+    if ($edit_row) {
+        $edit_images_stmt = $db->prepare('SELECT * FROM custom_section_images WHERE section_id=? ORDER BY sort_order');
+        $edit_images_stmt->execute([$edit_id]);
+        $edit_images = $edit_images_stmt->fetchAll();
+    }
 }
 
-$sections = $db->query('SELECT * FROM custom_sections ORDER BY page, sort_order')->fetchAll();
+$sections = $db->query(
+    'SELECT cs.*, (SELECT COUNT(*) FROM custom_section_images WHERE section_id = cs.id) AS image_count
+     FROM custom_sections cs ORDER BY page, sort_order'
+)->fetchAll();
 $media_files = $db->query("SELECT filename FROM media ORDER BY id DESC")->fetchAll(PDO::FETCH_COLUMN);
 $new_images = [];
 $ni_dir = dirname(__DIR__) . '/new_images';
@@ -134,6 +166,12 @@ include '_layout.php';
 .cs-info { font-size:.72rem;color:#94a3b8;margin-top:3px; }
 
 .cs-empty { text-align:center;padding:40px;color:#94a3b8;font-size:.9rem; }
+
+.cs-image-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px; }
+.cs-image-item { position:relative;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0; }
+.cs-image-item img { width:100%;aspect-ratio:1;object-fit:cover;display:block; }
+.cs-image-item form { position:absolute;top:5px;right:5px; }
+.cs-image-remove { background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:.68rem;cursor:pointer;line-height:1; }
 
 /* picker modal */
 #cs-picker-modal { display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center; }
@@ -200,15 +238,18 @@ include '_layout.php';
       </div>
       <div>
         <div class="cs-field">
-          <label>Image</label>
-          <?php if (!empty($edit_row['image'])): ?>
-          <img src="../uploads/<?= h(ltrim($edit_row['image'],'uploads/')) ?>" class="cs-preview-thumb" id="cs-img-preview" alt="">
+          <label>Images</label>
+          <?php if ($edit_row): ?>
+          <p class="cs-info">Manage this section's photos in the Images panel below — you can add as many as you like.</p>
           <?php else: ?>
-          <div id="cs-img-preview" style="display:none"></div>
+          <p class="cs-info">Save the section first, then you'll be able to add one or more images to it.</p>
           <?php endif; ?>
-          <input type="file" name="image_upload" accept="image/*" style="margin-top:8px;font-size:.78rem" onchange="csPreviewFile(this)">
-          <input type="text" name="image" id="cs-img-val" value="<?= h($edit_row['image'] ?? '') ?>" placeholder="or type filename" style="margin-top:6px">
-          <button type="button" class="cs-pick-btn" onclick="csOpenPicker()">&#128247; Choose from Library</button>
+        </div>
+        <div class="cs-field">
+          <label>Link (optional button)</label>
+          <input type="text" name="link_text" value="<?= h($edit_row['link_text'] ?? '') ?>" placeholder="Button text, e.g. Learn more" style="margin-bottom:6px">
+          <input type="url" name="link_url" value="<?= h($edit_row['link_url'] ?? '') ?>" placeholder="https://... or a page like about.php">
+          <p class="cs-info">Shown as a button under the section text when both are filled in</p>
         </div>
         <div class="cs-field">
           <label>YouTube URL</label>
@@ -250,6 +291,41 @@ include '_layout.php';
   </form>
 </div>
 
+<?php if ($edit_row): ?>
+<!-- Images for this section -->
+<div class="cs-form-box">
+  <h3>Images for "<?= h($edit_row['heading'] ?: 'this section') ?>"</h3>
+  <?php if (!empty($edit_images)): ?>
+  <div class="cs-image-grid">
+    <?php foreach ($edit_images as $ei): ?>
+    <?php $ei_url = strpos($ei['image'], '/') === false ? '../uploads/' . h($ei['image']) : '../' . h($ei['image']); ?>
+    <div class="cs-image-item">
+      <img src="<?= $ei_url ?>" alt="">
+      <form method="post" onsubmit="return confirm('Remove this image?')">
+        <input type="hidden" name="_action" value="delete_image">
+        <input type="hidden" name="id" value="<?= (int)$ei['id'] ?>">
+        <input type="hidden" name="section_id" value="<?= (int)$edit_row['id'] ?>">
+        <button type="submit" class="cs-image-remove" title="Remove">&#10005;</button>
+      </form>
+    </div>
+    <?php endforeach; ?>
+  </div>
+  <?php else: ?>
+  <p class="cs-info" style="margin-bottom:14px">No images yet.</p>
+  <?php endif; ?>
+
+  <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;margin-top:10px">
+    <form method="post" enctype="multipart/form-data" style="display:flex;gap:8px;align-items:center">
+      <input type="hidden" name="_action" value="add_image">
+      <input type="hidden" name="section_id" value="<?= (int)$edit_row['id'] ?>">
+      <input type="file" name="image_upload" accept="image/*" style="font-size:.78rem">
+      <button type="submit" class="cs-pick-btn">Upload &amp; Add</button>
+    </form>
+    <button type="button" class="cs-pick-btn" onclick="csOpenPicker()">&#128247; Choose from Library</button>
+  </div>
+</div>
+<?php endif; ?>
+
 <!-- Existing sections table -->
 <?php if (empty($sections)): ?>
 <div class="cs-empty">No custom sections yet. Add one above.</div>
@@ -259,7 +335,7 @@ include '_layout.php';
     <tr>
       <th>Page</th>
       <th>Heading</th>
-      <th>Has Image</th>
+      <th>Images</th>
       <th>Has Video</th>
       <th>Status</th>
       <th>Order</th>
@@ -271,7 +347,7 @@ include '_layout.php';
   <tr>
     <td><span class="cs-page-badge"><?= h($pages_list[$cs['page']] ?? $cs['page']) ?></span></td>
     <td><?= h(mb_strimwidth($cs['heading'], 0, 50, '…')) ?: '<em style="color:#94a3b8">(no heading)</em>' ?></td>
-    <td><?= $cs['image'] ? '&#10003;' : '—' ?></td>
+    <td><?= (int)$cs['image_count'] ?: '—' ?></td>
     <td><?= $cs['youtube_url'] ? '&#9654;' : '—' ?></td>
     <td>
       <form method="post" style="display:inline">
@@ -326,6 +402,12 @@ include '_layout.php';
   </div>
 </div>
 
+<form method="post" id="cs-add-image-form" style="display:none">
+  <input type="hidden" name="_action" value="add_image">
+  <input type="hidden" name="section_id" value="<?= (int)($edit_row['id'] ?? 0) ?>">
+  <input type="hidden" name="image" id="cs-add-image-path">
+</form>
+
 <script>
 const CS_PAGE_URLS = <?= json_encode($cs_page_urls) ?>;
 // ---- Rich text body editor ----
@@ -376,38 +458,10 @@ document.querySelector('form').addEventListener('submit', function() {
   _csBodyTA.value = _csEditable.innerHTML;
 });
 
-// ---- Image preview ----
-function csPreviewFile(input) {
-  if (!input.files || !input.files[0]) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var el = document.getElementById('cs-img-preview');
-    if (el.tagName === 'DIV') {
-      var img = document.createElement('img');
-      img.className = 'cs-preview-thumb';
-      img.id = 'cs-img-preview';
-      el.parentNode.replaceChild(img, el);
-      el = img;
-    }
-    el.src = e.target.result;
-    el.style.display = 'block';
-  };
-  reader.readAsDataURL(input.files[0]);
-}
+// ---- Add image from library picker ----
 function csPickImg(fname) {
-  document.getElementById('cs-img-val').value = fname;
-  var el = document.getElementById('cs-img-preview');
-  var url = fname.indexOf('/') === -1 ? '../uploads/' + fname : '../' + fname;
-  if (el.tagName === 'DIV') {
-    var img = document.createElement('img');
-    img.className = 'cs-preview-thumb';
-    img.id = 'cs-img-preview';
-    el.parentNode.replaceChild(img, el);
-    el = img;
-  }
-  el.src = url;
-  el.style.display = 'block';
-  csClosePicker();
+  document.getElementById('cs-add-image-path').value = fname;
+  document.getElementById('cs-add-image-form').submit();
 }
 
 // ---- Picker modal ----

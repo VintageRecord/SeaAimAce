@@ -35,26 +35,29 @@ try {
         case 'amenity':
         case 'pricing':
         case 'team_member':
+        case 'custom_section':
             $id    = (int)($data['id'] ?? 0);
             $field = preg_replace('/[^a-z0-9_]/', '', $data['field'] ?? '');
             if (!$id || !$field) throw new Exception('Invalid id/field');
 
             $table_map = [
-                'feature'     => 'features',
-                'space'       => 'spaces',
-                'amenity'     => 'amenities',
-                'pricing'     => 'pricing_plans',
-                'team_member' => 'team_members',
+                'feature'        => 'features',
+                'space'          => 'spaces',
+                'amenity'        => 'amenities',
+                'pricing'        => 'pricing_plans',
+                'team_member'    => 'team_members',
+                'custom_section' => 'custom_sections',
             ];
             $table = $table_map[$type];
 
             // Whitelist allowed fields per table
             $allowed = [
-                'features'      => ['icon','title','description','stat1_num','stat1_label','stat2_num','stat2_label','stat3_num','stat3_label'],
-                'spaces'        => ['title','description','tag1','tag2','tag3'],
-                'amenities'     => ['icon','title','description'],
-                'pricing_plans' => ['name','button_text'],
-                'team_members'  => ['name','role','bio'],
+                'features'       => ['icon','title','description','stat1_num','stat1_label','stat2_num','stat2_label','stat3_num','stat3_label'],
+                'spaces'         => ['title','description','tag1','tag2','tag3'],
+                'amenities'      => ['icon','title','description'],
+                'pricing_plans'  => ['name','button_text'],
+                'team_members'   => ['name','role','bio'],
+                'custom_sections'=> ['heading','body','link_text'],
             ];
             if (!in_array($field, $allowed[$table] ?? [])) throw new Exception('Field not allowed');
 
@@ -81,6 +84,23 @@ try {
             }
             if (preg_match('/^team_member_(\d+)$/', $key, $mm)) {
                 $db->prepare('UPDATE team_members SET image = ? WHERE id = ?')->execute([$src, (int)$mm[1]]);
+            } elseif (preg_match('/^custom_section_(\d+)_img(\d+)$/', $key, $mm)) {
+                $sectionId = (int)$mm[1];
+                $index     = (int)$mm[2];
+                $rows = $db->prepare('SELECT id FROM custom_section_images WHERE section_id = ? ORDER BY sort_order');
+                $rows->execute([$sectionId]);
+                $rows = $rows->fetchAll();
+                if (isset($rows[$index])) {
+                    $db->prepare('UPDATE custom_section_images SET image = ? WHERE id = ?')->execute([$src, $rows[$index]['id']]);
+                } elseif ($index === count($rows)) {
+                    // The Live Editor's one extra "+ Add image" slot — append a new row.
+                    $maxSort = $db->prepare('SELECT COALESCE(MAX(sort_order),0)+10 FROM custom_section_images WHERE section_id = ?');
+                    $maxSort->execute([$sectionId]);
+                    $db->prepare('INSERT INTO custom_section_images (section_id, image, sort_order) VALUES (?, ?, ?)')
+                       ->execute([$sectionId, $src, $maxSort->fetchColumn()]);
+                } else {
+                    throw new Exception('Invalid image index');
+                }
             } else {
                 save_setting('img_src_' . $key, $src);
             }

@@ -720,6 +720,11 @@ require dirname(__DIR__) . '/_nav.php';
     </section>
 
 <?php
+$current_page = 'home';
+$_cs_base     = '../';
+$_cs_editable = true;
+require dirname(__DIR__) . '/_custom_sections.php';
+
 $_foot_base = '../';
 require_once dirname(__DIR__) . '/_footer.php';
 ?>
@@ -1047,6 +1052,7 @@ function switchImgTab(tab) {
 async function pickImg(src) {
     if (!activeImg) return;
     const displaySrc = '../' + src;
+    const wasNewSlot = activeImg.dataset.newSlot === '1';
     closeImgPicker();
     if (activeImgType === 'bg') {
         const existing = activeImg.style.backgroundImage || '';
@@ -1064,6 +1070,9 @@ async function pickImg(src) {
         });
         const json = await res.json();
         showIndicator(json.success ? 'Image updated' : (json.error || 'Save failed'), !json.success);
+        // A custom section's "+ Add image" slot just became a real image — reload so a fresh
+        // empty slot appears for adding another one.
+        if (json.success && wasNewSlot) location.reload();
     } catch(e) { showIndicator('Network error', true); }
 }
 imgPickerEl.addEventListener('click', e => { if (e.target === imgPickerEl) closeImgPicker(); });
