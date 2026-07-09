@@ -183,45 +183,31 @@ window.addEventListener('beforeunload', e => {
 });
 document.addEventListener('click', () => { hint.style.opacity = '0'; }, { once: true });
 
-// ── Image change on hover ──────────────────────────────────────
-const imgOverlay  = document.getElementById('cms-img-overlay');
+// ── Image change buttons ──────────────────────────────────────
 const imgPickerEl = document.getElementById('cms-img-picker');
 let activeImg = null;
-let activeImgType = 'src'; // 'src' for <img data-img-key> or 'bg' for [data-bg-key]
+let activeImgType = 'src';
 
-function attachImgHover(el, type) {
-    el.style.cursor = 'crosshair';
-    el.addEventListener('mouseenter', () => {
+function injectImgBtn(el, type) {
+    // Find a positioned ancestor to attach the button to
+    const anchor = el.closest('.u-gallery-item') || el.closest('.u-back-slide') || el.parentElement || el;
+    const existed = getComputedStyle(anchor).position;
+    if (existed === 'static') anchor.style.position = 'relative';
+
+    const btn = document.createElement('button');
+    btn.innerHTML = '&#128247;';
+    btn.title = 'Change image';
+    btn.style.cssText = 'position:absolute;top:6px;right:6px;z-index:9999;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:4px;padding:4px 7px;font-size:16px;cursor:pointer;line-height:1;';
+    btn.addEventListener('click', e => {
+        e.preventDefault(); e.stopPropagation();
         activeImg = el; activeImgType = type;
-        const rect = el.getBoundingClientRect();
-        const ow = imgOverlay.offsetWidth || 140;
-        imgOverlay.style.top  = (rect.top  + 8 + window.scrollY) + 'px';
-        imgOverlay.style.left = (Math.max(8, rect.right - ow - 8)) + 'px';
-        imgOverlay.style.display = 'flex';
+        openImgPicker();
     });
-    el.addEventListener('mouseleave', () => {
-        setTimeout(() => {
-            if (!imgOverlay.matches(':hover') && !el.matches(':hover')) imgOverlay.style.display = 'none';
-        }, 80);
-    });
+    anchor.appendChild(btn);
 }
-document.querySelectorAll('[data-img-key]').forEach(el => {
-    // If the img is covered by a sibling overlay (e.g. u-over-slide), attach hover
-    // to the closest gallery-item or back-slide wrapper so the overlay doesn't block it
-    const wrapper = el.closest('.u-gallery-item') || el.closest('.u-back-slide') || el;
-    attachImgHover(wrapper, 'src');
-    wrapper._imgEl = el; // remember the actual <img> for src updates
-});
-document.querySelectorAll('[data-bg-key]').forEach(el => attachImgHover(el, 'bg'));
 
-if (imgOverlay) {
-    imgOverlay.addEventListener('mouseleave', () => {
-        setTimeout(() => {
-            const over = [...document.querySelectorAll('[data-img-key],[data-bg-key],.u-gallery-item,.u-back-slide')].some(i => i.matches(':hover'));
-            if (!over) imgOverlay.style.display = 'none';
-        }, 80);
-    });
-}
+document.querySelectorAll('[data-img-key]').forEach(el => injectImgBtn(el, 'src'));
+document.querySelectorAll('[data-bg-key]').forEach(el => injectImgBtn(el, 'bg'));
 function openImgPicker()  { if (imgPickerEl) imgPickerEl.style.display = 'flex'; }
 function closeImgPicker() { if (imgPickerEl) imgPickerEl.style.display = 'none'; }
 function switchImgTab(tab) {
@@ -234,9 +220,6 @@ async function pickImg(src) {
     if (!activeImg) return;
     const displaySrc = '../' + src;
     closeImgPicker();
-    if (imgOverlay) imgOverlay.style.display = 'none';
-    // For src type: the activeImg may be a wrapper; the real <img> is in _imgEl
-    const imgEl = activeImgType === 'src' ? (activeImg._imgEl || activeImg) : activeImg;
     // Update the DOM element
     if (activeImgType === 'bg') {
         // Preserve any existing gradient prefix (e.g. linear-gradient(...), url(...))
@@ -245,9 +228,9 @@ async function pickImg(src) {
         const prefix = gradientMatch ? gradientMatch[1] : '';
         activeImg.style.backgroundImage = prefix + "url('" + displaySrc + "')";
     } else {
-        imgEl.src = displaySrc;
+        activeImg.src = displaySrc;
     }
-    const key = activeImgType === 'bg' ? activeImg.dataset.bgKey : imgEl.dataset.imgKey;
+    const key = activeImgType === 'bg' ? activeImg.dataset.bgKey : activeImg.dataset.imgKey;
     try {
         const res  = await fetch('live-edit-save.php', {
             method: 'POST',
