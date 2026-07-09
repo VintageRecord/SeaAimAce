@@ -16,9 +16,19 @@ if ($_sec_edit_id) {
     $_sec_edit = $s->fetch() ?: null;
 }
 
-$_sec_rows = $db->prepare('SELECT * FROM custom_sections WHERE page=? ORDER BY sort_order');
+$_sec_rows = $db->prepare(
+    'SELECT cs.*, (SELECT COUNT(*) FROM custom_section_images WHERE section_id = cs.id) AS image_count
+     FROM custom_sections cs WHERE page=? ORDER BY sort_order'
+);
 $_sec_rows->execute([$_sec_page]);
 $_sec_list = $_sec_rows->fetchAll();
+
+$_sec_edit_images = [];
+if ($_sec_edit) {
+    $_sec_img_stmt = $db->prepare('SELECT * FROM custom_section_images WHERE section_id=? ORDER BY sort_order');
+    $_sec_img_stmt->execute([$_sec_edit['id']]);
+    $_sec_edit_images = $_sec_img_stmt->fetchAll();
+}
 
 $_sec_media = $db->query("SELECT filename FROM media ORDER BY id DESC")->fetchAll(PDO::FETCH_COLUMN);
 $_sec_new_images = [];
@@ -51,7 +61,7 @@ if (is_dir($_sec_ni_dir)) {
   <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:8px">
     <div style="flex:1;min-width:0">
       <span style="font-size:.85rem;font-weight:600;color:var(--text)"><?= h($_sr['heading'] ?: '(no heading)') ?></span>
-      <?php if ($_sr['image']): ?><span style="font-size:.7rem;color:var(--text-muted);margin-left:8px">&#128247;</span><?php endif; ?>
+      <?php if ($_sr['image_count']): ?><span style="font-size:.7rem;color:var(--text-muted);margin-left:8px">&#128247; <?= (int)$_sr['image_count'] ?></span><?php endif; ?>
       <?php if ($_sr['youtube_url']): ?><span style="font-size:.7rem;color:var(--text-muted);margin-left:4px">&#9654;</span><?php endif; ?>
     </div>
     <form method="post" style="display:inline">
@@ -114,19 +124,31 @@ if (is_dir($_sec_ni_dir)) {
       </div>
 
       <div class="form-group">
-        <label>Image</label>
-        <?php
-        $_si = $_sec_edit['image'] ?? '';
-        $_si_url = $_si ? (strpos($_si,'/') !== false ? '../'.$_si : '../uploads/'.$_si) : '';
-        ?>
-        <?php if ($_si_url): ?>
-        <img src="<?= h($_si_url) ?>" id="sec-img-preview" style="max-width:140px;border-radius:6px;display:block;margin-bottom:6px" alt="">
+        <label>Images</label>
+        <?php if ($_sec_edit): ?>
+        <div style="font-size:.72rem;color:#94a3b8">Manage this section's photos in the Images panel below.</div>
         <?php else: ?>
-        <div id="sec-img-preview" style="display:none"></div>
+        <div style="font-size:.72rem;color:#94a3b8">Save the section first, then you can add one or more images to it.</div>
         <?php endif; ?>
-        <input type="file" name="sec_image_upload" accept="image/*" style="font-size:.78rem;margin-bottom:6px" onchange="secPreviewFile(this)">
-        <input type="text" name="sec_image" id="sec-img-val" value="<?= h($_si) ?>" placeholder="or pick from library" style="margin-bottom:4px">
-        <button type="button" class="sec-tb-btn" onclick="secOpenPicker()">&#128247; Library</button>
+      </div>
+
+      <div class="form-group">
+        <label>Image Size</label>
+        <?php $_sec_img_size = $_sec_edit['image_size'] ?? 'medium'; ?>
+        <select name="sec_image_size">
+          <option value="small"  <?= $_sec_img_size === 'small'  ? 'selected' : '' ?>>Small</option>
+          <option value="medium" <?= $_sec_img_size === 'medium' ? 'selected' : '' ?>>Medium</option>
+          <option value="large"  <?= $_sec_img_size === 'large'  ? 'selected' : '' ?>>Large</option>
+          <option value="full"   <?= $_sec_img_size === 'full'   ? 'selected' : '' ?>>Full width</option>
+        </select>
+        <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Applies to every photo in this section</div>
+      </div>
+
+      <div class="form-group">
+        <label>Link (optional button)</label>
+        <input type="text" name="sec_link_text" value="<?= h($_sec_edit['link_text'] ?? '') ?>" placeholder="Button text, e.g. Learn more" style="margin-bottom:6px">
+        <input type="url" name="sec_link_url" value="<?= h($_sec_edit['link_url'] ?? '') ?>" placeholder="https://... or a page like about.php">
+        <div style="font-size:.72rem;color:#94a3b8;margin-top:3px">Shown as a button under the section text when both are filled in</div>
       </div>
 
       <div class="form-group">
@@ -169,6 +191,46 @@ if (is_dir($_sec_ni_dir)) {
     </button>
   </form>
 </div>
+
+<?php if ($_sec_edit): ?>
+<!-- Images for this section -->
+<div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:24px">
+  <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:14px">Images for "<?= h($_sec_edit['heading'] ?: 'this section') ?>"</div>
+  <?php if (!empty($_sec_edit_images)): ?>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-bottom:14px">
+    <?php foreach ($_sec_edit_images as $_ei): ?>
+    <?php $_ei_url = strpos($_ei['image'], '/') === false ? '../uploads/' . h($_ei['image']) : '../' . h($_ei['image']); ?>
+    <div style="position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--border)">
+      <img src="<?= $_ei_url ?>" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;display:block">
+      <form method="post" onsubmit="return confirm('Remove this image?')" style="position:absolute;top:5px;right:5px">
+        <input type="hidden" name="_sec_action" value="delete_image">
+        <input type="hidden" name="_sec_img_id" value="<?= (int)$_ei['id'] ?>">
+        <input type="hidden" name="_sec_id" value="<?= (int)$_sec_edit['id'] ?>">
+        <button type="submit" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:.68rem;cursor:pointer;line-height:1">&#10005;</button>
+      </form>
+    </div>
+    <?php endforeach; ?>
+  </div>
+  <?php else: ?>
+  <p style="font-size:.78rem;color:var(--text-muted);margin-bottom:14px">No images yet.</p>
+  <?php endif; ?>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+    <form method="post" enctype="multipart/form-data" style="display:flex;gap:8px;align-items:center">
+      <input type="hidden" name="_sec_action" value="add_image">
+      <input type="hidden" name="_sec_id" value="<?= (int)$_sec_edit['id'] ?>">
+      <input type="file" name="sec_image_upload" accept="image/*" style="font-size:.78rem">
+      <button type="submit" class="sec-tb-btn">Upload &amp; Add</button>
+    </form>
+    <button type="button" class="sec-tb-btn" onclick="secOpenPicker()">&#128247; Choose from Library</button>
+  </div>
+</div>
+
+<form method="post" id="sec-add-image-form" style="display:none">
+  <input type="hidden" name="_sec_action" value="add_image">
+  <input type="hidden" name="_sec_id" value="<?= (int)$_sec_edit['id'] ?>">
+  <input type="hidden" name="sec_new_image" id="sec-add-image-path">
+</form>
+<?php endif; ?>
 
 <!-- Image picker modal -->
 <div id="sec-picker-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);align-items:center;justify-content:center">
@@ -235,28 +297,10 @@ document.querySelectorAll('form').forEach(function(f) {
   f.addEventListener('submit', function() { _ta.value = _ed.innerHTML; });
 });
 
-window.secPreviewFile = function(input) {
-  if(!input.files||!input.files[0]) return;
-  var r=new FileReader();
-  r.onload=function(e) { secShowPreview(e.target.result); };
-  r.readAsDataURL(input.files[0]);
-};
-function secShowPreview(url) {
-  var el=document.getElementById('sec-img-preview');
-  if(el.tagName==='DIV') {
-    var img=document.createElement('img');
-    img.id='sec-img-preview';
-    img.style.cssText='max-width:140px;border-radius:6px;display:block;margin-bottom:6px';
-    el.parentNode.replaceChild(img,el); el=img;
-  }
-  el.src=url; el.style.display='block';
-}
-
 window.secPickImg = function(fname) {
-  document.getElementById('sec-img-val').value=fname;
-  var url=fname.indexOf('/')===−1?'../uploads/'+fname:'../'+fname;
-  secShowPreview(url);
-  secClosePicker();
+  var pathEl = document.getElementById('sec-add-image-path');
+  var formEl = document.getElementById('sec-add-image-form');
+  if (pathEl && formEl) { pathEl.value = fname; formEl.submit(); }
 };
 
 window.secOpenPicker  = function() { document.getElementById('sec-picker-modal').style.display='flex'; };
