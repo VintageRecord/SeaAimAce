@@ -79,7 +79,7 @@ $current_page = 'gallery';
           <div class="u-gallery-inner u-gallery-inner-1">
             <div class="u-effect-fade u-effect-hover-zoom u-gallery-item">
               <div class="u-back-slide" data-image-width="1380" data-image-height="920">
-                <img class="u-back-image u-expanded" src="new_images/3.jpg" alt="Sample Headline">
+                <img class="u-back-image u-expanded" src="<?= h(setting('img_src_gallery_s3_img1','new_images/3.jpg')) ?>" alt="Sample Headline">
               </div>
               <div class="u-over-slide u-shading u-over-slide-1">
                 <h3 class="u-gallery-heading">Sample Headline</h3>
@@ -88,7 +88,7 @@ $current_page = 'gallery';
             </div>
             <div class="u-effect-fade u-effect-hover-zoom u-gallery-item">
               <div class="u-back-slide" data-image-width="1480" data-image-height="833">
-                <img class="u-back-image u-expanded" src="new_images/37.jpg" alt="Sample Headline">
+                <img class="u-back-image u-expanded" src="<?= h(setting('img_src_gallery_s3_img2','new_images/37.jpg')) ?>" alt="Sample Headline">
               </div>
               <div class="u-over-slide u-shading u-over-slide-2">
                 <h3 class="u-gallery-heading">Sample Headline</h3>
@@ -97,7 +97,7 @@ $current_page = 'gallery';
             </div>
             <div class="u-effect-fade u-effect-hover-zoom u-gallery-item">
               <div class="u-back-slide" data-image-width="740" data-image-height="833">
-                <img class="u-back-image u-expanded" src="new_images/fd.jpg" alt="Sample Headline">
+                <img class="u-back-image u-expanded" src="<?= h(setting('img_src_gallery_s3_img3','new_images/fd.jpg')) ?>" alt="Sample Headline">
               </div>
               <div class="u-over-slide u-shading u-over-slide-3">
                 <h3 class="u-gallery-heading">Sample Headline</h3>
@@ -106,19 +106,19 @@ $current_page = 'gallery';
             </div>
             <div class="u-effect-fade u-effect-hover-zoom u-gallery-item">
               <div class="u-back-slide" data-image-width="800" data-image-height="800">
-                <img class="u-back-image u-expanded" src="new_images/lifestyle-people-living-e.jpg">
+                <img class="u-back-image u-expanded" src="<?= h(setting('img_src_gallery_s3_img4','new_images/lifestyle-people-living-e.jpg')) ?>">
               </div>
               <div class="u-over-slide u-shading u-over-slide-4"></div>
             </div>
             <div class="u-effect-fade u-effect-hover-zoom u-gallery-item">
               <div class="u-back-slide" data-image-width="1380" data-image-height="920">
-                <img class="u-back-image u-expanded" src="new_images/t5.jpg">
+                <img class="u-back-image u-expanded" src="<?= h(setting('img_src_gallery_s3_img5','new_images/t5.jpg')) ?>">
               </div>
               <div class="u-over-slide u-shading u-over-slide-5"></div>
             </div>
             <div class="u-effect-fade u-effect-hover-zoom u-gallery-item">
               <div class="u-back-slide" data-image-width="800" data-image-height="1200">
-                <img class="u-back-image u-expanded" src="new_images/r6.jpg">
+                <img class="u-back-image u-expanded" src="<?= h(setting('img_src_gallery_s3_img6','new_images/r6.jpg')) ?>">
               </div>
               <div class="u-over-slide u-shading u-over-slide-6"></div>
             </div>
