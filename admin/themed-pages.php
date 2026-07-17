@@ -20,7 +20,7 @@ $show_preview = false;
 include '_layout.php';
 ?>
 
-<?php if (isset($_GET['applied'])):
+<?php if (isset($_GET['applied']) && is_string($_GET['applied'])):
     $applied_name = $THEME_BUNDLES[$_GET['applied']]['name'] ?? $_GET['applied'];
 ?>
 <div class="alert alert-success">"<?= h($applied_name) ?>" theme applied — new pages were created as drafts below. Edit each one, then publish and add it to your nav if you want it public.</div>

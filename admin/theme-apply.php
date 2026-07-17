@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(['success' => false, 'error' => 'POST required'], 405);
 }
 
-$bundle_id = trim($_POST['bundle'] ?? '');
+$bundle_id = is_string($_POST['bundle'] ?? null) ? trim($_POST['bundle']) : '';
 if (!isset($THEME_BUNDLES[$bundle_id])) {
     respond(['success' => false, 'error' => 'Unknown theme bundle'], 400);
 }

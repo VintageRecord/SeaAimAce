@@ -22,6 +22,22 @@ if (!empty(array_intersect($existing_labels, $forge_labels))) {
     foreach ($default_nav_links as $i => $nl) $nlst->execute([...$nl, $i]);
 }
 
+$nav_template_options = [
+    'default'  => ['label' => 'Default',  'desc' => 'Logo left, links right, mobile hamburger menu'],
+    'centered' => ['label' => 'Centered', 'desc' => 'Logo centered on top, links centered below'],
+];
+$footer_template_options = [
+    'default' => ['label' => 'Default', 'desc' => 'Brand + link columns, bottom bar'],
+    'minimal' => ['label' => 'Minimal', 'desc' => 'Single row — logo, copyright, links'],
+];
+
+// Hash of the current nav_links table, used to detect edits made elsewhere
+// (e.g. Themed Pages' "Add to Nav") between when this form was loaded and submitted.
+function nav_links_snapshot(PDO $db): string {
+    $rows = $db->query('SELECT id, label, url, sort_order FROM nav_links ORDER BY id')->fetchAll();
+    return md5(json_encode($rows));
+}
+
 $flash = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -38,19 +54,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Settings
     foreach (['nav_logo_text','nav_book_btn_text','nav_book_btn_href',
               'nav_bg_color','nav_text_color','site_tagline',
-              'footer_copyright','footer_bg_color','footer_text_color',
-              'nav_template','footer_template'] as $f) {
+              'footer_copyright','footer_bg_color','footer_text_color'] as $f) {
         if (isset($_POST[$f])) save_setting($f, trim($_POST[$f]));
     }
+    if (isset($_POST['nav_template']) && array_key_exists($_POST['nav_template'], $nav_template_options)) {
+        save_setting('nav_template', $_POST['nav_template']);
+    }
+    if (isset($_POST['footer_template']) && array_key_exists($_POST['footer_template'], $footer_template_options)) {
+        save_setting('footer_template', $_POST['footer_template']);
+    }
 
-    // Nav links
-    $nl_labels = $_POST['nl_label'] ?? [];
-    $nl_urls   = $_POST['nl_url']   ?? [];
-    $db->exec('DELETE FROM nav_links');
-    $nlst = $db->prepare('INSERT INTO nav_links (label,url,sort_order) VALUES (?,?,?)');
-    foreach ($nl_labels as $i => $label) {
-        if (trim($label) === '') continue;
-        $nlst->execute([trim($label), trim($nl_urls[$i] ?? ''), $i]);
+    // Nav links — skipped (with a flash warning) if the table changed since this
+    // form was loaded, e.g. via Themed Pages' "Add to Nav", so we don't silently
+    // wipe out a link added from another tab.
+    $nav_conflict = isset($_POST['nav_snapshot']) && $_POST['nav_snapshot'] !== nav_links_snapshot($db);
+    if (!$nav_conflict) {
+        $nl_labels = $_POST['nl_label'] ?? [];
+        $nl_urls   = $_POST['nl_url']   ?? [];
+        $db->exec('DELETE FROM nav_links');
+        $nlst = $db->prepare('INSERT INTO nav_links (label,url,sort_order) VALUES (?,?,?)');
+        foreach ($nl_labels as $i => $label) {
+            if (trim($label) === '') continue;
+            $nlst->execute([trim($label), trim($nl_urls[$i] ?? ''), $i]);
+        }
     }
 
     // Footer columns
@@ -68,6 +94,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fcst->execute([trim($heading), json_encode($links), $i]);
     }
 
+    if ($nav_conflict) {
+        $nav_conflict_msg = 'Other settings were saved, but Nav Links were not — they changed elsewhere (e.g. Themed Pages "Add to Nav") since this page was loaded. Reload and try again.';
+        if (!empty($_SERVER['HTTP_X_AJAX'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => $nav_conflict_msg]);
+            exit;
+        }
+        header('Location: navigation.php?flash=nav_conflict');
+        exit;
+    }
+
     if (!empty($_SERVER['HTTP_X_AJAX'])) {
         header('Content-Type: application/json');
         echo json_encode(['success' => true]);
@@ -83,18 +120,10 @@ if (isset($_GET['flash'])) {
 
 $nav_links      = $db->query('SELECT * FROM nav_links ORDER BY sort_order')->fetchAll();
 $footer_columns = $db->query('SELECT * FROM footer_columns ORDER BY sort_order')->fetchAll();
+$nav_snapshot   = nav_links_snapshot($db);
 
 $nav_template    = setting('nav_template', 'default');
 $footer_template = setting('footer_template', 'default');
-
-$nav_template_options = [
-    'default'  => ['label' => 'Default',  'desc' => 'Logo left, links right, mobile hamburger menu'],
-    'centered' => ['label' => 'Centered', 'desc' => 'Logo centered on top, links centered below'],
-];
-$footer_template_options = [
-    'default' => ['label' => 'Default', 'desc' => 'Brand + link columns, bottom bar'],
-    'minimal' => ['label' => 'Minimal', 'desc' => 'Single row — logo, copyright, links'],
-];
 
 $page_title = 'Navigation & Footer';
 $active_nav = 'navigation';
@@ -181,9 +210,14 @@ include '_layout.php';
 <div class="alert alert-success" style="background:#d4edda;border:1px solid #c3e6cb;color:#155724;padding:10px 16px;border-radius:6px;margin-bottom:16px;">
     Navigation reset to defaults.
 </div>
+<?php elseif ($flash === 'nav_conflict'): ?>
+<div class="alert" style="background:#3a2a0a;border:1px solid #5a4a1a;color:#e0b84a;padding:10px 16px;border-radius:6px;margin-bottom:16px;">
+    Other settings were saved, but Nav Links were not — they changed elsewhere (e.g. Themed Pages "Add to Nav") since this page was loaded. Reload and try again.
+</div>
 <?php endif; ?>
 
 <form method="POST" data-ajax data-live>
+<input type="hidden" name="nav_snapshot" value="<?= h($nav_snapshot) ?>">
 
 <!-- ══════════════════════════════════════
      NAVIGATION BAR

@@ -6,7 +6,16 @@ $db = get_db();
 
 // Delete
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $db->prepare('DELETE FROM pages WHERE id = ?')->execute([(int)$_GET['delete']]);
+    $del_id   = (int)$_GET['delete'];
+    $del_stmt = $db->prepare('SELECT slug FROM pages WHERE id = ?');
+    $del_stmt->execute([$del_id]);
+    $del_slug = $del_stmt->fetchColumn();
+
+    $db->prepare('DELETE FROM pages WHERE id = ?')->execute([$del_id]);
+    if ($del_slug) {
+        $db->prepare('DELETE FROM nav_links WHERE url = ?')->execute(['preview.php?slug=' . $del_slug]);
+    }
+
     $back = ($_GET['from'] ?? '') === 'themed' ? 'themed-pages.php?deleted=1' : 'pages.php?deleted=1';
     redirect($back);
 }
