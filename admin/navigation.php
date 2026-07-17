@@ -160,6 +160,9 @@ include '_layout.php';
     padding:0 6px 0 0; user-select:none; align-self:center;
 }
 .nl-row { grid-template-columns:20px 1fr 1fr auto; }
+.nl-row.dragging { opacity:.35; }
+.nl-row.drag-over-top    { box-shadow:inset 0 2px 0 0 var(--accent,#E63946); }
+.nl-row.drag-over-bottom { box-shadow:inset 0 -2px 0 0 var(--accent,#E63946); }
 
 /* ── Footer column card ── */
 .fc-card {
@@ -310,7 +313,7 @@ include '_layout.php';
         <div id="nav-links-list">
         <?php foreach ($nav_links as $nl): ?>
         <div class="nl-row">
-            <span class="drag-handle" title="Drag to reorder">⠿</span>
+            <span class="drag-handle" draggable="true" title="Drag to reorder">⠿</span>
             <input type="text" name="nl_label[]" value="<?= h($nl['label']) ?>" placeholder="Label" aria-label="Link label">
             <input type="text" name="nl_url[]"   value="<?= h($nl['url']) ?>"   placeholder="URL"   aria-label="Link URL">
             <button type="button" class="item-remove" onclick="removeBlock(this)" title="Remove link">✕</button>
@@ -436,13 +439,57 @@ function addNavLink() {
     const row = document.createElement('div');
     row.className = 'nl-row';
     row.innerHTML = `
-        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        <span class="drag-handle" draggable="true" title="Drag to reorder">⠿</span>
         <input type="text" name="nl_label[]" placeholder="Label" aria-label="Link label">
         <input type="text" name="nl_url[]"   placeholder="URL"   aria-label="Link URL">
         <button type="button" class="item-remove" onclick="removeBlock(this)" title="Remove">✕</button>`;
     document.getElementById('nav-links-list').appendChild(row);
     row.querySelector('input').focus();
 }
+
+// ── Nav link drag-to-reorder ──
+// Row order in the DOM at submit time is what determines sort_order
+// (nl_label[]/nl_url[] are saved in the order they appear in the form),
+// so reordering the .nl-row elements here is the entire fix — no hidden
+// order field needed.
+(function () {
+    const list = document.getElementById('nav-links-list');
+    let draggedRow = null;
+
+    list.addEventListener('dragstart', e => {
+        const handle = e.target.closest('.drag-handle');
+        if (!handle) return;
+        draggedRow = handle.closest('.nl-row');
+        draggedRow.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+
+    list.addEventListener('dragend', () => {
+        if (draggedRow) draggedRow.classList.remove('dragging');
+        draggedRow = null;
+        list.querySelectorAll('.nl-row').forEach(r => r.classList.remove('drag-over-top', 'drag-over-bottom'));
+    });
+
+    list.addEventListener('dragover', e => {
+        if (!draggedRow) return;
+        const row = e.target.closest('.nl-row');
+        if (!row || row === draggedRow) return;
+        e.preventDefault();
+        list.querySelectorAll('.nl-row').forEach(r => r.classList.remove('drag-over-top', 'drag-over-bottom'));
+        const before = e.clientY < row.getBoundingClientRect().top + row.offsetHeight / 2;
+        row.classList.add(before ? 'drag-over-top' : 'drag-over-bottom');
+    });
+
+    list.addEventListener('drop', e => {
+        if (!draggedRow) return;
+        const row = e.target.closest('.nl-row');
+        if (!row || row === draggedRow) return;
+        e.preventDefault();
+        const before = e.clientY < row.getBoundingClientRect().top + row.offsetHeight / 2;
+        row.insertAdjacentElement(before ? 'beforebegin' : 'afterend', draggedRow);
+        row.classList.remove('drag-over-top', 'drag-over-bottom');
+    });
+})();
 
 function resetNav() {
     if (!confirm('Reset all nav links to the camping site defaults?')) return;
