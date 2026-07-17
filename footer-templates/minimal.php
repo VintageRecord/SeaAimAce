@@ -12,7 +12,7 @@
     <nav aria-label="Footer navigation" style="display:flex;flex-wrap:wrap;gap:18px">
       <?php foreach ($fnav as $fn): ?>
       <a href="<?= h($_foot_base . $fn['url']) ?>" style="<?= h($link_style) ?> font-size:.78rem"
-         onmouseover="this.style.opacity='.6'" onmouseout="this.style.opacity='1'"><?= h($fn['label']) ?></a>
+         onmouseover="<?= h($_foot_link_hover_in) ?>" onmouseout="<?= h($_foot_link_hover_out) ?>"><?= h($fn['label']) ?></a>
       <?php endforeach; ?>
     </nav>
   </div>

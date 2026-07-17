@@ -25,6 +25,8 @@ if (!empty(array_intersect($existing_labels, $forge_labels))) {
 $nav_template_options = [
     'default'  => ['label' => 'Default',  'desc' => 'Logo left, links right, mobile hamburger menu'],
     'centered' => ['label' => 'Centered', 'desc' => 'Logo centered on top, links centered below'],
+    'boxed'    => ['label' => 'Boxed',    'desc' => 'Floating rounded rectangle bar, inset from page edges'],
+    'split'    => ['label' => 'Split',    'desc' => 'Logo left, links truly centered, CTA button right'],
 ];
 $footer_template_options = [
     'default' => ['label' => 'Default', 'desc' => 'Brand + link columns, bottom bar'],
@@ -53,8 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Settings
     foreach (['nav_logo_text','nav_book_btn_text','nav_book_btn_href',
-              'nav_bg_color','nav_text_color','site_tagline',
-              'footer_copyright','footer_bg_color','footer_text_color'] as $f) {
+              'nav_bg_color','nav_text_color','nav_accent_color','site_tagline',
+              'footer_copyright','footer_bg_color','footer_text_color','footer_accent_color'] as $f) {
         if (isset($_POST[$f])) save_setting($f, trim($_POST[$f]));
     }
     if (isset($_POST['nav_template']) && array_key_exists($_POST['nav_template'], $nav_template_options)) {
@@ -267,6 +269,16 @@ include '_layout.php';
                     <button type="button" class="color-clear" onclick="clearColor('nav_text_color','nav_text_color_pick')">Clear</button>
                 </div>
             </div>
+            <div class="form-group">
+                <label>Accent Colour <span style="font-size:.75rem;color:var(--text-muted)">(CTA button &amp; active link)</span></label>
+                <div class="color-row">
+                    <input type="color" id="nav_accent_color_pick" value="<?= h(setting('nav_accent_color','#E63946') ?: '#E63946') ?>"
+                           oninput="document.getElementById('nav_accent_color').value=this.value">
+                    <input type="text" id="nav_accent_color" name="nav_accent_color" value="<?= h(setting('nav_accent_color')) ?>" placeholder="e.g. #E63946"
+                           oninput="syncColorPick('nav_accent_color_pick',this.value)">
+                    <button type="button" class="color-clear" onclick="clearColor('nav_accent_color','nav_accent_color_pick')">Clear</button>
+                </div>
+            </div>
         </div>
 
         <!-- CTA Button -->
@@ -357,6 +369,16 @@ include '_layout.php';
                     <input type="text" id="footer_text_color" name="footer_text_color" value="<?= h(setting('footer_text_color')) ?>" placeholder="e.g. #aaaaaa"
                            oninput="syncColorPick('footer_text_color_pick',this.value)">
                     <button type="button" class="color-clear" onclick="clearColor('footer_text_color','footer_text_color_pick')">Clear</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Accent Colour <span style="font-size:.75rem;color:var(--text-muted)">(column headings &amp; link hover)</span></label>
+                <div class="color-row">
+                    <input type="color" id="footer_accent_color_pick" value="<?= h(setting('footer_accent_color','#E63946') ?: '#E63946') ?>"
+                           oninput="document.getElementById('footer_accent_color').value=this.value">
+                    <input type="text" id="footer_accent_color" name="footer_accent_color" value="<?= h(setting('footer_accent_color')) ?>" placeholder="e.g. #E63946"
+                           oninput="syncColorPick('footer_accent_color_pick',this.value)">
+                    <button type="button" class="color-clear" onclick="clearColor('footer_accent_color','footer_accent_color_pick')">Clear</button>
                 </div>
             </div>
         </div>

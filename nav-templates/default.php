@@ -1,3 +1,7 @@
+<?php
+$_nav_btn_style    = $nav_accent ? "background:{$nav_accent}!important;border-color:{$nav_accent}!important;color:#fff!important;" : '';
+$_nav_active_style = $nav_accent ? "border-color:{$nav_accent};color:{$nav_accent};" : '';
+?>
 <header class="u-clearfix u-header u-header" id="sec-c67f"<?= $nav_style ? ' style="' . h($nav_style) . '"' : '' ?>>
   <div class="u-clearfix u-sheet u-valign-middle u-sheet-1" style="display:flex;align-items:center;gap:0">
     <!-- Logo -->
@@ -24,7 +28,7 @@
             <a class="u-active-grey-5 u-button-style u-hover-grey-10 u-nav-link u-text-active-grey-90 u-text-grey-90 u-text-hover-grey-90 u-nav-link-2<?= $is_active ? ' u-nav-link-active' : '' ?>"
                href="<?= h($_nav_base . $nl['url']) ?>"
                role="menuitem"
-               <?= $nav_text && !$is_active ? 'style="color:' . h($nav_text) . '"' : '' ?>
+               <?php if ($is_active && $_nav_active_style): ?>style="<?= h($_nav_active_style) ?>"<?php elseif ($nav_text && !$is_active): ?>style="color:<?= h($nav_text) ?>"<?php endif; ?>
                <?= $is_active ? 'aria-current="page"' : '' ?>><?= h($nl['label']) ?></a>
           </li>
           <?php endforeach; ?>
@@ -32,7 +36,7 @@
         <?php if ($nav_btn_text): ?>
         <a href="<?= h($_nav_base . ltrim($nav_btn_href, '/')) ?>"
            class="u-border-2 u-border-palette-2-base u-btn u-btn-round u-button-style u-palette-2-base u-radius-50"
-           style="margin-left:16px;padding:8px 22px;font-size:.82rem;font-weight:600;white-space:nowrap;flex-shrink:0">
+           style="margin-left:16px;padding:8px 22px;font-size:.82rem;font-weight:600;white-space:nowrap;flex-shrink:0;<?= h($_nav_btn_style) ?>">
           <?= h($nav_btn_text) ?>
         </a>
         <?php endif; ?>
@@ -55,7 +59,7 @@
               <li class="u-nav-item" style="margin-top:12px">
                 <a href="<?= h($_nav_base . ltrim($nav_btn_href, '/')) ?>"
                    class="u-border-2 u-border-palette-2-base u-btn u-btn-round u-button-style u-palette-2-base u-radius-50"
-                   style="display:inline-block;padding:8px 22px;font-size:.85rem;font-weight:600">
+                   style="display:inline-block;padding:8px 22px;font-size:.85rem;font-weight:600;<?= h($_nav_btn_style) ?>">
                   <?= h($nav_btn_text) ?>
                 </a>
               </li>

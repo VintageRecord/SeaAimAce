@@ -19,12 +19,12 @@
         $links = json_decode($col['links'], true) ?: [];
       ?>
       <div>
-        <h4 style="font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin:0 0 14px"><?= h($col['heading']) ?></h4>
+        <h4 style="font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px;<?= h($_foot_heading_style) ?>"><?= h($col['heading']) ?></h4>
         <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
           <?php foreach ($links as $lnk): ?>
           <li>
             <a href="<?= h($_foot_base . ($lnk[1] ?? '#')) ?>" style="<?= h($link_style) ?> font-size:.85rem;line-height:1.4"
-               onmouseover="this.style.opacity='.6'" onmouseout="this.style.opacity='1'"><?= h($lnk[0] ?? '') ?></a>
+               onmouseover="<?= h($_foot_link_hover_in) ?>" onmouseout="<?= h($_foot_link_hover_out) ?>"><?= h($lnk[0] ?? '') ?></a>
           </li>
           <?php endforeach; ?>
         </ul>
@@ -48,7 +48,7 @@
       <nav aria-label="Footer navigation" style="display:flex;flex-wrap:wrap;gap:18px">
         <?php foreach ($fnav as $fn): ?>
         <a href="<?= h($_foot_base . $fn['url']) ?>" style="<?= h($link_style) ?> font-size:.78rem"
-           onmouseover="this.style.opacity='.6'" onmouseout="this.style.opacity='1'"><?= h($fn['label']) ?></a>
+           onmouseover="<?= h($_foot_link_hover_in) ?>" onmouseout="<?= h($_foot_link_hover_out) ?>"><?= h($fn['label']) ?></a>
         <?php endforeach; ?>
       </nav>
     </div>

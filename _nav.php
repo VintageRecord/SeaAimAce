@@ -11,6 +11,7 @@ $nav_btn_text   = setting('nav_book_btn_text', 'Book a Tour');
 $nav_btn_href   = setting('nav_book_btn_href', 'contact.php');
 $nav_bg         = setting('nav_bg_color', '');
 $nav_text       = setting('nav_text_color', '');
+$nav_accent     = setting('nav_accent_color', '');
 $nav_template   = setting('nav_template', 'default');
 
 // Build inline style for nav
@@ -42,7 +43,7 @@ $page_slug_map = [
     'contact' => 'contact.php',
 ];
 $active_url = $page_slug_map[$current_page] ?? '';
-$_nav_variants = ['default', 'centered'];
+$_nav_variants = ['default', 'centered', 'boxed', 'split'];
 if (!in_array($nav_template, $_nav_variants, true)) $nav_template = 'default';
 ?>
 <?php require __DIR__ . '/nav-templates/' . $nav_template . '.php'; ?>

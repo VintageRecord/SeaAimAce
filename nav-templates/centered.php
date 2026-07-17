@@ -2,8 +2,10 @@
 // Self-contained alternate nav: centered logo on top, links + CTA on a second row.
 // Deliberately avoids nicepage.js/u-* classes so it renders identically regardless
 // of what nicepage.css does to .u-header/.u-menu elsewhere on the page.
-$_nc_bg   = $nav_bg   ?: '#ffffff';
-$_nc_text = $nav_text ?: '#222222';
+$_nc_bg     = $nav_bg   ?: '#ffffff';
+$_nc_text   = $nav_text ?: '#222222';
+$_nc_accent = $nav_accent ?: $_nc_text;
+$_nc_accent_fg = $nav_accent ? '#fff' : $_nc_bg;
 ?>
 <header id="sec-c67f" style="background:<?= h($_nc_bg) ?>;color:<?= h($_nc_text) ?>;border-bottom:1px solid rgba(0,0,0,.08);font-family:'Segoe UI',system-ui,sans-serif">
   <div style="max-width:1200px;margin:0 auto;padding:16px 24px;text-align:center">
@@ -21,12 +23,12 @@ $_nc_text = $nav_text ?: '#222222';
         $is_active = ($nl['url'] === $active_url);
       ?>
       <a href="<?= h($_nav_base . $nl['url']) ?>"
-         style="color:inherit;text-decoration:none;font-size:.9rem;font-weight:<?= $is_active ? '700' : '500' ?>;<?= $is_active ? 'border-bottom:2px solid currentColor;padding-bottom:3px' : '' ?>"
+         style="color:<?= $is_active ? h($_nc_accent) : 'inherit' ?>;text-decoration:none;font-size:.9rem;font-weight:<?= $is_active ? '700' : '500' ?>;<?= $is_active ? 'border-bottom:2px solid ' . h($_nc_accent) . ';padding-bottom:3px' : '' ?>"
          <?= $is_active ? 'aria-current="page"' : '' ?>><?= h($nl['label']) ?></a>
       <?php endforeach; ?>
       <?php if ($nav_btn_text): ?>
       <a href="<?= h($_nav_base . ltrim($nav_btn_href, '/')) ?>"
-         style="background:<?= h($_nc_text) ?>;color:<?= h($_nc_bg) ?>;padding:8px 22px;border-radius:50px;font-size:.82rem;font-weight:600;text-decoration:none;white-space:nowrap">
+         style="background:<?= h($_nc_accent) ?>;color:<?= h($_nc_accent_fg) ?>;padding:8px 22px;border-radius:50px;font-size:.82rem;font-weight:600;text-decoration:none;white-space:nowrap">
         <?= h($nav_btn_text) ?>
       </a>
       <?php endif; ?>
