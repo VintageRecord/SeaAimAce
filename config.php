@@ -89,6 +89,7 @@ function _ensure_schema(PDO $pdo): void {
             html_content     TEXT NOT NULL DEFAULT '',
             css_content      TEXT NOT NULL DEFAULT '',
             editor_json      TEXT NOT NULL DEFAULT '{}',
+            theme_group      TEXT NOT NULL DEFAULT '',
             updated_at       TEXT NOT NULL DEFAULT (datetime('now'))
         );
 
@@ -172,6 +173,7 @@ function _ensure_schema(PDO $pdo): void {
     ");
     // Column migrations for existing databases
     try { $pdo->exec("ALTER TABLE pages ADD COLUMN css_content TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
+    try { $pdo->exec("ALTER TABLE pages ADD COLUMN theme_group TEXT NOT NULL DEFAULT ''"); } catch (\Exception $e) {}
 }
 
 function setting(string $key, string $default = ''): string {

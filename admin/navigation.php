@@ -22,6 +22,24 @@ if (!empty(array_intersect($existing_labels, $forge_labels))) {
     foreach ($default_nav_links as $i => $nl) $nlst->execute([...$nl, $i]);
 }
 
+$nav_template_options = [
+    'default'  => ['label' => 'Default',  'desc' => 'Logo left, links right, mobile hamburger menu'],
+    'centered' => ['label' => 'Centered', 'desc' => 'Logo centered on top, links centered below'],
+    'boxed'    => ['label' => 'Boxed',    'desc' => 'Floating rounded rectangle bar, inset from page edges'],
+    'split'    => ['label' => 'Split',    'desc' => 'Logo left, links truly centered, CTA button right'],
+];
+$footer_template_options = [
+    'default' => ['label' => 'Default', 'desc' => 'Brand + link columns, bottom bar'],
+    'minimal' => ['label' => 'Minimal', 'desc' => 'Single row — logo, copyright, links'],
+];
+
+// Hash of the current nav_links table, used to detect edits made elsewhere
+// (e.g. Themed Pages' "Add to Nav") between when this form was loaded and submitted.
+function nav_links_snapshot(PDO $db): string {
+    $rows = $db->query('SELECT id, label, url, sort_order FROM nav_links ORDER BY id')->fetchAll();
+    return md5(json_encode($rows));
+}
+
 $flash = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -37,19 +55,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Settings
     foreach (['nav_logo_text','nav_book_btn_text','nav_book_btn_href',
-              'nav_bg_color','nav_text_color','site_tagline',
-              'footer_copyright','footer_bg_color','footer_text_color'] as $f) {
+              'nav_bg_color','nav_text_color','nav_accent_color','site_tagline',
+              'footer_copyright','footer_bg_color','footer_text_color','footer_accent_color'] as $f) {
         if (isset($_POST[$f])) save_setting($f, trim($_POST[$f]));
     }
+    if (isset($_POST['nav_template']) && array_key_exists($_POST['nav_template'], $nav_template_options)) {
+        save_setting('nav_template', $_POST['nav_template']);
+    }
+    if (isset($_POST['footer_template']) && array_key_exists($_POST['footer_template'], $footer_template_options)) {
+        save_setting('footer_template', $_POST['footer_template']);
+    }
 
-    // Nav links
-    $nl_labels = $_POST['nl_label'] ?? [];
-    $nl_urls   = $_POST['nl_url']   ?? [];
-    $db->exec('DELETE FROM nav_links');
-    $nlst = $db->prepare('INSERT INTO nav_links (label,url,sort_order) VALUES (?,?,?)');
-    foreach ($nl_labels as $i => $label) {
-        if (trim($label) === '') continue;
-        $nlst->execute([trim($label), trim($nl_urls[$i] ?? ''), $i]);
+    // Nav links — skipped (with a flash warning) if the table changed since this
+    // form was loaded, e.g. via Themed Pages' "Add to Nav", so we don't silently
+    // wipe out a link added from another tab.
+    $nav_conflict = isset($_POST['nav_snapshot']) && $_POST['nav_snapshot'] !== nav_links_snapshot($db);
+    if (!$nav_conflict) {
+        $nl_labels = $_POST['nl_label'] ?? [];
+        $nl_urls   = $_POST['nl_url']   ?? [];
+        $db->exec('DELETE FROM nav_links');
+        $nlst = $db->prepare('INSERT INTO nav_links (label,url,sort_order) VALUES (?,?,?)');
+        foreach ($nl_labels as $i => $label) {
+            if (trim($label) === '') continue;
+            $nlst->execute([trim($label), trim($nl_urls[$i] ?? ''), $i]);
+        }
     }
 
     // Footer columns
@@ -67,6 +96,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fcst->execute([trim($heading), json_encode($links), $i]);
     }
 
+    if ($nav_conflict) {
+        $nav_conflict_msg = 'Other settings were saved, but Nav Links were not — they changed elsewhere (e.g. Themed Pages "Add to Nav") since this page was loaded. Reload and try again.';
+        if (!empty($_SERVER['HTTP_X_AJAX'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => $nav_conflict_msg]);
+            exit;
+        }
+        header('Location: navigation.php?flash=nav_conflict');
+        exit;
+    }
+
     if (!empty($_SERVER['HTTP_X_AJAX'])) {
         header('Content-Type: application/json');
         echo json_encode(['success' => true]);
@@ -82,6 +122,10 @@ if (isset($_GET['flash'])) {
 
 $nav_links      = $db->query('SELECT * FROM nav_links ORDER BY sort_order')->fetchAll();
 $footer_columns = $db->query('SELECT * FROM footer_columns ORDER BY sort_order')->fetchAll();
+$nav_snapshot   = nav_links_snapshot($db);
+
+$nav_template    = setting('nav_template', 'default');
+$footer_template = setting('footer_template', 'default');
 
 $page_title = 'Navigation & Footer';
 $active_nav = 'navigation';
@@ -116,6 +160,9 @@ include '_layout.php';
     padding:0 6px 0 0; user-select:none; align-self:center;
 }
 .nl-row { grid-template-columns:20px 1fr 1fr auto; }
+.nl-row.dragging { opacity:.35; }
+.nl-row.drag-over-top    { box-shadow:inset 0 2px 0 0 var(--accent,#E63946); }
+.nl-row.drag-over-bottom { box-shadow:inset 0 -2px 0 0 var(--accent,#E63946); }
 
 /* ── Footer column card ── */
 .fc-card {
@@ -144,6 +191,20 @@ include '_layout.php';
     margin:0 0 12px;
 }
 .section-head h3 { margin:0; font-size:.95rem; font-weight:600; }
+
+/* ── Template swatch picker ── */
+.tpl-swatch-row { display:flex; gap:12px; flex-wrap:wrap; }
+.tpl-swatch {
+    position:relative; width:180px; border:2px solid var(--border);
+    border-radius:8px; padding:12px 14px; cursor:pointer;
+    background:var(--surface-2,#1e1e1e); transition:border-color .15s;
+}
+.tpl-swatch:hover { border-color:#555; }
+.tpl-swatch input[type="radio"] { position:absolute; top:10px; right:10px; margin:0; accent-color:var(--accent,#E63946); }
+.tpl-swatch input[type="radio"]:checked ~ .tpl-swatch-label { color:#fff; }
+.tpl-swatch:has(input:checked) { border-color:var(--accent,#E63946); }
+.tpl-swatch-label { display:block; font-size:.85rem; font-weight:600; margin-bottom:4px; padding-right:20px; }
+.tpl-swatch-desc { display:block; font-size:.72rem; color:var(--text-muted); line-height:1.4; }
 </style>
 
 <?php if ($flash === 'saved'): ?>
@@ -154,9 +215,14 @@ include '_layout.php';
 <div class="alert alert-success" style="background:#d4edda;border:1px solid #c3e6cb;color:#155724;padding:10px 16px;border-radius:6px;margin-bottom:16px;">
     Navigation reset to defaults.
 </div>
+<?php elseif ($flash === 'nav_conflict'): ?>
+<div class="alert" style="background:#3a2a0a;border:1px solid #5a4a1a;color:#e0b84a;padding:10px 16px;border-radius:6px;margin-bottom:16px;">
+    Other settings were saved, but Nav Links were not — they changed elsewhere (e.g. Themed Pages "Add to Nav") since this page was loaded. Reload and try again.
+</div>
 <?php endif; ?>
 
 <form method="POST" data-ajax data-live>
+<input type="hidden" name="nav_snapshot" value="<?= h($nav_snapshot) ?>">
 
 <!-- ══════════════════════════════════════
      NAVIGATION BAR
@@ -167,8 +233,20 @@ include '_layout.php';
     </div>
     <div class="card-body">
 
+        <!-- Layout Template -->
+        <p class="form-section-title" style="margin-top:0">Layout Template</p>
+        <div class="tpl-swatch-row" style="margin-bottom:20px">
+            <?php foreach ($nav_template_options as $key => $opt): ?>
+            <label class="tpl-swatch">
+                <input type="radio" name="nav_template" value="<?= h($key) ?>" <?= $nav_template === $key ? 'checked' : '' ?>>
+                <span class="tpl-swatch-label"><?= h($opt['label']) ?></span>
+                <span class="tpl-swatch-desc"><?= h($opt['desc']) ?></span>
+            </label>
+            <?php endforeach; ?>
+        </div>
+
         <!-- Appearance -->
-        <p class="form-section-title" style="margin-top:0">Appearance</p>
+        <p class="form-section-title">Appearance</p>
         <div class="form-grid">
             <div class="form-group">
                 <label>Logo Text <span style="font-size:.75rem;color:var(--text-muted)">(shown beside logo image)</span></label>
@@ -192,6 +270,16 @@ include '_layout.php';
                     <input type="text" id="nav_text_color" name="nav_text_color" value="<?= h(setting('nav_text_color')) ?>" placeholder="e.g. #222222"
                            oninput="syncColorPick('nav_text_color_pick',this.value)">
                     <button type="button" class="color-clear" onclick="clearColor('nav_text_color','nav_text_color_pick')">Clear</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Accent Colour <span style="font-size:.75rem;color:var(--text-muted)">(CTA button &amp; active link)</span></label>
+                <div class="color-row">
+                    <input type="color" id="nav_accent_color_pick" value="<?= h(setting('nav_accent_color','#E63946') ?: '#E63946') ?>"
+                           oninput="document.getElementById('nav_accent_color').value=this.value">
+                    <input type="text" id="nav_accent_color" name="nav_accent_color" value="<?= h(setting('nav_accent_color')) ?>" placeholder="e.g. #E63946"
+                           oninput="syncColorPick('nav_accent_color_pick',this.value)">
+                    <button type="button" class="color-clear" onclick="clearColor('nav_accent_color','nav_accent_color_pick')">Clear</button>
                 </div>
             </div>
         </div>
@@ -225,7 +313,7 @@ include '_layout.php';
         <div id="nav-links-list">
         <?php foreach ($nav_links as $nl): ?>
         <div class="nl-row">
-            <span class="drag-handle" title="Drag to reorder">⠿</span>
+            <span class="drag-handle" draggable="true" title="Drag to reorder">⠿</span>
             <input type="text" name="nl_label[]" value="<?= h($nl['label']) ?>" placeholder="Label" aria-label="Link label">
             <input type="text" name="nl_url[]"   value="<?= h($nl['url']) ?>"   placeholder="URL"   aria-label="Link URL">
             <button type="button" class="item-remove" onclick="removeBlock(this)" title="Remove link">✕</button>
@@ -243,8 +331,20 @@ include '_layout.php';
     <div class="card-header"><h2>Footer</h2></div>
     <div class="card-body">
 
+        <!-- Layout Template -->
+        <p class="form-section-title" style="margin-top:0">Layout Template</p>
+        <div class="tpl-swatch-row" style="margin-bottom:20px">
+            <?php foreach ($footer_template_options as $key => $opt): ?>
+            <label class="tpl-swatch">
+                <input type="radio" name="footer_template" value="<?= h($key) ?>" <?= $footer_template === $key ? 'checked' : '' ?>>
+                <span class="tpl-swatch-label"><?= h($opt['label']) ?></span>
+                <span class="tpl-swatch-desc"><?= h($opt['desc']) ?></span>
+            </label>
+            <?php endforeach; ?>
+        </div>
+
         <!-- Footer settings -->
-        <p class="form-section-title" style="margin-top:0">Appearance & Text</p>
+        <p class="form-section-title">Appearance & Text</p>
         <div class="form-grid">
             <div class="form-group full-width">
                 <label>Copyright Text</label>
@@ -272,6 +372,16 @@ include '_layout.php';
                     <input type="text" id="footer_text_color" name="footer_text_color" value="<?= h(setting('footer_text_color')) ?>" placeholder="e.g. #aaaaaa"
                            oninput="syncColorPick('footer_text_color_pick',this.value)">
                     <button type="button" class="color-clear" onclick="clearColor('footer_text_color','footer_text_color_pick')">Clear</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Accent Colour <span style="font-size:.75rem;color:var(--text-muted)">(column headings &amp; link hover)</span></label>
+                <div class="color-row">
+                    <input type="color" id="footer_accent_color_pick" value="<?= h(setting('footer_accent_color','#E63946') ?: '#E63946') ?>"
+                           oninput="document.getElementById('footer_accent_color').value=this.value">
+                    <input type="text" id="footer_accent_color" name="footer_accent_color" value="<?= h(setting('footer_accent_color')) ?>" placeholder="e.g. #E63946"
+                           oninput="syncColorPick('footer_accent_color_pick',this.value)">
+                    <button type="button" class="color-clear" onclick="clearColor('footer_accent_color','footer_accent_color_pick')">Clear</button>
                 </div>
             </div>
         </div>
@@ -329,13 +439,57 @@ function addNavLink() {
     const row = document.createElement('div');
     row.className = 'nl-row';
     row.innerHTML = `
-        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        <span class="drag-handle" draggable="true" title="Drag to reorder">⠿</span>
         <input type="text" name="nl_label[]" placeholder="Label" aria-label="Link label">
         <input type="text" name="nl_url[]"   placeholder="URL"   aria-label="Link URL">
         <button type="button" class="item-remove" onclick="removeBlock(this)" title="Remove">✕</button>`;
     document.getElementById('nav-links-list').appendChild(row);
     row.querySelector('input').focus();
 }
+
+// ── Nav link drag-to-reorder ──
+// Row order in the DOM at submit time is what determines sort_order
+// (nl_label[]/nl_url[] are saved in the order they appear in the form),
+// so reordering the .nl-row elements here is the entire fix — no hidden
+// order field needed.
+(function () {
+    const list = document.getElementById('nav-links-list');
+    let draggedRow = null;
+
+    list.addEventListener('dragstart', e => {
+        const handle = e.target.closest('.drag-handle');
+        if (!handle) return;
+        draggedRow = handle.closest('.nl-row');
+        draggedRow.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+
+    list.addEventListener('dragend', () => {
+        if (draggedRow) draggedRow.classList.remove('dragging');
+        draggedRow = null;
+        list.querySelectorAll('.nl-row').forEach(r => r.classList.remove('drag-over-top', 'drag-over-bottom'));
+    });
+
+    list.addEventListener('dragover', e => {
+        if (!draggedRow) return;
+        const row = e.target.closest('.nl-row');
+        if (!row || row === draggedRow) return;
+        e.preventDefault();
+        list.querySelectorAll('.nl-row').forEach(r => r.classList.remove('drag-over-top', 'drag-over-bottom'));
+        const before = e.clientY < row.getBoundingClientRect().top + row.offsetHeight / 2;
+        row.classList.add(before ? 'drag-over-top' : 'drag-over-bottom');
+    });
+
+    list.addEventListener('drop', e => {
+        if (!draggedRow) return;
+        const row = e.target.closest('.nl-row');
+        if (!row || row === draggedRow) return;
+        e.preventDefault();
+        const before = e.clientY < row.getBoundingClientRect().top + row.offsetHeight / 2;
+        row.insertAdjacentElement(before ? 'beforebegin' : 'afterend', draggedRow);
+        row.classList.remove('drag-over-top', 'drag-over-bottom');
+    });
+})();
 
 function resetNav() {
     if (!confirm('Reset all nav links to the camping site defaults?')) return;
